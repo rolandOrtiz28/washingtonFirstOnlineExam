@@ -92,9 +92,6 @@ router.post('/register', catchAsync(async (req, res) => {
     }
 }));
 
-router.get('/dashboard', (req,res)=>{
-    res.render('teacher/dashboard');
-});
 
 router.get('/exams', async(req,res)=>{
 const exams = await Exam.find({})
@@ -205,6 +202,19 @@ router.post('/exams/submit/:id', async (req, res) => {
     console.error(err);
     res.status(500).send('Internal Server Error');
   }
+});
+
+
+
+
+
+//dashboard routes
+router.get('/dashboard', (req,res)=>{
+  res.render('teacher/dashboard');
+});
+
+router.get('/examdashboard', (req,res)=>{
+  res.render('teacher/examDash');
 });
 
 

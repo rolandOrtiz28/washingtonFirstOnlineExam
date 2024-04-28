@@ -1,0 +1,198 @@
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/00e4d50ddc.js" crossorigin="anonymous"></script>
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link span {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand-icon">
+                <img src="/images/Logo.png" alt="" style="width: 30px;">
+            </div>
+            <div class="sidebar-brand-text ms-2">WFS TEACHERS</div>
+        </a>
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link" href="/dashboard">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Statistics</span></a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Interface
+        </div>
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/examdashboard">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Components</span>
+            </a>
+           
+        </li>
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Utilities</span>
+            </a>
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Custom Utilities:</h6>
+                    <a class="collapse-item" href="utilities-color.html">Colors</a>
+                    <a class="collapse-item" href="utilities-border.html">Borders</a>
+                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                    <a class="collapse-item" href="utilities-other.html">Other</a>
+                </div>
+            </div>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Addons
+        </div>
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Pages</span>
+            </a>
+            <div id="collapsePages" class="collapse multi-collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Login Screens:</h6>
+                    <a class="collapse-item" href="login.html">Login</a>
+                    <a class="collapse-item" href="register.html">Register</a>
+                    <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                    <div class="collapse-divider"></div>
+                    <h6 class="collapse-header">Other Pages:</h6>
+                    <a class="collapse-item" href="404.html">404 Page</a>
+                    <a class="collapse-item" href="blank.html">Blank Page</a>
+                </div>
+            </div>
+        </li>
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Charts</span></a>
+        </li>
+        <!-- Nav Item - Tables -->
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Tables</span></a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+        <!-- Sidebar Message -->
+    </ul>
+    <!-- End of Sidebar -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    <script>
+        "use strict";
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get references to relevant elements
+            var sidebarToggle = document.getElementById('sidebarToggle');
+            var sidebar = document.querySelector('.sidebar');
+            var sidebarTextElements = document.querySelectorAll('.sidebar-heading, .nav-link span');
+
+            // Toggle the side navigation
+            sidebarToggle.addEventListener('click', function (e) {
+                document.body.classList.toggle("sidebar-toggled");
+                sidebar.classList.toggle("toggled");
+                sidebarTextElements.forEach(function (element) {
+                    if (sidebar.classList.contains("toggled")) {
+                        element.style.opacity = 0; // Hide text elements
+                    } else {
+                        element.style.opacity = 1; // Show text elements
+                    }
+                });
+            });
+
+            // Close any open menu accordions when window is resized below 768px
+            window.addEventListener('resize', function () {
+                if (window.innerWidth < 768) {
+                    var collapses = document.querySelectorAll('.sidebar .collapse');
+                    collapses.forEach(function (collapse) {
+                        collapse.classList.remove('show');
+                    });
+                }
+
+                // Toggle the side navigation when window is resized below 480px
+                if (window.innerWidth < 480 && !sidebar.classList.contains("toggled")) {
+                    document.body.classList.add("sidebar-toggled");
+                    sidebar.classList.add("toggled");
+                    var collapses = document.querySelectorAll('.sidebar .collapse');
+                    collapses.forEach(function (collapse) {
+                        collapse.classList.remove('show');
+                    });
+                }
+            });
+
+            // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
+            if (document.body.classList.contains('fixed-nav')) {
+                document.querySelector('.sidebar').addEventListener('wheel', function (e) {
+                    if (window.innerWidth > 768) {
+                        var delta = e.deltaY || -e.detail;
+                        this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+                        e.preventDefault();
+                    }
+                });
+            }
+
+            // Scroll to top button appear
+            window.addEventListener('scroll', function () {
+                var scrollDistance = window.pageYOffset || document.documentElement.scrollTop;
+                var scrollToTopButton = document.querySelector('.scroll-to-top');
+                if (scrollDistance > 100) {
+                    scrollToTopButton.style.display = "block";
+                } else {
+                    scrollToTopButton.style.display = "none";
+                }
+            });
+
+            // Smooth scrolling using JavaScript
+            var scrollButton = document.querySelectorAll('a.scroll-to-top');
+            scrollButton.forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var targetElement = document.getElementById(this.getAttribute('href').slice(1));
+                    var targetOffset = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({
+                        top: targetOffset,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+
+    
