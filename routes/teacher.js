@@ -213,8 +213,9 @@ router.get('/dashboard', (req,res)=>{
   res.render('teacher/dashboard');
 });
 
-router.get('/examdashboard', (req,res)=>{
-  res.render('teacher/examDash');
+router.get('/examdashboard', async(req,res)=>{
+  const exams = await Exam.find({})
+  res.render('teacher/examDash', {exams});
 });
 
 
