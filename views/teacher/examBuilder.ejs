@@ -1,0 +1,147 @@
+<% layout('/layouts/boilerplate') -%>
+<div class="container-md">
+
+    <h1>Exam Builder</h1>
+    <form action="/builder" method="POST" class="mt-4">
+<div class="row">
+    <div class="col">
+        <!-- Name input -->
+        <div data-mdb-input-init class="form-outline">
+            <input type="text" class="form-control" id="title" name="title" placeholder="Title" required>
+
+        </div>
+    </div>
+    <div class="col">
+        <!-- Email input -->
+        <div data-mdb-input-init class="form-outline">
+            <input type="text" class="form-control" id="term" name="term" placeholder="Term" required>
+
+        </div>
+    </div>
+    <div class="col">
+        <!-- Email input -->
+        <div data-mdb-input-init class="form-outline">
+            <input type="text" class="form-control" id="level" name="level" placeholder="Level" required>
+
+        </div>
+    </div>
+    <div class="col">
+        <!-- Email input -->
+        <div data-mdb-input-init class="form-outline">
+            <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
+
+        </div>
+    </div>
+
+</div>
+        <hr>
+    <h2>Contents</h2>
+    <div id="contents">
+        <div class="content mb-4">
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control mb-2" name="contents[][title]" placeholder="Content Title"
+                        required>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="form-control mb-2" name="contents[][remark]" placeholder="Content Remark">
+                </div>
+            </div>
+            <div class="questions">
+            <div class="question mb-2">
+                <input type="text" class="form-control mb-2" name="contents[][questions][0][question]" placeholder="Question"
+                    required>
+                <input type="text" class="form-control mb-2" name="contents[][questions][0][choices][0]" placeholder="Choice 1"
+                    required>
+                <input type="text" class="form-control mb-2" name="contents[][questions][0][choices][1]" placeholder="Choice 2"
+                    required>
+                <input type="text" class="form-control mb-2" name="contents[][questions][0][choices][2]" placeholder="Choice 3"
+                    required>
+                <input type="text" class="form-control mb-2" name="contents[][questions][0][correctAnswer]"
+                    placeholder="Correct Answer" required>
+                <input type="number" class="form-control mb-2" name="contents[][questions][0][points]" placeholder="Points"
+                    required>
+            </div>
+            </div>
+            <button type="button" class="addQuestion btn btn-primary">Add Question</button>
+        </div>
+    </div>
+    <button type="button" id="addContent" class="btn btn-success">Add Content</button>
+    <button type="submit" class="btn btn-primary">Publish Exam</button>
+    </form>
+</div>
+    <script>
+      document.getElementById('addContent').addEventListener('click', () => {
+            // Find the total number of contents
+            const contentCount = document.querySelectorAll('.content').length;
+
+            // Creating a new empty content div
+            const emptyContent = document.createElement('div');
+            emptyContent.classList.add('content');
+            emptyContent.innerHTML = `
+        <!-- Input fields for content title and remark -->
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control mb-2" name="contents[${contentCount}][title]" placeholder="Content Title" required>
+            </div>
+            <div class="col-md-2">
+                <input type="text" class="form-control mb-2" name="contents[${contentCount}][remark]" placeholder="Content Remark">
+            </div>
+        </div>
+        <!-- Container for questions -->
+        <div class="questions">
+            <!-- Initial question -->
+            <div class="question mb-2">
+                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][question]" placeholder="Question" required>
+                <!-- Choices -->
+                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][0]" placeholder="Choice 1" required>
+                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][1]" placeholder="Choice 2" required>
+                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][2]" placeholder="Choice 3" required>
+                <!-- Correct answer -->
+                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][correctAnswer]" placeholder="Correct Answer" required>
+                <!-- Points -->
+                <input type="number" class="form-control mb-2" name="contents[${contentCount}][questions][0][points]" placeholder="Points" required>
+            </div>
+        </div>
+        <!-- Button to add new question -->
+        <button type="button" class="addQuestion btn btn-primary">Add Question</button>
+    `;
+            // Appending the new content to the contents div
+            document.getElementById('contents').appendChild(emptyContent);
+        });
+
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('addQuestion')) {
+                const questionContainer = event.target.parentNode.querySelector('.questions');
+
+                // Find the index of the content section
+                const contentIndex = Array.from(questionContainer.parentNode.parentNode.children).indexOf(questionContainer.parentNode);
+
+                // Find the total number of questions for this content
+                const questionCount = questionContainer.querySelectorAll('.question').length;
+
+                // Create a new question div with empty input fields
+                const newQuestion = document.createElement('div');
+                newQuestion.classList.add('question');
+                newQuestion.innerHTML = `
+            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][question]" placeholder="Question" required>
+            <!-- Choices -->
+            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][0]" placeholder="Choice 1" required>
+            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][1]" placeholder="Choice 2" required>
+            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][2]" placeholder="Choice 3" required>
+            <!-- Correct answer -->
+            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][correctAnswer]" placeholder="Correct Answer" required>
+            <!-- Points -->
+            <input type="number" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][points]" placeholder="Points" required>
+        `;
+
+                // Append the new question to the question container
+                questionContainer.appendChild(newQuestion);
+            }
+        });
+
+    </script>
+
+
+
+<hr />

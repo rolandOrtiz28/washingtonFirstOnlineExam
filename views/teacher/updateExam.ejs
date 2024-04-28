@@ -1,0 +1,103 @@
+<% layout('/layouts/boilerplate') -%>
+    <div class="container-md mb-4">
+        <h1>Update Exam</h1>
+        <form action="/update/<%= exam._id %>" method="POST" class="mt-4">
+            <div class="row">
+                <div class="col">
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" class="form-control" id="title" name="title" value="<%= exam.title %>"
+                            placeholder="Title" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" class="form-control" id="term" name="term" value="<%= exam.term %>"
+                            placeholder="Term" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" class="form-control" id="level" name="level" value="<%= exam.level %>"
+                            placeholder="Level" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" class="form-control" id="subject" name="subject" value="<%= exam.subject %>"
+                            placeholder="Subject" required>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h2>Contents</h2>
+            <div id="contents">
+                <% exam.contents.forEach((content, contentIndex)=> { %>
+                    <div class="content mb-4">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="form-control mb-2" name="contents[<%= contentIndex %>][title]"
+                                    value="<%= content.title %>" placeholder="Content Title">
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control mb-2"
+                                    name="contents[<%= contentIndex %>][remark]" value="<%= content.remark %>"
+                                    placeholder="Content Remark">
+                            </div>
+                        </div>
+                        <div class="questions">
+                            <% content.questions.forEach((question, questionIndex)=> { %>
+                                <div class="question mb-2">
+                                    <input type="text" class="form-control mb-2"
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][question]"
+                                        value="<%= question.question %>" placeholder="Question" required>
+                                    <input type="text" class="form-control mb-2"
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][0]"
+                                        value="<%= question.choices[0] %>" placeholder="Choice 1" required>
+                                    <input type="text" class="form-control mb-2"
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][1]"
+                                        value="<%= question.choices[1] %>" placeholder="Choice 2" required>
+                                    <input type="text" class="form-control mb-2"
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][2]"
+                                        value="<%= question.choices[2] %>" placeholder="Choice 3" required>
+                                    <input type="text" class="form-control mb-2"
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][correctAnswer]"
+                                        value="<%= question.correctAnswer %>" placeholder="Correct Answer" required>
+                                    <input type="number" class="form-control mb-2"
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][points]"
+                                        value="<%= question.points %>" placeholder="Points" required>
+                                </div>
+                                <% }); %>
+                        </div>
+
+                    </div>
+                    <% }); %>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Exam</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addContent').addEventListener('click', () => {
+            const content = document.querySelector('.content').cloneNode(true);
+            document.getElementById('contents').appendChild(content);
+        });
+
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('addQuestion')) {
+                const questionContainer = event.target.parentNode.querySelector('.questions');
+                const question = document.querySelector('.question').cloneNode(true);
+                const existingQuestions = questionContainer.querySelectorAll('.question').length;
+
+                // Adjust the name attributes to ensure unique names for each input
+                question.querySelectorAll('input').forEach((input) => {
+                    const name = input.getAttribute('name').replace('[]', `[${existingQuestions}]`);
+                    input.setAttribute('name', name);
+                });
+
+                questionContainer.appendChild(question);
+            }
+        });
+
+    </script>

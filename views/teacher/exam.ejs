@@ -1,0 +1,40 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <div class="container">
+        <h1>Answer Exam</h1>
+        <form action="/exams/submit/<%= exam._id %>" method="POST">
+            <% exam.contents.forEach((content, contentIndex)=> { %>
+<h5 class="card-title">
+    <%= content.title %>
+</h5>
+                <div class="card mb-4">
+
+                    <div class="card-body">
+                        <!-- Display content title -->
+
+                        <% content.questions.forEach((question, questionIndex)=> { %>
+                            <div class="form-group mb-3">
+                                <!-- Display each question -->
+                                <label for="question<%= contentIndex %>_<%= questionIndex %>">
+                                    <%= questionIndex + 1 %>. <%= question.question %>
+                                </label>
+                                <% question.choices.forEach((choice, choiceIndex)=> { %>
+                                    <!-- Display each choice -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="answers[<%= contentIndex %>]"
+                                            id="choice<%= contentIndex %>_<%= questionIndex %>_<%= choiceIndex %>"
+                                            value="<%= choice %>" required>
+                                        <label class="form-check-label"
+                                            for="choice<%= contentIndex %>_<%= questionIndex %>_<%= choiceIndex %>">
+                                            <%= choice %>
+                                        </label>
+                                    </div>
+                                    <% }) %>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+                <% }) %>
+                    <button type="submit" class="btn btn-primary">Submit Answers</button>
+        </form>
+    </div>
