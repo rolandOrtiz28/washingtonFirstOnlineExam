@@ -10,10 +10,11 @@ const PORT = process.env.PORT || 3000;
 const session = require('express-session')
 const MongoDBStore = require("connect-mongo");
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
 const ExpressError = require('./utils/ExpressError')
 const flash = require('connect-flash')
 const Teacher = require('./model/teacher')
+const LocalStrategy = require('passport-local')
+
 // MongoDB connection
 mongoose.connect(dbUrl, {});
 const db = mongoose.connection;
@@ -29,6 +30,7 @@ db.once("open", () => {
 
 //routes
 const teacherRoute = require('./routes/teacher')
+const studentRoute = require('./routes/student')
 
 const secret = process.env.SESSION_SECRET
 
@@ -65,6 +67,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(Teacher.authenticate()));
 
+
 passport.serializeUser(function (user, cb) {
     cb(null, user);
 });
@@ -88,6 +91,7 @@ res.render('home')
 })
 
 app.use('/', teacherRoute)
+app.use('/student', studentRoute)
 
 
 

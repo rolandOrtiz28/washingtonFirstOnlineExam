@@ -8,6 +8,7 @@ const { cloudinary } = require('../cloudinary');
 const Teacher = require('../model/teacher')
 const catchAsync = require('../utils/CatchAsync')
 const passport = require('passport')
+const {isLoggedIn} = require('../middleware')
 
 
 router.get('/teacher/registerteacher', (req, res) => {
@@ -18,7 +19,7 @@ router.get('/teacher/login', (req, res) => {
     res.render('teacher/login')
 })
 
-router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }), async (req, res) => {
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/', keepSessionInfo: true }), async (req, res) => {
     try {
         const { username } = req.body;
 
@@ -33,7 +34,7 @@ router.post('/login', passport.authenticate('local', { failureFlash: true, failu
             await user.save();
         }
         req.flash('success', `Welcome Teacher ${username}`);
-        res.redirect('/');
+        res.redirect('/dashboard');
     } catch (err) {
         console.log(err.message);
         res.status(500).send('An error occurred during login.');
@@ -104,22 +105,26 @@ router.get('/builder', (req, res) => {
 });
 
 router.post('/builder', async (req, res) => {
+  
   try {
     const { title, term, level, subject, remark, contents } = req.body;
+
+    const author = req.user._id;
     const newExam = new Exam({
       title,
       term,
       level,
       subject,
       remark,
-      contents
+      contents,
+      author
     });
 console.log(newExam)
     await newExam.save();
-    res.redirect('/dashboard');
+    res.redirect('/examdashboard');
   } catch (err) {
     console.error(err);
-    res.redirect('/dashboard');
+    res.redirect('/');
   }
 });
 
@@ -209,12 +214,12 @@ router.post('/exams/submit/:id', async (req, res) => {
 
 
 //dashboard routes
-router.get('/dashboard', (req,res)=>{
+router.get('/dashboard', isLoggedIn,async(req,res)=>{
   res.render('teacher/dashboard');
 });
 
-router.get('/examdashboard', async(req,res)=>{
-  const exams = await Exam.find({})
+router.get('/examdashboard', isLoggedIn,async(req,res)=>{
+  const exams = await Exam.find({}).populate('author')
   res.render('teacher/examDash', {exams});
 });
 

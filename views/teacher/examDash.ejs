@@ -1,5 +1,5 @@
 <% layout('/layouts/adminboilerplate') -%>
-
+<link rel="stylesheet" href="/css/examDash.css">
 <div class="conatianer mt-5">
 
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -26,26 +26,27 @@
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
           <div class="row">
             <% for(let exam of exams) { %>
-                <div class="col-md-3 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= exam.title %>
-                            </h5>
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                <%= exam.subject %>
-                            </h6>
-                            <p class="card-text">
-                                <%= exam.level %>
-                            </p>
-                            <p class="card-text">
-                                <%= exam.term %>
-                            </p>
-                            <a href="/exam/update/<%= exam._id %>" class="btn btn-primary mt-2">Update Exam</a>
-                            <a href="/exams/start/<%= exam._id %>" class="btn btn-primary mt-2">View Exam</a>
-                        </div>
+              <div class="col-sm-3">
+                <div class="card">
+   
+                  <div class="body">
+                    <h2><%= exam.title %></h2>
+                    <p class="text"><%=exam.level %></p><span class="username">Created by: <%= exam.author.username  %></span>
+                     <div class="footer">
+                  <div>
+                    <div>   <% if (currentUser && exam.author.equals(currentUser._id)) { %>
+                      <a href="/exam/update/<%= exam._id %>" class="mt-2"><i class="fas fa-edit"></i></a>
+
+                      <% }%>
                     </div>
-                </div>
+                    <div><a href="/exams/start/<%= exam._id %>" class="mt-2"><i class="fas fa-eye"></i></a></div>
+                    
+                  </div>
+                  
+                 
+                   </div>
+                </div></div>
+              </div>
                 <% } %>
         </div>
 
