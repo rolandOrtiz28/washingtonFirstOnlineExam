@@ -14,6 +14,7 @@ const ExpressError = require('./utils/ExpressError')
 const flash = require('connect-flash')
 const Teacher = require('./model/teacher')
 const LocalStrategy = require('passport-local')
+const expressLayouts = require('express-ejs-layouts');
 
 // MongoDB connection
 mongoose.connect(dbUrl, {});
@@ -55,6 +56,8 @@ const sessionConfig = {
 
 app.set('view engine', 'ejs');
 app.engine('ejs', ejsMate);
+app.set('layout', 'layouts/boilerplate');
+app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')))

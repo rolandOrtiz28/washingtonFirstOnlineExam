@@ -73,7 +73,10 @@
                     <% }); %>
 
             </div>
-
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="isPublished" name="isPublished" <% if (exam.isPublished) { %>checked<% } %>>
+                <label class="form-check-label" for="isPublished">Published</label>
+            </div>
             <button type="submit" class="btn btn-primary">Update Exam</button>
         </form>
     </div>

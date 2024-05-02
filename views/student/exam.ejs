@@ -1,0 +1,25 @@
+<% layout('/layouts/boilerplate') %>
+
+<% block('title', 'Exam: ' + exam.title) %>
+
+<div class="container">
+    <h1 class="mt-5"><%= exam.title %></h1>
+    <form action="/student/submit-exam" method="POST">
+        <input type="hidden" name="examId" value="<%= exam._id %>"> <!-- Add this line -->
+        <% exam.contents.forEach(content => { %>
+            <h2><%= content.title %></h2>
+            <% content.questions.forEach((question, index) => { %>
+                <h3><%= index + 1 %>. <%= question.question %></h3>
+                <% question.choices.forEach(choice => { %>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answers[<%= content.title %>][<%= index %>]" id="choice<%= index %>" value="<%= choice %>">
+                        <label class="form-check-label" for="choice<%= index %>">
+                            <%= choice %>
+                        </label>
+                    </div>
+                <% }); %>
+            <% }); %> 
+        <% }); %>
+        <button type="submit" class="btn btn-primary mt-3">Submit Exam</button>
+    </form>
+</div>

@@ -94,11 +94,6 @@ router.post('/register', catchAsync(async (req, res) => {
 }));
 
 
-router.get('/exams', async(req,res)=>{
-const exams = await Exam.find({})
-
-res.render('teacher/exams', {exams})
-})
 
 router.get('/builder', (req, res) => {
   res.render('teacher/examBuilder');
@@ -146,24 +141,26 @@ router.get('/exam/update/:id', async (req, res) => {
 
 router.post('/update/:id', async (req, res) => {
   try {
-    const { title, term, level, subject, remark, contents } = req.body;
+    const { title, term, level, subject, remark, contents, isPublished } = req.body;
     const exam = await Exam.findByIdAndUpdate(req.params.id, {
       title,
       term,
       level,
       subject,
       remark,
-      contents
+      contents,
+      isPublished: isPublished === 'on' ? true : false // Parse the value of isPublished from the form
     });
     if (!exam) {
       return res.status(404).send('Exam not found');
     }
-    res.redirect('/exams');
+    res.redirect('/examdashboard');
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 
 

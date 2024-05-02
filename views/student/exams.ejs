@@ -1,0 +1,24 @@
+<% layout('/layouts/boilerplate') -%>
+<link rel="stylesheet" href="/css/exams.css">
+
+<div class="container mt-5">
+    <h1>Available Exams</h1>
+    <% if (exams.length > 0) { %>
+        <div class="row">
+            <% exams.forEach(exam => { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= exam.title %></h5>
+                            <p class="card-text">Level: <%= exam.level %></p>
+                            <p class="card-text">Subject: <%= exam.subject %></p>
+                            <a href="/student/exam/<%= exam._id %>" class="btn btn-primary">Start Exam</a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <p>No exams available.</p>
+    <% } %>
+</div>
