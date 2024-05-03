@@ -1,7 +1,7 @@
 <% layout('/layouts/boilerplate') -%>
     <div class="container-md">
         <h1>Exam Builder</h1>
-        <form action="/builder" method="POST" class="mt-4">
+        <form action="/builder" method="POST" class="mt-4"  enctype="multipart/form-data">
             <div class="row">
                 <div class="col">
                     <!-- Name input -->
@@ -62,7 +62,10 @@
                                 </select>
                             </div>
                             <div class="form-outline mb-2" id="audioField_0" style="display: none;">
-                                <input type="text" class="form-control mb-2" name="contents[0][audio]" placeholder="Audio URL">
+            
+                                <input type="file" class="form-control mb-2" name="audio" accept="audio/*" required>
+
+   
                             </div>
                             <div class="form-outline mb-2" id="storyField_0" style="display: none;">
                                 <textarea class="form-control mb-2" name="contents[0][story]" placeholder="Story"></textarea>
