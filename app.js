@@ -13,6 +13,7 @@ const passport = require('passport');
 const ExpressError = require('./utils/ExpressError')
 const flash = require('connect-flash')
 const Teacher = require('./model/teacher')
+const Student = require('./model/students')
 const LocalStrategy = require('passport-local')
 const expressLayouts = require('express-ejs-layouts');
 
@@ -69,6 +70,7 @@ app.use(session(sessionConfig))
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(Teacher.authenticate()));
+passport.use(new LocalStrategy(Student.authenticate()));
 
 
 passport.serializeUser(function (user, cb) {

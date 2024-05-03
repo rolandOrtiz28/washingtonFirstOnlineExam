@@ -13,7 +13,14 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 }
 
+module.exports.authMiddleware = (req, res, next) => {
 
+    if (req.session.user) {
+        next(); // User is authenticated, proceed to next middleware
+    } else {
+        res.status(401).send('Unauthenticated');
+    }
+};
 
 // module.exports.validateCampground = (req, res, next) => {
 //     const { error } = campgroundSchema.validate(req.body);

@@ -1,6 +1,6 @@
 <% layout('/layouts/boilerplate') -%>
     <link rel="stylesheet" href="/css/studentForm.css">
-
+<%- include('../partials/flash') %>
     <section class="container bg-primary" style="border-radius: 10px;">
         <div class="">
             <div class="row d-flex justify-content-center align-items-center">
@@ -14,6 +14,12 @@
                             <div class="col-xl-6">
                                 <div class="card-body p-md-5 text-black">
                                     <h3 class="mb-5 text-uppercase">Student registration form</h3>
+<div class="col-md-6 mb-4">
+    <div class="form-outline">
+        <p>Already have an account?<a href="/student/login">Click here</a></p>
+
+    </div>
+</div>
                                     <form action="/student/register" method="POST" class="px-md-2 needs-validation" novalidate>
                                         <div class="row">
 
@@ -34,6 +40,7 @@
 
                                             </div>
                                         </div>
+
 
 
 
@@ -92,6 +99,43 @@
 
 
                                         </div>
+    <div class="d-flex flex-row align-items-center mb-4">
+        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+        <div class="form-outline flex-fill mb-0">
+            <input type="text" id="form3Example1c" class="form-control" name="username" />
+            <label class="form-label" for="form3Example1c">Your Username</label>
+        </div>
+    </div>
+
+<div class="d-flex flex-row align-items-center mb-4">
+    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+    <div class="form-outline flex-fill mb-0">
+        <input type="email" id="form3Example3c" class="form-control" name="email" />
+        <label class="form-label" for="form3Example3c">Your Email</label>
+    </div>
+</div>
+
+<div class="d-flex flex-row align-items-center mb-4">
+    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+    <div class="form-outline flex-fill mb-0 position-relative">
+        <input type="password" id="password2" class="form-control" name="password" />
+        <label class="form-label" for="password2">Password</label>
+        <button class="btn bg-transparent input eye-icon" id="eye-icon2" type="button">
+            <i class="far fa-eye icon"></i>
+        </button>
+    </div>
+</div>
+
+
+<div class="d-flex flex-row align-items-center mb-4">
+    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+    <div class="form-outline flex-fill mb-0">
+        <input type="password" id="confirm-password" name="confirm-password" class="form-control" />
+        <label class="form-label" for="form3Example4cd">Repeat your
+            password</label>
+    </div>
+</div>
+
 
 
 
@@ -137,3 +181,19 @@
         })()
 
     </script>
+
+<script>
+    let eyeicon = document.getElementById("eye-icon2")
+    let password = document.getElementById("password2")
+
+    eyeicon.onclick = function () {
+        if (password.type == "password") {
+            password.type = "text";
+            eyeicon.innerHTML = '<i class="far fa-eye-slash"></i>';
+        } else {
+            password.type = "password";
+            eyeicon.innerHTML = '<i class="far fa-eye"></i>';
+        }
+    }
+
+</script>
