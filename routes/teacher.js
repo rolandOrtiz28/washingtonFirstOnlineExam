@@ -95,12 +95,19 @@ router.post('/register', catchAsync(async (req, res) => {
 
 
 
-router.get('/builder', (req, res) => {
-  res.render('teacher/examBuilder');
-});
+router.get('/builder', async (req, res) => {
+    try {
+        // Fetch contents from your database or wherever you're storing them
+        const contents = []; // Replace this with actual content data
 
+        res.render('teacher/examBuilder', { contents });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 router.post('/builder', async (req, res) => {
-  
+
   try {
     const { title, term, level, subject, remark, contents } = req.body;
 
@@ -178,33 +185,6 @@ router.get('/exams/start/:id', async (req, res) => {
   }
 });
 
-router.post('/exams/submit/:id', async (req, res) => {
-  try {
-    const exam = await Exam.findById(req.params.id);
-    if (!exam) {
-      return res.status(404).send('Exam not found');
-    }
-
-    // Calculate score
-    let score = 0;
-    req.body.answers.forEach((answer, index) => {
-      if (answer === exam.contents[index].correctAnswer) {
-        score += exam.contents[index].points;
-      }
-    });
-
-    // Update student's record with exam score
-    const studentId = req.user.id; // Assuming you have authentication and can access the student's ID
-    await Student.findByIdAndUpdate(studentId, { $push: { examScores: { examId: exam._id, score: score } } });
-
-    // You can customize this part based on your requirements
-    // Here, we're rendering the exam result template with the calculated score
-    res.render('student/examResult', { score });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
-});
 
 
 

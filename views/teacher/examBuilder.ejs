@@ -1,164 +1,182 @@
 <% layout('/layouts/boilerplate') -%>
-<div class="container-md">
-
-    <h1>Exam Builder</h1>
-    <form action="/builder" method="POST" class="mt-4">
-<div class="row">
-    <div class="col">
-        <!-- Name input -->
-        <div data-mdb-input-init class="form-outline">
-            <input type="text" class="form-control" id="title" name="title" placeholder="Title" required>
-
-        </div>
-    </div>
-    <div class="col">
-        <!-- Email input -->
-        <div data-mdb-input-init class="form-outline">
-            <input type="text" class="form-control" id="term" name="term" placeholder="Term" required>
-
-        </div>
-    </div>
-    <div class="col">
-        <!-- Email input -->
-        <div data-mdb-input-init class="form-outline">
-            <select class="form-select program text-muted" aria-label="Default select example"
-            name="level" required>
-            <option selected disabled class="text-muted">Level</option>
-            <option value="EAL-1b">EAL-1A</option>
-            <option value="EAL-2B">EAL-1B</option>
-            <option value="EAL-2A">EAL-2A</option>
-            <option value="EAL-2B">EAL-2B</option>
-            <option value="EAL-3A">EAL-3A</option>
-            <option value="EAL-3B">EAL-3B</option>
-            <option value="EAL-4A">EAL-4A</option>
-            <option value="EAL-4B">EAL-4B</option>
-            <option value="EAL-5A">EAL-5A</option>
-            <option value="EAL-5B">EAL-5B</option>
-            <option value="EAL-6A">EAL-6A</option>
-            <option value="EAL-6B">EAL-6B</option>
-            <option value="EAL-7A">EAL-7A</option>
-            <option value="EAL-7B">EAL-7B</option>
-        </select>
-
-        </div>
-    </div>
-    <div class="col">
-        <!-- Email input -->
-        <div data-mdb-input-init class="form-outline">
-            <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
-
-        </div>
-    </div>
-
-</div>
-        <hr>
-    <h2>Contents</h2>
-    <div id="contents">
-        <div class="content mb-4">
+    <div class="container-md">
+        <h1>Exam Builder</h1>
+        <form action="/builder" method="POST" class="mt-4">
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control mb-2" name="contents[][title]" placeholder="Content Title"
-                        required>
+                    <!-- Name input -->
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Title" required>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <input type="text" class="form-control mb-2" name="contents[][remark]" placeholder="Content Remark">
+                <div class="col">
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" class="form-control" id="term" name="term" placeholder="Term" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline">
+                        <select class="form-select program text-muted" aria-label="Default select example" name="level"
+                            required>
+                            <option selected disabled class="text-muted">Level</option>
+                            <option value="EAL-1b">EAL-1A</option>
+                            <option value="EAL-2B">EAL-1B</option>
+                            <option value="EAL-2A">EAL-2A</option>
+                            <option value="EAL-2B">EAL-2B</option>
+                            <option value="EAL-3A">EAL-3A</option>
+                            <option value="EAL-3B">EAL-3B</option>
+                            <option value="EAL-4A">EAL-4A</option>
+                            <option value="EAL-4B">EAL-4B</option>
+                            <option value="EAL-5A">EAL-5A</option>
+                            <option value="EAL-5B">EAL-5B</option>
+                            <option value="EAL-6A">EAL-6A</option>
+                            <option value="EAL-6B">EAL-6B</option>
+                            <option value="EAL-7A">EAL-7A</option>
+                            <option value="EAL-7B">EAL-7B</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject"
+                            required>
+                    </div>
                 </div>
             </div>
-            <div class="questions">
-            <div class="question mb-2">
-                <input type="text" class="form-control mb-2" name="contents[][questions][0][question]" placeholder="Question"
-                    required>
-                <input type="text" class="form-control mb-2" name="contents[][questions][0][choices][0]" placeholder="Choice 1"
-                    required>
-                <input type="text" class="form-control mb-2" name="contents[][questions][0][choices][1]" placeholder="Choice 2"
-                    required>
-                <input type="text" class="form-control mb-2" name="contents[][questions][0][choices][2]" placeholder="Choice 3"
-                    required>
-                <input type="text" class="form-control mb-2" name="contents[][questions][0][correctAnswer]"
-                    placeholder="Correct Answer" required>
-                <input type="number" class="form-control mb-2" name="contents[][questions][0][points]" placeholder="Points"
-                    required>
+            <hr>
+            <h2>Contents</h2>
+            <div id="contents">
+                <div class="content mb-4">
+                    <div class="row">
+                        <div class="col">
+                            <div data-mdb-input-init class="form-outline">
+                                <select class="form-select mb-2" name="contents[0][type]" required>
+                                    <option value="" selected disabled>Select Content Type</option>
+                                    <option value="Listening">Listening</option>
+                                    <option value="Vocabulary">Vocabulary</option>
+                                    <option value="Grammar">Grammar</option>
+                                    <option value="Reading">Reading</option>
+                                </select>
+                            </div>
+                            <div class="form-outline mb-2" id="audioField_0" style="display: none;">
+                                <input type="text" class="form-control mb-2" name="contents[0][audio]" placeholder="Audio URL">
+                            </div>
+                            <div class="form-outline mb-2" id="storyField_0" style="display: none;">
+                                <textarea class="form-control mb-2" name="contents[0][story]" placeholder="Story"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control mb-2" name="contents[0][remark]"
+                                placeholder="Content Remark">
+                        </div>
+                    </div>
+
+                    <div class="questions">
+                        <div class="question mb-2">
+                            <input type="text" class="form-control mb-2" name="contents[0][questions][0][question]"
+                                placeholder="Question" required>
+                            <input type="text" class="form-control mb-2" name="contents[0][questions][0][choices][0]"
+                                placeholder="Choice 1" required>
+                            <input type="text" class="form-control mb-2" name="contents[0][questions][0][choices][1]"
+                                placeholder="Choice 2" required>
+                            <input type="text" class="form-control mb-2" name="contents[0][questions][0][choices][2]"
+                                placeholder="Choice 3" required>
+                            <input type="text" class="form-control mb-2" name="contents[0][questions][0][correctAnswer]"
+                                placeholder="Correct Answer" required>
+                            <input type="number" class="form-control mb-2" name="contents[0][questions][0][points]"
+                                placeholder="Points" required>
+                        </div>
+                    </div>
+                    <button type="button" class="addQuestion btn btn-primary">Add Question</button>
+                </div>
             </div>
-            </div>
-            <button type="button" class="addQuestion btn btn-primary">Add Question</button>
-        </div>
+            <button type="button" id="addContent" class="btn btn-success">Add Content</button>
+            <button type="submit" class="btn btn-primary">Publish Exam</button>
+        </form>
     </div>
-    <button type="button" id="addContent" class="btn btn-success">Add Content</button>
-    <button type="submit" class="btn btn-primary">Publish Exam</button>
-    </form>
-</div>
+
     <script>
-      document.getElementById('addContent').addEventListener('click', () => {
-            // Find the total number of contents
+        document.getElementById('addContent').addEventListener('click', () => {
             const contentCount = document.querySelectorAll('.content').length;
 
-            // Creating a new empty content div
             const emptyContent = document.createElement('div');
             emptyContent.classList.add('content');
             emptyContent.innerHTML = `
-        <!-- Input fields for content title and remark -->
-        <div class="row">
-            <div class="col">
-                <input type="text" class="form-control mb-2" name="contents[${contentCount}][title]" placeholder="Content Title" required>
+            <div class="row">
+                  <div class="col">
+                <div data-mdb-input-init class="form-outline">
+                    <select class="form-select mb-2" name="contents[${contentCount}][type]" required>
+                        <option value="" selected disabled>Select Content Type</option>
+                        <option value="Listening">Listening</option>
+                        <option value="Vocabulary">Vocabulary</option>
+                        <option value="Grammar">Grammar</option>
+                        <option value="Reading">Reading</option>
+                    </select>
+                </div>
+                <div class="form-outline mb-2" id="audioField_${contentCount}" style="display: none;">
+                    <input type="text" class="form-control mb-2" name="contents[${contentCount}][audio]" placeholder="Audio URL">
+                </div>
+                <div class="form-outline mb-2" id="storyField_${contentCount}" style="display: none;">
+                    <textarea class="form-control mb-2" name="contents[${contentCount}][story]" placeholder="Story"></textarea>
+                </div>
             </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control mb-2" name="contents[${contentCount}][remark]" placeholder="Content Remark">
+                <div class="col-md-2">
+                    <input type="text" class="form-control mb-2" name="contents[${contentCount}][remark]" placeholder="Content Remark">
+                </div>
             </div>
-        </div>
-        <!-- Container for questions -->
-        <div class="questions">
-            <!-- Initial question -->
-            <div class="question mb-2">
-                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][question]" placeholder="Question" required>
-                <!-- Choices -->
-                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][0]" placeholder="Choice 1" required>
-                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][1]" placeholder="Choice 2" required>
-                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][2]" placeholder="Choice 3" required>
-                <!-- Correct answer -->
-                <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][correctAnswer]" placeholder="Correct Answer" required>
-                <!-- Points -->
-                <input type="number" class="form-control mb-2" name="contents[${contentCount}][questions][0][points]" placeholder="Points" required>
+
+            <div class="questions">
+                <div class="question mb-2">
+                    <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][question]" placeholder="Question" required>
+                    <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][0]" placeholder="Choice 1" required>
+                    <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][1]" placeholder="Choice 2" required>
+                    <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][2]" placeholder="Choice 3" required>
+                    <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][correctAnswer]" placeholder="Correct Answer" required>
+                    <input type="number" class="form-control mb-2" name="contents[${contentCount}][questions][0][points]" placeholder="Points" required>
+                </div>
             </div>
-        </div>
-        <!-- Button to add new question -->
-        <button type="button" class="addQuestion btn btn-primary">Add Question</button>
-    `;
-            // Appending the new content to the contents div
+            <button type="button" class="addQuestion btn btn-primary">Add Question</button>
+        `;
             document.getElementById('contents').appendChild(emptyContent);
         });
 
         document.addEventListener('click', function (event) {
             if (event.target.classList.contains('addQuestion')) {
                 const questionContainer = event.target.parentNode.querySelector('.questions');
-
-                // Find the index of the content section
                 const contentIndex = Array.from(questionContainer.parentNode.parentNode.children).indexOf(questionContainer.parentNode);
-
-                // Find the total number of questions for this content
                 const questionCount = questionContainer.querySelectorAll('.question').length;
-
-                // Create a new question div with empty input fields
                 const newQuestion = document.createElement('div');
                 newQuestion.classList.add('question');
                 newQuestion.innerHTML = `
-            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][question]" placeholder="Question" required>
-            <!-- Choices -->
-            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][0]" placeholder="Choice 1" required>
-            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][1]" placeholder="Choice 2" required>
-            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][2]" placeholder="Choice 3" required>
-            <!-- Correct answer -->
-            <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][correctAnswer]" placeholder="Correct Answer" required>
-            <!-- Points -->
-            <input type="number" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][points]" placeholder="Points" required>
-        `;
-
-                // Append the new question to the question container
+                <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][question]" placeholder="Question" required>
+                <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][0]" placeholder="Choice 1" required>
+                <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][1]" placeholder="Choice 2" required>
+                <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][2]" placeholder="Choice 3" required>
+                <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][correctAnswer]" placeholder="Correct Answer" required>
+                <input type="number" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][points]" placeholder="Points" required>
+            `;
                 questionContainer.appendChild(newQuestion);
             }
         });
 
+        document.addEventListener('change', function (event) {
+            if (event.target.name.startsWith('contents[') && event.target.name.endsWith('][type]')) {
+                const contentIndex = event.target.name.match(/\[(\d+)\]/)[1];
+                const audioField = document.getElementById(`audioField_${contentIndex}`);
+                const storyField = document.getElementById(`storyField_${contentIndex}`);
+                if (event.target.value === 'Listening') {
+                    audioField.style.display = 'block';
+                    storyField.style.display = 'none';
+                } else if (event.target.value === 'Reading') {
+                    audioField.style.display = 'none';
+                    storyField.style.display = 'block';
+                } else {
+                    audioField.style.display = 'none';
+                    storyField.style.display = 'none';
+                }
+            }
+        });
     </script>
-
-
-
-<hr />
