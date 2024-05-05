@@ -12,9 +12,11 @@ const storage = new CloudinaryStorage({
     cloudinary,
     params: {
         folder: 'WFS',
-        allowed_formats: ['jpeg', 'png', 'jpg', 'mp3', 'wav'],
+        resource_type: 'video',
+        allowed_formats: ['mp3', 'wav'],
         quality: 80,
-        maxFileSize: 100000000
+        maxFileSize: 100000000,
+    
     },
 
 })

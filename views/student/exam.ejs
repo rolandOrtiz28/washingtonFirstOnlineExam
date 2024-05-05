@@ -6,8 +6,22 @@
     <h1 class="mt-5"><%= exam.title %></h1>
     <form action="/student/submit-exam" method="POST">
         <input type="hidden" name="examId" value="<%= exam._id %>"> <!-- Add this line -->
-        <% exam.contents.forEach(content => { %>
-            <h2><%= content.title %></h2>
+        <% exam.contents.forEach((content, contentIndex) => { %>
+            <h2 class="mb-3"><%= content.type %></h2>
+            <div class="row">
+            <% if (content.type === 'Listening' && content.audio) { %>
+                <div class="col-3">
+                <audio id="audio_<%= contentIndex %>" controls>
+                    <source src="<%= content.audio %>" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-primary mt-2" onclick="playAudio(<%= contentIndex %>)">Play Audio</button>
+                <button type="button" class="btn btn-danger mt-2" onclick="hideAudio('audio_<%= contentIndex %>')" style="display: none;">Hide Audio</button>
+            </div>
+            <% } %>
+        </div>
             <% content.questions.forEach((question, index) => { %>
                 <h3><%= index + 1 %>. <%= question.question %></h3>
                 <% question.choices.forEach(choice => { %>
@@ -23,3 +37,30 @@
         <button type="submit" class="btn btn-primary mt-3">Submit Exam</button>
     </form>
 </div>
+
+<script>
+    // Array to keep track of the number of times each audio has been played
+    const playedCount = [];
+
+    function playAudio(index) {
+        const audio = document.getElementById(`audio_${index}`);
+        if (!playedCount[index]) {
+            playedCount[index] = 0;
+        }
+        if (playedCount[index] < 3) { // Limiting to 3 plays
+            audio.play();
+            playedCount[index]++;
+        } else {
+            audio.style.display = "none"; // Hide the audio element after 3 plays
+            document.getElementById(`hideButton_${index}`).style.display = "inline"; // Show the hide button
+            alert('You have reached the maximum play limit for this audio.');
+        }
+    }
+
+    function hideAudio(audioId) {
+        const audio = document.getElementById(audioId);
+        audio.style.display = "none"; // Hide the audio element
+        const index = audioId.split('_')[1]; // Extract index from audioId
+        document.getElementById(`hideButton_${index}`).style.display = "none"; // Hide the hide button
+    }
+</script>

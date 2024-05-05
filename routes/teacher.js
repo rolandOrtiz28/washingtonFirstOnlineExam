@@ -1,28 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const Exam = require('../model/examination');
-const multer = require('multer');
-
 const Teacher = require('../model/teacher')
 const catchAsync = require('../utils/CatchAsync')
 const passport = require('passport')
 const {isLoggedIn} = require('../middleware')
-const fileUpload = require('express-fileupload');
-const cloudinary = require('cloudinary').v2;
+const { cloudinary } = require('../cloudinary');
+const multer = require('multer');
+
+const {storage} = require('../cloudinary'); 
+const upload = multer({ storage });
 
 
-// Configure multer storage
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
-cloudinary.config({
-  cloud_name: 'dalfz3t49',
-  api_key: '333337243589348',
-  api_secret: '-uqK2puwH-mqXuMBk9l4WhiEFMo'
-});
-
-
-router.use(fileUpload());
 router.get('/teacher/registerteacher', (req, res) => {
     res.render('teacher/registerTeacher')
 })
@@ -106,7 +96,6 @@ await Teacher.deleteMany({})
 }));
 
 
-
 router.get('/builder', async (req, res) => {
     try {
         // Fetch contents from your database or wherever you're storing them
@@ -118,6 +107,7 @@ router.get('/builder', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 // router.post('/builder', async (req, res) => {
 
 //   try {
@@ -141,68 +131,70 @@ router.get('/builder', async (req, res) => {
 //     res.redirect('/');
 //   }
 // });
-router.post('/builder', upload.single('audio'), async (req, res) => {
+
+// router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
+//   try {
+//     const { title, term, level, subject, remark, contents } = req.body;
+//     const author = req.user._id;
+
+//     // Cloudinary URL provided by multer
+//     const audioUrl = req.file.path;
+// console.log(audioUrl)
+//     const newExam = new Exam({
+//       title,
+//       term,
+//       level,
+//       subject,
+//       remark,
+//       contents,
+//       author,
+//       audio: audioUrl  // Use the Cloudinary URL directly
+//     });
+
+//     await newExam.save();
+//     res.redirect('/examdashboard');
+//   } catch (err) {
+//     console.error(err);
+//     res.redirect('/');
+//   }
+// });
+
+router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
   try {
-      console.log(req.body); // Log the req.body object
+    const { title, term, level, subject, remark, contents } = req.body;
+    const author = req.user._id;
 
-      // Check if audio file is present
-      if (!req.file) {
-          return res.status(400).send('No audio file was uploaded.');
-      }
+    // Initialize audioUrl to null
+    let audioUrl = null;
 
-      // Handle audio file upload to Cloudinary
-      const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path, {
-          resource_type: 'raw', // Specify resource type as 'raw' for audio files
-          folder: 'audio', // Specify the folder in your Cloudinary account where you want to save the file
-          overwrite: true // Overwrite if file with the same name already exists
-      });
+    // Check if content type is "Listening" and audio file is uploaded
+    if (contents[0].type === "Listening" && req.file) {
+      // Cloudinary URL provided by multer
+      audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
+    }
 
-      // Access the audio URL from the Cloudinary response
-      const audioUrl = cloudinaryResponse.secure_url;
-
-      // Extract other form data
-      const { title, term, level, subject, remark } = req.body;
-      const author = req.user._id;
-
-      // Construct the newContents array
-      const newContents = [];
-      for (let i = 0; req.body[`contents[${i}][type]`]; i++) {
-          const content = {
-              type: req.body[`contents[${i}][type]`],
-              story: req.body[`contents[${i}][story]`],
-              remark: req.body[`contents[${i}][remark]`],
-              questions: [{
-                  question: req.body[`contents[${i}][questions][0][question]`],
-                  choices: [
-                      req.body[`contents[${i}][questions][0][choices][0]`],
-                      req.body[`contents[${i}][questions][0][choices][1]`],
-                      req.body[`contents[${i}][questions][0][choices][2]`]
-                  ],
-                  correctAnswer: req.body[`contents[${i}][questions][0][correctAnswer]`],
-                  points: parseInt(req.body[`contents[${i}][questions][0][points]`])
-              }]
-          };
-          newContents.push(content);
-      }
-
-      // Save the new exam
-      const newExam = new Exam({
-          title,
-          term,
-          level,
-          subject,
-          remark,
-          contents: newContents,
-          author
-      });
-
-      await newExam.save();
-      res.redirect('/examdashboard');
+    const newExam = new Exam({
+      title,
+      term,
+      level,
+      subject,
+      remark,
+      contents: [{
+        ...contents[0], // Copy other content fields
+        audio: audioUrl // Include the audio URL in the content object
+      }],
+      author,
+      isPublished: false
+    });
+console.log(newExam)
+    await newExam.save();
+    res.redirect('/examdashboard');
   } catch (err) {
-      console.error(err);
-      res.status(500).send('Internal Server Error');
+    console.error(err);
+    res.redirect('/');
   }
 });
+
 
 // GET route to render the update form
 router.get('/exam/update/:id', async (req, res) => {

@@ -18,16 +18,6 @@ router.get('/login', async (req, res) => {
 })
 
 
-// router.post('/register', catchAsync(async(req, res)=>{
-//     await Students.deleteMany({})
-// const {name, age, gender, level, time} = req.body;
-// const student = new Student({name, age, gender, level, time})
-
-// await student.save();
-
-// res.redirect(`/student/show?level=${student.level}`);
-
-// }))
 
 router.post('/register', catchAsync(async (req, res) => {
     try {
