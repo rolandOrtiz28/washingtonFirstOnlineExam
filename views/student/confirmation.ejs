@@ -1,0 +1,32 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <style>
+     hr {
+  border: none;
+  border-top: 3px double #000000;
+  color: #000000;
+  overflow: visible;
+  text-align: center;
+  height: 10px;
+width: 50%;
+margin: 0 auto;
+}
+
+hr::after {
+  background: #fff;
+  content: '§';
+  padding: 0 4px;
+  position: relative;
+  top: -13px;
+}
+    </style>
+
+    <header class="text-center">
+        <h1>សាលារៀន វ៉ាស៊ីនតោន ហ្វឺសត៍</h1>
+        <h2>Washington FIRST School</h2>
+        <hr/>
+
+<h3>GENERAL ENGLISH PROGRAMS</h3>
+<h4>PART-TIME ENGLISH COURSE</h4>
+<h4>MID-TERM EXAM OF <%= exam.term %></h4>
+    </header>

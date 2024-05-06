@@ -2,6 +2,13 @@
 <link rel="stylesheet" href="/css/exams.css">
 
 <div class="container mt-5">
+<nav>
+<% if(currentUser){ %>
+<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+<li class="nav-item"><a class="nav-link active" aria-current="page" href="/logout">logout</a></li>
+</ul>
+<%} %>
+</nav>
     <h1>Available Exams</h1>
     <% if (exams.length > 0) { %>
         <div class="row">
@@ -12,7 +19,7 @@
                             <h5 class="card-title"><%= exam.title %></h5>
                             <p class="card-text">Level: <%= exam.level %></p>
                             <p class="card-text">Subject: <%= exam.subject %></p>
-                            <a href="/student/exam/<%= exam._id %>" class="btn btn-primary">Start Exam</a>
+                            <a href="/student/exam/confirmation/<%= exam._id %>" class="btn btn-primary">Start Exam</a>
                         </div>
                     </div>
                 </div>

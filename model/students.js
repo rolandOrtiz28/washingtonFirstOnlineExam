@@ -36,6 +36,10 @@ const StudentsSchema = new Schema({
  examScores: {
         type: [{ examId: Schema.Types.ObjectId, score: Number }],
         default: []
+    },
+ role: {
+        type: String,
+        default: 'student'
     }
 });
 

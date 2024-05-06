@@ -1,7 +1,7 @@
 <% layout('/layouts/boilerplate') -%>
     <div class="container-md mb-4">
         <h1>Update Exam</h1>
-        <form action="/update/<%= exam._id %>" method="POST" class="mt-4">
+        <form action="/update/<%= exam._id %>" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="row">
                 <div class="col">
                     <div data-mdb-input-init class="form-outline">
@@ -44,38 +44,45 @@
                                     placeholder="Content Remark">
                             </div>
                         </div>
+                        <!-- Add input field for uploading new audio -->
+                        <div class="row">
+                            <div class="col">
+                                <label for="audio_<%= contentIndex %>">Upload New Audio:</label>
+                                <input type="file" class="form-control" id="audio_<%= contentIndex %>"
+                                    name="contents[<%= contentIndex %>][audio]">
+                            </div>
+                        </div>
                         <div class="questions">
                             <% content.questions.forEach((question, questionIndex)=> { %>
                                 <div class="question mb-2">
                                     <input type="text" class="form-control mb-2"
-                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][question]"
-                                        value="<%= question.question %>" placeholder="Question" required>
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][question]" value="<%= question.question %>"
+                                        placeholder="Question" required>
                                     <input type="text" class="form-control mb-2"
-                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][0]"
-                                        value="<%= question.choices[0] %>" placeholder="Choice 1" required>
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][0]" value="<%= question.choices[0] %>"
+                                        placeholder="Choice 1" required>
                                     <input type="text" class="form-control mb-2"
-                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][1]"
-                                        value="<%= question.choices[1] %>" placeholder="Choice 2" required>
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][1]" value="<%= question.choices[1] %>"
+                                        placeholder="Choice 2" required>
                                     <input type="text" class="form-control mb-2"
-                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][2]"
-                                        value="<%= question.choices[2] %>" placeholder="Choice 3" required>
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][choices][2]" value="<%= question.choices[2] %>"
+                                        placeholder="Choice 3" required>
                                     <input type="text" class="form-control mb-2"
                                         name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][correctAnswer]"
                                         value="<%= question.correctAnswer %>" placeholder="Correct Answer" required>
                                     <input type="number" class="form-control mb-2"
-                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][points]"
-                                        value="<%= question.points %>" placeholder="Points" required>
+                                        name="contents[<%= contentIndex %>][questions][<%= questionIndex %>][points]" value="<%= question.points %>"
+                                        placeholder="Points" required>
                                 </div>
                                 <% }); %>
                         </div>
-
                     </div>
                     <% }); %>
-
             </div>
             <div class="form-check form-switch mb-3">
-                <input class="form-check-input" type="checkbox" id="isPublished" name="isPublished" <% if (exam.isPublished) { %>checked<% } %>>
-                <label class="form-check-label" for="isPublished">Published</label>
+                <input class="form-check-input" type="checkbox" id="isPublished" name="isPublished" <% if
+                    (exam.isPublished) { %>checked<% } %>>
+                    <label class="form-check-label" for="isPublished">Published</label>
             </div>
             <button type="submit" class="btn btn-primary">Update Exam</button>
         </form>
@@ -83,24 +90,23 @@
 
     <script>
         document.getElementById('addContent').addEventListener('click', () => {
-            const content = document.querySelector('.content').cloneNode(true);
-            document.getElementById('contents').appendChild(content);
-        });
+                const content = document.querySelector('.content').cloneNode(true);
+                document.getElementById('contents').appendChild(content);
+            });
 
-        document.addEventListener('click', function (event) {
-            if (event.target.classList.contains('addQuestion')) {
-                const questionContainer = event.target.parentNode.querySelector('.questions');
-                const question = document.querySelector('.question').cloneNode(true);
-                const existingQuestions = questionContainer.querySelectorAll('.question').length;
+            document.addEventListener('click', function (event) {
+                if (event.target.classList.contains('addQuestion')) {
+                    const questionContainer = event.target.parentNode.querySelector('.questions');
+                    const question = document.querySelector('.question').cloneNode(true);
+                    const existingQuestions = questionContainer.querySelectorAll('.question').length;
 
-                // Adjust the name attributes to ensure unique names for each input
-                question.querySelectorAll('input').forEach((input) => {
-                    const name = input.getAttribute('name').replace('[]', `[${existingQuestions}]`);
-                    input.setAttribute('name', name);
-                });
+                    // Adjust the name attributes to ensure unique names for each input
+                    question.querySelectorAll('input').forEach((input) => {
+                        const name = input.getAttribute('name').replace('[]', `[${existingQuestions}]`);
+                        input.setAttribute('name', name);
+                    });
 
-                questionContainer.appendChild(question);
-            }
-        });
-
+                    questionContainer.appendChild(question);
+                }
+            });
     </script>
