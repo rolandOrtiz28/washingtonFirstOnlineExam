@@ -1,0 +1,247 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url("/images/CleanBG.png");
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+.validicon {
+    font-size: 11px;
+    margin-top: 10px;
+}
+
+.check-leng,
+.check-big-letter,
+.check-num,
+.check-special-char {
+
+    display: none;
+
+}
+
+.cross-leng,
+.cross-big-letter,
+.cross-num,
+.cross-special-char {
+    display: inline-block;
+}
+
+
+
+.card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 10px;
+}
+
+
+/* inputs */
+/* From uiverse.io by @alexruix */
+.input {
+    line-height: 28px;
+    border: 2px solid transparent;
+    border-bottom-color: #777;
+    padding: .2rem 0;
+    outline: none;
+    background-color: transparent;
+    color: #0d0c22;
+    transition: .3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.input:focus,
+input:hover {
+    outline: none;
+    padding: .2rem 1rem;
+    border-radius: 1rem;
+    border-color: #7a9cc6;
+}
+
+.input::placeholder {
+    color: #777;
+}
+
+.input:focus::placeholder {
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+.nav-item {
+    background-color: linear-gradient(320deg, rgba(0, 140, 255, 0.678), rgba(128, 0, 128, 0.308))
+}
+
+
+
+
+
+.Bttn {
+    position: relative;
+    width: 150px;
+    height: 55px;
+    border-radius: 45px;
+    border: none;
+    background-color: #FFD059;
+    color: white;
+    box-shadow: 0px 10px 10px rgb(255, 245, 219) inset,
+        0px 5px 10px rgba(5, 5, 5, 0.212),
+        0px -10px 10px rgb(255, 208, 89) inset;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button {
+    position: relative;
+    padding: 10px 22px;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    background-color: #800;
+    transition: all 0.2s ease;
+}
+
+.button:active {
+    transform: scale(0.96);
+}
+
+.button:before,
+.button:after {
+    position: absolute;
+    content: "";
+    width: 150%;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    z-index: -1000;
+    background-repeat: no-repeat;
+}
+
+.button:hover:before {
+    top: -70%;
+    background-image: radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, transparent 20%, #800000 20%, transparent 30%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, transparent 10%, #800000 15%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+        10% 10%, 18% 18%;
+    background-position: 50% 120%;
+    animation: greentopBubbles 0.6s ease;
+}
+
+@keyframes greentopBubbles {
+    0% {
+        background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+            40% 90%, 55% 90%, 70% 90%;
+    }
+
+    50% {
+        background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+            50% 50%, 65% 20%, 90% 30%;
+    }
+
+    100% {
+        background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+            50% 40%, 65% 10%, 90% 20%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+.button:hover::after {
+    bottom: -70%;
+    background-image: radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, transparent 10%, #800000 15%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%),
+        radial-gradient(circle, #800000 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+    background-position: 50% 0%;
+    animation: greenbottomBubbles 0.6s ease;
+}
+
+@keyframes greenbottomBubbles {
+    0% {
+        background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+            70% -10%, 70% 0%;
+    }
+
+    50% {
+        background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+            105% 0%;
+    }
+
+    100% {
+        background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+            110% 10%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+
+.check {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    appearance: none;
+top: 5px;
+    background-color: #bbb;
+    transition: all .3s;
+}
+
+.check::before {
+    content: '';
+    position: absolute;
+    border: solid #fff;
+    display: block;
+    width: .3em;
+    height: .6em;
+    border-width: 0 .2em .2em 0;
+    z-index: 1;
+    opacity: 0;
+    right: calc(50% - .3em);
+    top: calc(50% - .4em);
+    transform: rotate(0deg);
+    transition: all .3s;
+    transform-origin: center center;
+}
+
+.check:checked {
+    animation: a .3s ease-in forwards;
+    background-color: #800000;
+}
+
+.check:checked::before {
+    opacity: 1;
+    transform: rotate(405deg);
+}
+
+@keyframes a {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+    }
+
+    50% {
+        opacity: 0;
+        transform: scale(.8) rotateY(180deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotateY(360deg);
+    }
+}
