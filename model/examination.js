@@ -11,6 +11,7 @@ const questionSchema = new Schema({
 
 const contentSchema = new Schema({
   title: String,
+  instruction: String,
   type: { type: String, enum: ['Listening', 'Vocabulary', 'Grammar', 'Reading'] },
   remark: String,
   audio: String, // For storing the audio URL if type is Listening

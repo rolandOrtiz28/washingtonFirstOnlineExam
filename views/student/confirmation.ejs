@@ -1,7 +1,7 @@
 <% layout('/layouts/boilerplate') -%>
 
     <style>
-     hr {
+     .hr1 {
   border: none;
   border-top: 3px double #000000;
   color: #000000;
@@ -12,21 +12,174 @@ width: 50%;
 margin: 0 auto;
 }
 
-hr::after {
+.hr1::after {
   background: #fff;
   content: '§';
   padding: 0 4px;
   position: relative;
   top: -13px;
 }
+     .hr2 {
+  border: none;
+  border-top: 3px double #000000;
+  color: #000000;
+  overflow: visible;
+  text-align: center;
+  height: 10px;
+width: 100%;
+margin: 0 auto;
+}
+
+.hr2::after {
+  background: #fff;
+  content: '§';
+  padding: 0 4px;
+  position: relative;
+  top: -13px;
+}
+
+img{
+  width: 150px;
+}
+header{
+  color: #002060;
+}
+
+.rules{
+border: 2px solid black;
+}
     </style>
 
     <header class="text-center">
-        <h1>សាលារៀន វ៉ាស៊ីនតោន ហ្វឺសត៍</h1>
-        <h2>Washington FIRST School</h2>
-        <hr/>
+      <div class="row text-center">
+        <div class="col">
+          <img src="/images/Logo.png" alt="">
+          <h1 class="mt-3">សាលារៀន វ៉ាស៊ីនតោន ហ្វឺសត៍</h1>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col">
+          <h2>Washington FIRST School</h2>
+        </div>
+      </div>
+        <hr class="hr1"/>
 
+        <div class="row mt-3">
 <h3>GENERAL ENGLISH PROGRAMS</h3>
 <h4>PART-TIME ENGLISH COURSE</h4>
-<h4>MID-TERM EXAM OF <%= exam.term %></h4>
+<h4><%= exam.title.toUpperCase() %> OF <%= exam.term.toUpperCase() %></h4>
+<h4><u>LEVEL: <%= exam.level.toUpperCase() %></u></h4>
+<h4><u>SUBJECT: <%= exam.subject.toUpperCase() %></u></h4>
+<h5 id="datePlaceholder">DATE: <span id="currentDate"></span></h5>
+<h4>TIME ALLOWED: 60 MINUTES</h4>
+</div>
     </header>
+
+    <div class="container mt-5">
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr class="bg-light">
+            <th scope="col">SECTION</th>
+            <th scope="col">CONTENT</th>
+            <th scope="col">MARK</th>
+           
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Listening</td>
+            <td>20</td>
+           
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Vocabulary</td>
+            <td>10</td>
+            
+          </tr>
+          <tr>
+            <td>3</td>
+            <td >Functional</td>
+            <td >10</td>
+      
+          </tr>
+          <tr>
+            <td>4</td>
+            <td >Grammar</td>
+            <td >20</td>
+      
+          </tr>
+          <tr>
+            <td>5</td>
+            <td >Reading</td>
+            <td >20</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td >Writing</td>
+            <td >20</td>
+          </tr>
+          <tr class="bg-light">
+            <td></td>
+            <th >TOTAL</th>
+            <td >100</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+
+<div class="container rules mt-5 mb-5">
+    <div class="container text-center mt-5">
+<h1>EXAMINATION RULES AND GUILDELINES</h1>
+<h4>"Make sure you know and follow the rules"</h4>
+<hr class="hr2"/>
+    </div>
+    <div class="container mt-5">
+      <h3>Exam Rules for Students</h3>
+      <p><b>Failure to obey any of the following rules may result in your exam paper being removed and disciplinary action taken against you.</b></p>
+      <ol>
+        <li>Make sure that you are prepared for the exam. Have your materials such as pen(s), pencil(s), and your eraser available and ready.</li>
+        <li>You will not be allowed to leave the exam room during the exam.</li>
+        <li>You may be asked by the invigilator to place a barrier between you and the person sitting beside you.</li>
+        <li>Be careful and try to be quick because the exam is a race against time.</li>
+        <li>Make sure you have completed filling in all the parameters given on the exam paper, such as your complete name, date, etc.</li>
+        <li>Open your exam paper when you are told to do so. Silence is strictly being observed.</li>
+        <li>If you have any query or difficulty with the exam paper, feel free to ask the invigilator.</li>
+        <li>The invigilator will not answer any questions about the exam once it has started.</li>
+        <li>Cheating is strictly prohibited and punishable by our school examination behavior and standards. Please refer to examination offences (cheating).</li>
+      </ol>
+      <h3>Examination Offences (Cheating)</h3>
+      <ol>
+        <li>Lose marks or score reductions – Talking to another examinee, looking at other’s exam paper. If you are seen doing either of these things a 20% mark will be deducted from your exam.</li>
+        <li>Zero for the exam but nothing further – If you repeat the same action and found any cheating material you will fail the exam and lose 100%.</li>
+      </ol>
+    </div>
+    
+  </div>
+  <div class="container text-center mt-5 mb-5">
+    <a href="/student/exam/<%= exam._id %>" class="btn btn-primary btn-lg">Start Exam</a>
+  </div>
+
+    <script>
+      // Get the current date
+      var currentDate = new Date();
+      
+      // Convert month number to month name
+      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      var monthName = months[currentDate.getMonth()];
+      
+      // Add "th" to the day
+      var day = currentDate.getDate();
+      var dayWithSuffix = day + (day % 10 == 1 && day != 11 ? 'st' : (day % 10 == 2 && day != 12 ? 'nd' : (day % 10 == 3 && day != 13 ? 'rd' : 'th')));
+      
+      // Format the date as desired (e.g., "May 25th, YYYY")
+      var formattedDate = dayWithSuffix + ' ' +monthName+ ', ' + currentDate.getFullYear(); // Adjust the format as needed
+      
+      // Display the formatted date in the designated element
+      document.getElementById("currentDate").textContent = formattedDate;
+    </script>
+    
+    

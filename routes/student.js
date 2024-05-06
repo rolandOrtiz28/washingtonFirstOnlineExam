@@ -12,7 +12,7 @@ const {authMiddleware} = require('../middleware')
 router.get('/exam/confirmation/:id', async (req,res)=>{
  try {
          const exam = await Exam.findById(req.params.id);
-        res.render('student/exam', { exam });
+        res.render('student/confirmation', { exam });
     } catch (err) {
         console.error(err);
         res.redirect('/');
