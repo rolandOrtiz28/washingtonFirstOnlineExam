@@ -1,6 +1,6 @@
 <% layout('/layouts/boilerplate') -%>
     <link rel="stylesheet" href="/css/loginForm.css">
-
+    <%- include('./partials/flash') %>
     <section class="h-100 form  mb-5">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100 cardo">
@@ -212,7 +212,7 @@
                                             <div class="form-group mb-4">
                                                 <label class="form-label" for="username">Username</label>
                                                 <input type="text" id="username" class="form-control bg-transparent input" name="username"
-                                                    placeholder=" Enter username" value="rolandortiz" required />
+                                                    placeholder=" Enter username" required />
                                                 <div class="valid-feedback">
                                                     Looks good!
                                                 </div>
@@ -224,7 +224,7 @@
                                                 <label for="password">Password</label>
                                                 <div class="input-group">
                                                     <input type="password" class="form-control bg-transparent input" id="password" name="password"
-                                                        placeholder="Enter password" value="Password123" required>
+                                                        placeholder="Enter password" required>
                                                     <div class="valid-feedback">
                                                         Looks good!
                                                     </div>

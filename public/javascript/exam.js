@@ -16,7 +16,7 @@
                     </select>
                 </div>
               <div class="form-outline mb-2" id="audioField_${contentCount}" style="display: none;">
-                                <input type="file" class="form-control mb-2" name="contents[${contentCount}][audio]" required>
+                                <input type="file" class="form-control mb-2" name="contents[${contentCount}][audio]">
                             </div>
                 <div class="form-outline mb-2" id="storyField_${contentCount}" style="display: none;">
                     <textarea class="form-control mb-2" name="contents[${contentCount}][story]" placeholder="Story"></textarea>
@@ -26,18 +26,22 @@
                     <input type="text" class="form-control mb-2" name="contents[${contentCount}][remark]" placeholder="Content Remark">
                 </div>
             </div>
-
+            <div class="col-md-6">
+            <input type="text" class="form-control mb-2" name="contents[0][instruction]"
+                placeholder="Instruction">
+        </div>
             <div class="questions">
                 <div class="question mb-2">
                     <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][question]" placeholder="Question" required>
                     <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][0]" placeholder="Choice 1" required>
                     <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][1]" placeholder="Choice 2" required>
                     <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][2]" placeholder="Choice 3" required>
+                    <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][choices][3]" placeholder="Choice 4" required>
                     <input type="text" class="form-control mb-2" name="contents[${contentCount}][questions][0][correctAnswer]" placeholder="Correct Answer" required>
                     <input type="number" class="form-control mb-2" name="contents[${contentCount}][questions][0][points]" placeholder="Points" required>
                 </div>
             </div>
-            <button type="button" class="addQuestion btn btn-primary">Add Question</button>
+            <button type="button" class="addQuestion btn btn-primary mb-2 mt-3">Add Question</button>
         `;
             document.getElementById('contents').appendChild(emptyContent);
         });
@@ -54,6 +58,7 @@
                 <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][0]" placeholder="Choice 1" required>
                 <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][1]" placeholder="Choice 2" required>
                 <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][2]" placeholder="Choice 3" required>
+                <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][choices][3]" placeholder="Choice 4" required>
                 <input type="text" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][correctAnswer]" placeholder="Correct Answer" required>
                 <input type="number" class="form-control mb-2" name="contents[${contentIndex}][questions][${questionCount}][points]" placeholder="Points" required>
             `;

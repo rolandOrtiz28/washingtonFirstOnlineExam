@@ -24,7 +24,7 @@ router.get('/show', isLoggedIn,async (req, res) => {
     try {
 
         const studentLevel = req.query.level; // Assuming level is passed as query parameter
-
+console.log(studentLevel)
         const exams = await Exam.find({ level: studentLevel, isPublished: true });
 
         res.render('student/exams', { exams });
@@ -156,7 +156,7 @@ await Students.deleteMany({})
 }))
 
 
-router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/student/registration', keepSessionInfo: true }), async (req, res) => {
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/student/login', keepSessionInfo: true }), async (req, res) => {
     try {
         const { username } = req.body;
 

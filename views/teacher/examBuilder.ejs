@@ -62,7 +62,7 @@
                                 </select>
                             </div>
                             <div class="form-outline mb-2" id="audioField_0" style="display: none;">
-                                <input type="file" class="form-control mb-2" name="contents[0][audio]" required>
+                                <input type="file" class="form-control mb-2" name="contents[0][audio]">
                             </div>
                             <div class="form-outline mb-2" id="storyField_0" style="display: none;">
                                 <textarea class="form-control mb-2" name="contents[0][story]" placeholder="Story"></textarea>
@@ -72,12 +72,12 @@
                             <input type="text" class="form-control mb-2" name="contents[0][remark]"
                                 placeholder="Content Remark">
                         </div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control mb-2" name="contents[0][instruction]"
-                                placeholder="Instruction">
-                        </div>
+                      
                     </div>
-
+                    <div class="col-md-6">
+                        <input type="text" class="form-control mb-2" name="contents[0][instruction]"
+                            placeholder="Instruction">
+                    </div>
                     <div class="questions">
                         <div class="question mb-2">
                             <input type="text" class="form-control mb-2" name="contents[0][questions][0][question]"
@@ -88,6 +88,8 @@
                                 placeholder="Choice 2" required>
                             <input type="text" class="form-control mb-2" name="contents[0][questions][0][choices][2]"
                                 placeholder="Choice 3" required>
+                            <input type="text" class="form-control mb-2" name="contents[0][questions][0][choices][3]"
+                                placeholder="Choice 4" required>
                             <input type="text" class="form-control mb-2" name="contents[0][questions][0][correctAnswer]"
                                 placeholder="Correct Answer" required>
                             <input type="number" class="form-control mb-2" name="contents[0][questions][0][points]"

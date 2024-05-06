@@ -25,41 +25,93 @@ router.get('/builder', isLoggedIn,isTeacher,async (req, res) => {
 
 
 
+// router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
+//   await Exam.deleteMany({})
+//   try {
+//     const { title, term, level, subject, remark, contents } = req.body;
+//     const author = req.user._id;
+
+//     // Initialize audioUrl to null
+//     let audioUrl = null;
+
+//     // Check if content type is "Listening" and audio file is uploaded
+//     if (contents[0].type === "Listening" && req.file) {
+//       // Cloudinary URL provided by multer
+//       audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
+//     }
+
+//     const newExam = new Exam({
+//       title,
+//       term,
+//       level,
+//       subject,
+//       remark,
+//       contents: [{
+//         ...contents[0], // Copy other content fields
+//         audio: audioUrl // Include the audio URL in the content object
+//       }],
+//       author,
+//       isPublished: false
+//     });
+// console.log(newExam)
+//     await newExam.save();
+//     res.redirect('/examdashboard');
+//   } catch (err) {
+//     console.error(err);
+//     res.redirect('/');
+//   }
+// });
 router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
+  await Exam.deleteMany({})
   try {
-    const { title, term, level, subject, remark, contents } = req.body;
-    const author = req.user._id;
+      const { title, term, level, subject, remark, contents } = req.body;
+      const author = req.user._id;
 
-    // Initialize audioUrl to null
-    let audioUrl = null;
+      // Initialize audioUrl to null
+      let audioUrl = null;
 
-    // Check if content type is "Listening" and audio file is uploaded
-    if (contents[0].type === "Listening" && req.file) {
-      // Cloudinary URL provided by multer
-      audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
-    }
+      // Check if content type is "Listening" and audio file is uploaded
+      if (contents[0].type === "Listening" && req.file) {
+          // Cloudinary URL provided by multer
+          audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
+      }
 
-    const newExam = new Exam({
-      title,
-      term,
-      level,
-      subject,
-      remark,
-      contents: [{
-        ...contents[0], // Copy other content fields
-        audio: audioUrl // Include the audio URL in the content object
-      }],
-      author,
-      isPublished: false
-    });
-console.log(newExam)
-    await newExam.save();
-    res.redirect('/examdashboard');
+      // Ensure content.instruction is an array before calling join
+      const newContents = contents.map(content => {
+          let audioUrl = null;
+
+          if (content.type === "Listening" && req.file) {
+              audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
+          }
+
+          const instruction = Array.isArray(content.instruction) ? content.instruction.join(' ') : '';
+
+          return {
+              ...content,
+              audio: audioUrl,
+              instruction: instruction
+          };
+      });
+
+      const newExam = new Exam({
+          title,
+          term,
+          level,
+          subject,
+          remark,
+          contents: newContents,
+          author,
+          isPublished: false
+      });
+
+      await newExam.save();
+      res.redirect('/examdashboard');
   } catch (err) {
-    console.error(err);
-    res.redirect('/');
+      console.error(err);
+      res.redirect('/');
   }
 });
+
 
 
 // Creating exam process
@@ -136,8 +188,9 @@ router.get('/dashboard', isLoggedIn,async(req,res)=>{
 });
 
 router.get('/examdashboard', isLoggedIn,async(req,res)=>{
+ 
   const exams = await Exam.find({}).populate('author')
-  res.render('teacher/examDash', {exams});
+  res.render('teacher/examDash', {exams, currentUserID: req.user._id });
 });
 
 
@@ -150,16 +203,13 @@ router.get('/teacher/login', (req, res) => {
     res.render('teacher/login')
 })
 
-router.post('/teacher/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/', keepSessionInfo: true }), async (req, res) => {
+router.post('/teacher/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/teacher/login', keepSessionInfo: true }), async (req, res) => {
     try {
         const { username } = req.body;
 
 
         const user = await Teacher.findOne({ username });
-        if (user.isAdmin == false) {
-            user.interactions += 1;
-            await user.save();
-        }
+       
         if (user) {
             user.isLoggedIn = true; // Set isLoggedIn to true
             await user.save();
@@ -206,7 +256,7 @@ await Teacher.deleteMany({})
             req.login(registeredUser, err => {
                 if (err) return next(err);
                 req.flash('success', `Welcome Teacher ${username}`)
-                res.redirect('/')
+                res.redirect('/dashboard')
             })
 
         }
@@ -222,7 +272,7 @@ router.get('/logout', (req, res, next) => {
     req.logout(function (err) {
         if (err) { return next(err); }
         req.flash('success', "Goodbye!");
-        res.redirect('/');
+        res.redirect('/teacher/login');
     });
 })
 
