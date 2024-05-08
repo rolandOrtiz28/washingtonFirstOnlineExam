@@ -65,12 +65,12 @@ router.post('/builder', upload.single("contents[0][audio]"), async (req, res) =>
               audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
           }
 
-          const instruction = Array.isArray(content.instruction) ? content.instruction.join(' ') : '';
+          // const instruction = Array.isArray(content.instruction) ? content.instruction.join(' ') : '';
 
           return {
               ...content,
               audio: audioUrl,
-              instruction: instruction
+           
           };
       });
 
@@ -110,93 +110,7 @@ router.get('/exam/update/:id', async (req, res) => {
 });
 
 
-// router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res) => {
-//   try {
-//     const { title, term, level, subject, remark, contents, isPublished } = req.body;
-//     const author = req.user._id;
 
-//     // Initialize audioUrl to null
-//     let audioUrl = null;
-
-//     // Check if content type is "Listening" and audio file is uploaded
-//     if (contents[0].type === "Listening" && req.file) {
-//       // Cloudinary URL provided by multer
-//       audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
-//     }
-
-//     const updatedExam = {
-//       title,
-//       term,
-//       level,
-//       subject,
-//       remark,
-//       contents: [{
-//         ...contents[0], // Copy other content fields
-//         audio: audioUrl // Include the audio URL in the content object
-//       }],
-//       isPublished: isPublished === 'on' ? true : false // Parse the value of isPublished from the form
-//     };
-
-//     const exam = await Exam.findByIdAndUpdate(req.params.id, updatedExam);
-//     if (!exam) {
-//       return res.status(404).send('Exam not found');
-//     }
-//     res.redirect('/examdashboard');
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
-
-// Update exam route
-// router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res) => {
-//   try {
-//     const { title, term, level, subject, remark, contents, isPublished } = req.body;
-//     const author = req.user._id;
-//     const examId = req.params.id;
-
-//     // Initialize audioUrl to null
-//     let audioUrl = null;
-
-//     // Check if content type is "Listening" and audio file is uploaded
-//     if (contents[0].type === "Listening" && req.file) {
-//       // Cloudinary URL provided by multer
-//       audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
-//     }
-
-//     // Ensure content.instruction is an array before calling join
-//     const newContents = contents.map(content => {
-//       let audioUrl = null;
-
-//       if (content.type === "Listening" && req.file) {
-//         audioUrl = req.file.path; // This needs to be adjusted to use the Cloudinary URL
-//       }
-
-//       const instruction = Array.isArray(content.instruction) ? content.instruction.join(' ') : '';
-
-//       return {
-//         ...content,
-//         audio: audioUrl,
-//         instruction: instruction
-//       };
-//     });
-
-//     await Exam.findByIdAndUpdate(examId, {
-//       title,
-//       term,
-//       level,
-//       subject,
-//       remark,
-//       contents: newContents,
-//       author,
-//       isPublished: isPublished === 'on' ? true : false
-//     });
-//     res.redirect('/examdashboard');
-//   } catch (err) {
-//     console.error(err);
-//     res.redirect('/');
-//   }
-// });
 
 router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res) => {
   try {
@@ -204,14 +118,20 @@ router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res)
     const author = req.user._id;
     const examId = req.params.id;
 
+    // Fetch the existing exam from the database
+    const existingExam = await Exam.findById(examId);
+
     // Ensure content.instruction is an array before calling join
-    const newContents = contents.map(content => {
+    const newContents = contents.map((content, contentIndex) => {
       // Check if content type is "Listening"
       if (content.type === "Listening") {
         // If a new audio file is uploaded, use it; otherwise, retain the existing audio URL
         if (req.file) {
-    // Cloudinary URL provided by multer
+          // Cloudinary URL provided by multer
           content.audio = req.file.path; // This needs to be adjusted to use the Cloudinary URL
+        } else {
+          // Retain the existing audio URL
+          content.audio = existingExam.contents[contentIndex].audio;
         }
       }
 

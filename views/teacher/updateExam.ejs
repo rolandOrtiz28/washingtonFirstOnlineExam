@@ -1,6 +1,6 @@
 <% layout('/layouts/boilerplate') -%>
     <div class="container-md">
-        <h1>Update Exam</h1>
+        <h1 class="text-center mb-5"><u>UPDATE EXAMINATION</u></h1>
         <form action="/update/<%= exam._id %>" method="POST" class="mt-4" enctype="multipart/form-data">
             <div class="row">
                 <div class="col">
@@ -90,7 +90,7 @@
                                                         </div>
                                                             </div>
                                             <div class="col-md-6">
-                                                <input type="text" class="form-control mb-2" name="contents[0][instruction]" value="<%=content.instruction %>">
+                                                <input type="text" class="form-control mb-2" name="contents[<%= contentIndex %>][instruction]" value="<%=content.instruction %>">
                                             </div>
                                             <!-- Repeat question structure for each question in the content -->
                                             <% content.questions.forEach((question, questionIndex)=> { %>

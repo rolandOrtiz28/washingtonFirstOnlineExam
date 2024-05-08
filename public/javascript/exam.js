@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-            <input type="text" class="form-control mb-2" name="contents[0][instruction]"
+            <input type="text" class="form-control mb-2" name="contents[${contentCount}][instruction]"
                 placeholder="Instruction">
         </div>
             <div class="questions">
