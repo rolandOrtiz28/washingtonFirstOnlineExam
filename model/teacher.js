@@ -9,7 +9,7 @@ const TeacherSchema = new Schema({
         required: true,
         unique: true
     },
- role: {
+    role: {
         type: String,
         default: 'teacher'
     }

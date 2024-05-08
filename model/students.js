@@ -6,41 +6,39 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const StudentsSchema = new Schema({
     email: {
         type: String,
-        required: true,
+        required: false,
         unique: true
-    },name: {
+    },
+    name: {
         type: String,
-        required: true,
+        required: false,
         unique: false,
     },
     age: {
         type: Number,
-        required: true,
+        required: false,
         unique: false,
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
         unique: false,
     },
     level: {
         type: String,
-        required: true,
+        required: false,
         unique: false,
     },
     time:{
         type: String,
-        required: true,
+        required: false,
         unique: false
     },
- examScores: {
+    examScores: {
         type: [{ examId: Schema.Types.ObjectId, score: Number }],
         default: []
     },
- role: {
-        type: String,
-        default: 'student'
-    }
+
 });
 
 

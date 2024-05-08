@@ -14,6 +14,7 @@ const ExpressError = require('./utils/ExpressError')
 const flash = require('connect-flash')
 const Teacher = require('./model/teacher')
 const Student = require('./model/students')
+const User = require('./model/user')
 const LocalStrategy = require('passport-local')
 const expressLayouts = require('express-ejs-layouts');
 
@@ -68,10 +69,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'models')));
 app.use(session(sessionConfig))
 
+
+
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(Teacher.authenticate()));
-passport.use(new LocalStrategy(Student.authenticate()));
+
+passport.use(new LocalStrategy(User.authenticate()));
+// passport.use(new LocalStrategy(Student.authenticate()));
 
 
 passport.serializeUser(function (user, cb) {

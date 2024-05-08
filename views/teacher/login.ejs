@@ -1,117 +1,72 @@
 <% layout('/layouts/boilerplate') -%>
-<style>
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.form-container {
-    background-color: #3a86ff;
-    padding: 1rem;
-    max-width: 350px;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.form-title {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    font-weight: 600;
-    text-align: center;
-    color: #ffff;
-}
-
-.input-container {
-    position: relative;
-}
-
-.input-container input,
-.form button {
-    outline: none;
-    border: 1px solid #e5e7eb;
-    margin: 8px 0;
-}
-
-.input-container input {
-    background-color: #fff;
-    padding: 1rem;
-    padding-right: 3rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    width: 300px;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.input-container button {
-    display: grid;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    place-content: center;
-}
-
-.input-container button svg {
-    color: #9CA3AF;
-    width: 1rem;
-    height: 1rem;
-}
-
-.submit {
-    display: block;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-    background-color: #fff;
-    color: #3a86ff;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    font-weight: 500;
-    width: 100%;
-    border-radius: 0.5rem;
-    text-transform: uppercase;
-}
-
-.signup-link {
-    color: #6B7280;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    text-align: center;
-}
-
-.signup-link a {
-    text-decoration: underline;
-}
-</style>
-
-
+<link rel="stylesheet" href="/css/loginteacher.css">
 <%- include('../partials/flash') %>
-    <div class="container">
-        <div class="form-container">
-            <form class="form validated-form" action="/teacher/login" method="POST" novalidate>
-                <p class="form-title">Sign in to your account</p>
-                <div class="input-container">
-                    <input placeholder="Enter username" type="username" name="username">
-                </div>
-                <div class="input-container">
-                    <input placeholder="Enter password" type="password" name="password" id="password">
-                    <div class="input-group-append">
-                        <button class="btn bg-transparent input" id="eye-icon" type="button">
-                            <i class="far fa-eye icon"></i>
-                        </button>
+<section class="h-100 gradient-form whole mb-5">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="card rounded-3 text-black">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="card-body p-md-5 mx-md-4">
+
+                                <div class="text-center">
+                                    <img src="/images/Logo.png"
+                                        style="width: 120px;" alt="logo">
+                                    <h2 class="mt-1 mb-5 pb-1" style="color: #800000; font-size: 20px !important;">Washington First School</h2>
+                                </div>
+
+                                <form action="/login" method="POST" class="validated-form" novalidate>
+                                    <p>Please login to your account</p>
+
+                                    <div class="form-outline mb-4">
+                                        <input class="form-control" type="text" id="username" name="username"
+                                            placeholder="Username" required />
+                                        <label class="form-label" for="username">Username</label>
+                                        <div class="valid-feedback">
+                                            Looks great!
+                                        </div>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input class="form-control" type="password" id="password" name="password" placeholder="Password"
+                                            required />
+                                        <label class="form-label" for="password">Password</label>
+                                    </div>
+
+
+
+                                    <button class="log-btn mb-3">Login</button>
+
+
+
+
+                                    <div class="d-flex align-items-center justify-content-center pb-4">
+                                        <p class="mb-0 me-2">Don't have an account?</p>
+                                        <a class="" href="/teacher/registerteacher">Register Now!</a>
+
+                                        </label>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                            <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                <center>
+                                    <h4 class="mb-4">"Individually, we are one drop. Together, we are an ocean."</h4>
+
+
+                                </center>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button class="submit" type="submit">Sign in</button>
-            </form>
+            </div>
         </div>
     </div>
-
+</section>
 
 
     <script>
