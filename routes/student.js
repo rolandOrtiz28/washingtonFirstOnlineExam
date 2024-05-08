@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require('../utils/CatchAsync')
-const Students = require('../model/students')
 const User = require('../model/user')
 const Exam = require('../model/examination')
 const passport = require('passport')
 const {isLoggedIn} = require('../middleware')
 const {authMiddleware} = require('../middleware')
+
 
 
 router.get('/exam/confirmation/:id', async (req,res)=>{
@@ -80,7 +80,7 @@ router.post('/submit-exam',  catchAsync(async (req, res) => {
         // Update student's record with exam score
         const studentId = req.user._id;
         console.log('Student ID:', studentId);
-       const updatedStudent = await Students.findOneAndUpdate(
+       const updatedStudent = await User.findOneAndUpdate(
     { _id: studentId },
     { $push: { examScores: { examId: exam._id, score: score } } },
     { new: true } // Return the modified document
@@ -112,50 +112,8 @@ router.get('/login', async (req, res) => {
 })
 
 
-
-// router.post('/register', catchAsync(async (req, res) => {
-//     try {
-//         const { email, username, password, name, age, gender, level, time } = req.body;
-
-//         // Password validation
-//         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-//         if (!passwordRegex.test(password)) {
-//             req.flash('error', 'Password must contain at least one uppercase letter, one digit, and be at least 8 characters long');
-//             return res.redirect('/student/registration');
-//         }
-//         const existingUsername = await Students.findOne({ username })
-//         if (existingUsername) {
-//             req.flash('error', 'A user with the given username is already registered')
-//             return res.redirect('/student/registration');
-//         }
-//         const existingEmail = await Students.findOne({ email })
-//         if (existingEmail) {
-//             req.flash('error', 'A user with the given email is already registered')
-//             return res.redirect('/student/registration');
-//         }
-//         const confirmPassword = req.body['confirm-password'];
-//         if (password !== confirmPassword) {
-//             req.flash('error', 'Passwords do not match');
-//             return res.redirect('/student/registration');
-//         } else {
-//             const student = new Students({ email, username, name, age, gender, level, time });
-//             const registeredUser = await Students.register(student, password);
-//             req.login(registeredUser, err => {
-//                 if (err) return next(err);
-//                 req.flash('success', `Welcome ${name}`)
-//                 res.redirect(`/student/show?level=${student.level}`)
-//             })
-
-//         }
-
-//     } catch (e) {
-//         console.log('error', e.message);
-//         res.redirect('/student/registration');
-//     }
-// }))
-
 router.post('/register', catchAsync(async (req, res) => {
-await User.deleteMany({})
+
     try {
         const { email, username, password, name, age, gender, level, time, role } = req.body;
 
@@ -189,7 +147,7 @@ await User.deleteMany({})
             if (role === 'student') {
                 res.redirect(`/student/show?level=${user.level}`);
             } else {
-                res.redirect('/dashboard');
+                res.redirect('/examdashboard');
             }
         });
     } catch (e) {
@@ -199,7 +157,7 @@ await User.deleteMany({})
 }));
 
 
-router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), async (req, res) => {
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/' }), async (req, res) => {
     try {
         const { username } = req.body;
         const user = await User.findOne({ username });
@@ -213,31 +171,13 @@ router.post('/login', passport.authenticate('local', { failureFlash: true, failu
         if (user.role === 'student') {
             res.redirect(`/student/show?level=${user.level}`);
         } else {
-            res.redirect('/dashboard');
+            res.redirect('/examdashboard');
         }
     } catch (err) {
         console.log(err.message);
         res.status(500).send('An error occurred during login.');
     }
 });
-// router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/student/login', keepSessionInfo: true }), async (req, res) => {
-//     try {
-//         const { username } = req.body;
-
-
-//         const user = await Students.findOne({ username });
-
-//         if (user) {
-//             user.isLoggedIn = true; // Set isLoggedIn to true
-//             await user.save();
-//         }
-//         req.flash('success', `Welcome ${username}`);
-//         res.redirect(`/student/show?level=${user.level}`);
-//     } catch (err) {
-//         console.log(err.message);
-//         res.status(500).send('An error occurred during login.');
-//     }
-// });
 
 
 
