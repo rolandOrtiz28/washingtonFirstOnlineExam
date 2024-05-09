@@ -1,8 +1,11 @@
+<% layout('/layouts/boilerplate') -%>
+    <link rel="stylesheet" href="/css/exam.css">
+
 <form action="/student/submit-exam" method="POST">
     <input type="hidden" name="examId" value="<%= exam._id %>">
     <% exam.contents.forEach((content, contentIndex)=> { %>
 <input type="hidden" name="contentIndex" value="<%= contentIndex %>">
-        <div class="container mb-3 p-3" style="border: 1px solid black;">
+        <div class="container mb-3 p-5">
             <!-- Content Details -->
             <div class="row">
                 <!-- Content Type -->
@@ -25,15 +28,16 @@
             <!-- Audio Section -->
             <div class="row">
                 <% if (content.type==='Listening' && content.audio) { %>
-                    <div class="col-3">
+                    <div class="col-3 d-flex justify-content-center text-center mb-4">
                         <audio id="audio_<%= contentIndex %>" controls>
                             <source src="<%= content.audio %>" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
+                        <input type="hidden" id="contentIndex" value="<%= contentIndex %>">
+
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-primary mt-2 ms-4"
-                            onclick="playAudio(<%= contentIndex %>)">Play Audio</button>
+                        
                         <button type="button" class="btn btn-danger mt-2"
                             onclick="hideAudio('audio_<%= contentIndex %>')" style="display: none;">Hide
                             Audio</button>
@@ -43,7 +47,7 @@
             <!-- Reading Section -->
             <div class="row d-flex justify-content-center">
                 <% if (content.type==='Reading' && content.story) { %>
-                    <div class="col-6 text-center">
+                    <div class="col-9 text-center story">
                         <p class="text-center">
                             <%= content.story %>
                         </p>
@@ -51,13 +55,14 @@
                     <% } %>
             </div>
             <!-- Questions Section -->
+            <div class="">
             <% content.questions.forEach((question, index)=> { %>
 <input type="hidden" name="questionIndex" value="<%= index %>">
                 <h3>
                     <%= index + 1 %>. <%= question.question %>
                 </h3>
                 <% question.choices.forEach((choice, choiceIndex)=> { %>
-                    <div class="form-check ms-3">
+                    <div class="form-check ms-3 ">
                         <input class="form-check-input" type="radio" name="answers[<%= contentIndex %>_<%= index %>]"
                             id="choice_<%= contentIndex %>_<%= index %>_<%= choiceIndex %>" value="<%= choice %>">
                         <label class="form-check-label"
@@ -67,8 +72,50 @@
                     </div>
                     <% }); %>
                         <% }); %>
+                    </div>
         </div>
         <% }); %>
             <button type="submit" class="btn btn-primary mt-3 mb-3">Submit Exam</button>
-            <a href="/student/exam/confirmation/<%= exam._id %>" class="btn btn-success btn-md mb-3">Back</a>
+            <a href="/student/exam/confirmation/<%= exam._id %>" class="btn btn-success btn-md mt-3 mb-3">Back</a>
 </form>
+
+
+<!-- <script>
+    var contentIndex = document.getElementById('contentIndex').value;
+
+    document.getElementById('audio_' + contentIndex).addEventListener('play', function() {
+        var playCount = parseInt(localStorage.getItem('playCount_' + contentIndex)) || 0;
+        if (playCount < 2) {
+            localStorage.setItem('playCount_' + contentIndex, playCount + 1);
+        } else {
+            this.style.display = 'none'; // Hide the audio element
+        }
+    });
+
+</script> -->
+
+<script>
+    window.onload = function() {
+        var contentIndex = document.getElementById('contentIndex').value;
+        if (!localStorage.getItem('playCount_' + contentIndex)) {
+            localStorage.setItem('playCount_' + contentIndex, 0);
+        }
+        
+        // Add event listener to the audio element
+        var audio = document.getElementById('audio_' + contentIndex);
+        audio.addEventListener('play', function() {
+            var playCount = parseInt(localStorage.getItem('playCount_' + contentIndex)) || 0;
+            
+            // Increment play count if less than 3
+            if (playCount < 3) {
+                localStorage.setItem('playCount_' + contentIndex, playCount + 1);
+            } else {
+                audio.style.display = 'none'; // Hide the audio element
+            }
+        });
+    };
+</script>
+
+
+
+

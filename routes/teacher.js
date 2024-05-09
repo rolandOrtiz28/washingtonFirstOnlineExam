@@ -43,7 +43,7 @@ router.get('/builder', isLoggedIn,isTeacher,async (req, res) => {
 
 
 router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
-  await Exam.deleteMany({})
+
   try {
       const { title, term, level, subject, remark, contents } = req.body;
       const author = req.user._id;

@@ -20,20 +20,21 @@
                     <div data-mdb-input-init class="form-outline">
                         <select class="form-select program text-muted" aria-label="Default select example" name="level" required>
                             <option value="" disabled>Select Level</option>
-                            <option value="EAL-1A" <%=exam.level==='EAL-1B' ? 'selected' : '' %>>EAL-1A</option>
-                            <option value="EAL-1B" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-1B</option>
-                            <option value="EAL-2A" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-2A</option>
-                            <option value="EAL-2B" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-2B</option>
-                            <option value="EAL-3A" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-3A</option>
-                            <option value="EAL-3B" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-3B</option>
-                            <option value="EAL-4A" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-4A</option>
-                            <option value="EAL-4B" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-4B</option>
-                            <option value="EAL-5A" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-5A</option>
-                            <option value="EAL-5B" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-5B</option>
-                            <option value="EAL-6A" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-6A</option>
-                            <option value="EAL-6B" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-6B</option>
-                            <option value="EAL-7A" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-7A</option>
-                            <option value="EAL-7B" <%=exam.level==='EAL-1b' ? 'selected' : '' %>>EAL-7B</option>
+                            <option value="EAL-1A" <%=exam.level==='EAL-1A' ? 'selected' : '' %>>EAL-1A</option>
+                            <option value="EAL-1B" <%=exam.level==='EAL-1B' ? 'selected' : '' %>>EAL-1B</option>
+                            <option value="EAL-2A" <%=exam.level==='EAL-2A' ? 'selected' : '' %>>EAL-2A</option>
+                            <option value="EAL-2B" <%=exam.level==='EAL-2B' ? 'selected' : '' %>>EAL-2B</option>
+                            <option value="EAL-3A" <%=exam.level==='EAL-3A' ? 'selected' : '' %>>EAL-3A</option>
+                            <option value="EAL-3B" <%=exam.level==='EAL-3B' ? 'selected' : '' %>>EAL-3B</option>
+                            <option value="EAL-4A" <%=exam.level==='EAL-4A' ? 'selected' : '' %>>EAL-4A</option>
+                            <option value="EAL-4B" <%=exam.level==='EAL-4B' ? 'selected' : '' %>>EAL-4B</option>
+                            <option value="EAL-5A" <%=exam.level==='EAL-5A' ? 'selected' : '' %>>EAL-5A</option>
+                            <option value="EAL-5B" <%=exam.level==='EAL-5B' ? 'selected' : '' %>>EAL-5B</option>
+                            <option value="EAL-6A" <%=exam.level==='EAL-6A' ? 'selected' : '' %>>EAL-6A</option>
+                            <option value="EAL-6B" <%=exam.level==='EAL-6B' ? 'selected' : '' %>>EAL-6B</option>
+                            <option value="EAL-7A" <%=exam.level==='EAL-7A' ? 'selected' : '' %>>EAL-7A</option>
+                            <option value="EAL-7B" <%=exam.level==='EAL-7B' ? 'selected' : '' %>>EAL-7B</option>
+                            
                         
                             <!-- Repeat for other levels -->
                         </select>
@@ -51,6 +52,7 @@
             <h2>Contents</h2>
             <!-- Repeat content structure for each existing content in the exam -->
             <% exam.contents.forEach((content, contentIndex)=> { %>
+                <% if (content) { %>
                 <div class="content mb-4">
                     <div class="row">
                         <div class="col">
@@ -123,6 +125,7 @@
                         
                             <button type="button" class="addQuestion btn btn-primary mt-3">Add Question</button>
 </div>
+<% } %>
 <% }) %>
 
             <div class="form-check form-switch mb-3">
