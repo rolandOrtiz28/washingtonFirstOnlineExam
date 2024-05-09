@@ -1,0 +1,13 @@
+.questions{
+border: 1px solid #800000;
+padding: 1rem;
+border-radius: 10px;
+box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.content-header{
+    border: 1px solid #800000;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

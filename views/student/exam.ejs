@@ -1,111 +1,72 @@
-<% layout('/layouts/boilerplate') %>
-<style>
-.instruction{
-font-size: 20px;
-
-}
-
-</style>
-    <% block('title', 'Exam: ' + exam.title) %>
-
-        <div class="container">
-           
-            <h1 class="mt-5 text-center">
-                <%= exam.title.toUpperCase() %>
-            </h1>
-           
-            <form action="/student/submit-exam" method="POST">
-                <input type="hidden" name="examId" value="<%= exam._id %>"> <!-- Add this line -->
-                <% exam.contents.forEach((content, contentIndex)=> { %>
-                    <div class="container mb-3 p-3" style="border: 1px solid black;">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2 class="m-3">
-                            <%= content.type %>
-                        </h2>
-                    </div>
-                    <div class="col-md-3 ms-auto">
-                        <h5 class="m-3">
-                            (Remark: <%= content.remark %>)
-                        </h5>
-                    </div>
+<form action="/student/submit-exam" method="POST">
+    <input type="hidden" name="examId" value="<%= exam._id %>">
+    <% exam.contents.forEach((content, contentIndex)=> { %>
+        <div class="container mb-3 p-3" style="border: 1px solid black;">
+            <!-- Content Details -->
+            <div class="row">
+                <!-- Content Type -->
+                <div class="col-md-6">
+                    <h2 class="m-3">
+                        <%= content.type %>
+                    </h2>
                 </div>
-<div class="col ms-3">
-<p class="instruction"><strong>Instruction:</strong> <%= content.instruction %></p>
-</div>
-                    <div class="row">
-                        <% if (content.type==='Listening' && content.audio) { %>
-                            <div class="col-3">
-                                <audio id="audio_<%= contentIndex %>" controls>
-                                    <source src="<%= content.audio %>" type="audio/mpeg">
-                                    Your browser does not support the audio element.
-                                </audio>
-                            </div>
-                            <div class="col-3">
-                                <button type="button" class="btn btn-primary mt-2 ms-4"
-                                    onclick="playAudio(<%= contentIndex %>)">Play Audio</button>
-                                <button type="button" class="btn btn-danger mt-2"
-                                    onclick="hideAudio('audio_<%= contentIndex %>')" style="display: none;">Hide
-                                    Audio</button>
-                            </div>
-                            <% } %>
+                <!-- Content Remark -->
+                <div class="col-md-3 ms-auto">
+                    <h5 class="m-3">(Remark: <%= content.remark %>)</h5>
+                </div>
+            </div>
+            <!-- Content Instruction -->
+            <div class="col ms-3">
+                <p class="instruction"><strong>Instruction:</strong>
+                    <%= content.instruction %>
+                </p>
+            </div>
+            <!-- Audio Section -->
+            <div class="row">
+                <% if (content.type==='Listening' && content.audio) { %>
+                    <div class="col-3">
+                        <audio id="audio_<%= contentIndex %>" controls>
+                            <source src="<%= content.audio %>" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
                     </div>
-                        <div class="row d-flex justify-content-center">
-                            <% if (content.type==='Reading' && content.story) { %>
-                                <div class="col-6 text-center">
-                                    <p class="text-center"><%=content.story %></p>
-                                </div>
-                                
-                                <% } %>
-                        </div>
-                    <% content.questions.forEach((question, index)=> { %>
-                        <h3>
-                            <%= index + 1 %>. <%= question.question %>
-                        </h3>
-                        <% question.choices.forEach(choice=> { %>
-                            <div class="form-check ms-3">
-                                <input class="form-check-input" type="radio"
-                                    name="answers[<%= content.title %>][<%= index %>]" id="choice<%= index %>"
-                                    value="<%= choice %>">
-                                <label class="form-check-label" for="choice<%= index %>">
-                                    <%= choice %>
-                                </label>
-                            </div>
-                           
-                            <% }); %>
-                                <% }); %>
-                                </div>
-                                    <% }); %>
-                                    
-                                        <button type="submit" class="btn btn-primary mt-3 mb-3">Submit Exam</button>
-                                        
-            </form>
-                    <a href="/student/exam/confirmation/<%= exam._id %>" class="btn btn-success btn-md mb-3">Back</a>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-primary mt-2 ms-4"
+                            onclick="playAudio(<%= contentIndex %>)">Play Audio</button>
+                        <button type="button" class="btn btn-danger mt-2"
+                            onclick="hideAudio('audio_<%= contentIndex %>')" style="display: none;">Hide
+                            Audio</button>
+                    </div>
+                    <% } %>
+            </div>
+            <!-- Reading Section -->
+            <div class="row d-flex justify-content-center">
+                <% if (content.type==='Reading' && content.story) { %>
+                    <div class="col-6 text-center">
+                        <p class="text-center">
+                            <%= content.story %>
+                        </p>
+                    </div>
+                    <% } %>
+            </div>
+            <!-- Questions Section -->
+            <% content.questions.forEach((question, index)=> { %>
+                <h3>
+                    <%= index + 1 %>. <%= question.question %>
+                </h3>
+                <% question.choices.forEach((choice, choiceIndex)=> { %>
+                    <div class="form-check ms-3">
+                        <input class="form-check-input" type="radio" name="answers[<%= contentIndex %>_<%= index %>]"
+                            id="choice_<%= contentIndex %>_<%= index %>_<%= choiceIndex %>" value="<%= choice %>">
+                        <label class="form-check-label"
+                            for="choice_<%= contentIndex %>_<%= index %>_<%= choiceIndex %>">
+                            <%= choice %>
+                        </label>
+                    </div>
+                    <% }); %>
+                        <% }); %>
         </div>
-
-        <script>
-            // Array to keep track of the number of times each audio has been played
-            const playedCount = [];
-
-            function playAudio(index) {
-                const audio = document.getElementById(`audio_${index}`);
-                if (!playedCount[index]) {
-                    playedCount[index] = 0;
-                }
-                if (playedCount[index] < 3) { // Limiting to 3 plays
-                    audio.play();
-                    playedCount[index]++;
-                } else {
-                    audio.style.display = "none"; // Hide the audio element after 3 plays
-                    document.getElementById(`hideButton_${index}`).style.display = "inline"; // Show the hide button
-                    alert('You have reached the maximum play limit for this audio.');
-                }
-            }
-
-            function hideAudio(audioId) {
-                const audio = document.getElementById(audioId);
-                audio.style.display = "none"; // Hide the audio element
-                const index = audioId.split('_')[1]; // Extract index from audioId
-                document.getElementById(`hideButton_${index}`).style.display = "none"; // Hide the hide button
-            }
-        </script>
+        <% }); %>
+            <button type="submit" class="btn btn-primary mt-3 mb-3">Submit Exam</button>
+            <a href="/student/exam/confirmation/<%= exam._id %>" class="btn btn-success btn-md mb-3">Back</a>
+</form>

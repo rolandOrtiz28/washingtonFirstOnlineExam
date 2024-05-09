@@ -58,6 +58,13 @@ role: {
     },
 });
 
+UserSchema.add({
+    contentScores: {
+        type: Schema.Types.Mixed,
+        default: {},
+    },
+});
+
 
 UserSchema.plugin(passportLocalMongoose);
 

@@ -44,9 +44,7 @@ router.get('/exam/:id', isLoggedIn, async (req, res) => {
     }
 });
 
-
-
-router.post('/submit-exam',  catchAsync(async (req, res) => {
+router.post('/submit-exam', catchAsync(async (req, res) => {
     try {
         // Ensure req.user exists and contains user information
         if (!req.user || !req.user._id) {
@@ -63,31 +61,53 @@ router.post('/submit-exam',  catchAsync(async (req, res) => {
             return res.status(400).send('Invalid form data'); // Handle invalid form data
         }
 
+        // Initialize object to store scores for each content
+        const contentScores = {};
+
         // Calculate score
-        let score = 0;
-        for (const contentTitle in req.body.answers) {
-            const contentAnswers = req.body.answers[contentTitle];
-            const content = exam.contents.find(content => content.title === contentTitle);
+        let overallScore = 0;
+        for (const contentAnswersKey in req.body.answers) {
+            const [contentIndex, questionIndex] = contentAnswersKey.split('_').map(Number);
+            const content = exam.contents[contentIndex];
+
             if (!content) {
                 continue; // Skip if content not found
             }
-            content.questions.forEach((question, index) => {
-                if (contentAnswers[index] === question.correctAnswer) {
-                    score += question.points;
+
+            const question = content.questions[questionIndex];
+            if (!question) {
+                continue; // Skip if question not found
+            }
+
+            const submittedAnswer = req.body.answers[contentAnswersKey];
+            const correctAnswer = question.correctAnswer;
+
+            if (submittedAnswer === correctAnswer) {
+                const contentScore = question.points;
+                overallScore += contentScore;
+
+                // Update contentScores
+                if (!contentScores[content.title]) {
+                    contentScores[content.title] = 0;
                 }
-            });
+                contentScores[content.title] += contentScore;
+            }
         }
 
         // Update student's record with exam score
         const studentId = req.user._id;
-        console.log('Student ID:', studentId);
-       const updatedStudent = await User.findOneAndUpdate(
-    { _id: studentId },
-    { $push: { examScores: { examId: exam._id, score: score } } },
-    { new: true } // Return the modified document
-);
 
-console.log(updatedStudent)
+        const updatedStudent = await User.findOneAndUpdate(
+            { _id: studentId },
+            {
+                $push: { examScores: { examId: exam._id, score: overallScore } },
+                $set: { contentScores: contentScores }
+            },
+            { new: true } // Return the modified document
+        );
+
+        console.log('Updated Student:', updatedStudent);
+
         // Render the exam result template with the calculated score
         res.redirect('/student/thankyou');
     } catch (err) {
