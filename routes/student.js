@@ -44,6 +44,77 @@ router.get('/exam/:id', isLoggedIn, async (req, res) => {
     }
 });
 
+// router.post('/submit-exam', catchAsync(async (req, res) => {
+//     try {
+//         // Ensure req.user exists and contains user information
+//         if (!req.user || !req.user._id) {
+//             return res.status(401).send('Unauthorized'); // User is not authenticated
+//         }
+
+//         const exam = await Exam.findById(req.body.examId);
+//         if (!exam) {
+//             return res.status(404).send('Exam not found');
+//         }
+
+//         // Check if req.body.answers is an object
+//         if (typeof req.body.answers !== 'object') {
+//             return res.status(400).send('Invalid form data'); // Handle invalid form data
+//         }
+
+//         // Initialize object to store scores for each content
+//         const contentScores = {};
+
+//         // Calculate score
+//         let overallScore = 0;
+//         for (const contentAnswersKey in req.body.answers) {
+//             const [contentIndex, questionIndex] = contentAnswersKey.split('_').map(Number);
+//             const content = exam.contents[contentIndex];
+
+//             if (!content) {
+//                 continue; // Skip if content not found
+//             }
+
+//             const question = content.questions[questionIndex];
+//             if (!question) {
+//                 continue; // Skip if question not found
+//             }
+
+//             const submittedAnswer = req.body.answers[contentAnswersKey];
+//             const correctAnswer = question.correctAnswer;
+
+//             if (submittedAnswer === correctAnswer) {
+//                 const contentScore = question.points;
+//                 overallScore += contentScore;
+
+//                 // Update contentScores
+//                 if (!contentScores[content.title]) {
+//                     contentScores[content.title] = 0;
+//                 }
+//                 contentScores[content.title] += contentScore;
+//             }
+//         }
+
+//         // Update student's record with exam score
+//         const studentId = req.user._id;
+
+//         const updatedStudent = await User.findOneAndUpdate(
+//             { _id: studentId },
+//             {
+//                 $push: { examScores: { examId: exam._id, score: overallScore } },
+//                 $set: { contentScores: contentScores }
+//             },
+//             { new: true } // Return the modified document
+//         );
+
+//         console.log('Updated Student:', updatedStudent);
+
+//         // Render the exam result template with the calculated score
+//         res.redirect('/student/thankyou');
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send('Internal Server Error');
+//     }
+// }));
 router.post('/submit-exam', catchAsync(async (req, res) => {
     try {
         // Ensure req.user exists and contains user information
@@ -66,34 +137,40 @@ router.post('/submit-exam', catchAsync(async (req, res) => {
 
         // Calculate score
         let overallScore = 0;
-        for (const contentAnswersKey in req.body.answers) {
-            const [contentIndex, questionIndex] = contentAnswersKey.split('_').map(Number);
-            const content = exam.contents[contentIndex];
+for (const contentAnswersKey in req.body.answers) {
+    const contentIndex = parseInt(req.body.contentIndex); // Parse content index
+    const questionIndex = parseInt(req.body.questionIndex); // Parse question index
 
-            if (!content) {
-                continue; // Skip if content not found
-            }
+    console.log("Content Index:", contentIndex);
+    console.log("Exam Contents:", exam.contents); // Debugging statement
 
-            const question = content.questions[questionIndex];
-            if (!question) {
-                continue; // Skip if question not found
-            }
+    const content = exam.contents[contentIndex];
 
-            const submittedAnswer = req.body.answers[contentAnswersKey];
-            const correctAnswer = question.correctAnswer;
+    console.log("Content:", content); // Debugging statement
 
-            if (submittedAnswer === correctAnswer) {
-                const contentScore = question.points;
-                overallScore += contentScore;
+    if (!content) {
+        continue; // Skip if content not found
+    }
 
-                // Update contentScores
-                if (!contentScores[content.title]) {
-                    contentScores[content.title] = 0;
-                }
-                contentScores[content.title] += contentScore;
-            }
-        }
+    const question = content.questions[questionIndex];
+    if (!question) {
+        continue; // Skip if question not found
+    }
 
+    const submittedAnswer = req.body.answers[contentAnswersKey];
+    const correctAnswer = question.correctAnswer;
+
+    if (submittedAnswer === correctAnswer) {
+        const contentScore = question.points;
+        overallScore += contentScore;
+
+        // Update contentScores
+        if (!contentScores[content._id]) {
+    contentScores[content._id] = 0;
+}
+contentScores[content._id] += contentScore;
+    }
+}
         // Update student's record with exam score
         const studentId = req.user._id;
 

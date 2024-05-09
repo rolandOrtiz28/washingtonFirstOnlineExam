@@ -1,6 +1,7 @@
 <form action="/student/submit-exam" method="POST">
     <input type="hidden" name="examId" value="<%= exam._id %>">
     <% exam.contents.forEach((content, contentIndex)=> { %>
+<input type="hidden" name="contentIndex" value="<%= contentIndex %>">
         <div class="container mb-3 p-3" style="border: 1px solid black;">
             <!-- Content Details -->
             <div class="row">
@@ -51,6 +52,7 @@
             </div>
             <!-- Questions Section -->
             <% content.questions.forEach((question, index)=> { %>
+<input type="hidden" name="questionIndex" value="<%= index %>">
                 <h3>
                     <%= index + 1 %>. <%= question.question %>
                 </h3>
