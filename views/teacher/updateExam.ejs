@@ -82,8 +82,10 @@
                                     <label for="audio_<%= contentIndex %>">Upload New Audio:</label>
                                     <input type="file" class="form-control mb-2" id="audio_<%= contentIndex %>" name="contents[<%= contentIndex %>][audio]">
                                     <% if (content.audio) { %>
-                                        <p>Existing Audio URL: <%= content.audio %>
-                                        </p>
+                                        <audio id="audio_<%= contentIndex %>" controls>
+                                            <source src="<%= content.audio %>" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
                                         <% } %>
                                             </div>
                                             </div>
