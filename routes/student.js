@@ -34,15 +34,16 @@ router.get('/show', isLoggedIn,async (req, res) => {
     }
 });
 
-router.get('/exam/:id', isLoggedIn,async (req, res) => {
+router.get('/exam/:id', isLoggedIn, async (req, res) => {
     try {
         const exam = await Exam.findById(req.params.id);
-        res.render('student/exam', { exam });
+        res.render('student/exam', { exam, currentPage: 0 }); // Pass currentPage with value 0
     } catch (err) {
         console.error(err);
         res.redirect('/');
     }
 });
+
 
 
 router.post('/submit-exam',  catchAsync(async (req, res) => {

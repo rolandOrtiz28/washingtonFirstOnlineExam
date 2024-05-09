@@ -135,11 +135,11 @@ router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res)
         }
       }
 
-      const instruction = Array.isArray(content.instruction) ? content.instruction.join(' ') : '';
+     
 
       return {
         ...content,
-        instruction: instruction
+       
       };
     });
 

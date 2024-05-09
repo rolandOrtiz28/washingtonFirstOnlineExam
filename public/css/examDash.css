@@ -5,7 +5,7 @@
     z-index: 5;
     box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
-    max-width: 300px;
+    max-width: 350px;
     transition: 200ms ease-in-out;
   }
   
@@ -20,7 +20,7 @@
     flex-direction: column;
   }
   
-  .body h2{
+  .body h4{
   color: #800000;
   
   }
