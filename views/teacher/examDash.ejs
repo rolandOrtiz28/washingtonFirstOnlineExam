@@ -1,93 +1,33 @@
 <% layout('/layouts/adminboilerplate') -%>
-  <link rel="stylesheet" href="/css/examDash.css">
-  <div class="container ms-4 mt-5">
-    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-          type="button" role="tab" aria-controls="pills-home" aria-selected="true">EAL-1A (PT1)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
-          type="button" role="tab" aria-controls="pills-profile" aria-selected="false">EAL-1A (PT2)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
-          type="button" role="tab" aria-controls="pills-contact" aria-selected="false">EAL-1B (PT1)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
-          type="button" role="tab" aria-controls="pills-contact" aria-selected="false">EAL-1B (PT2)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button"
-          role="tab" aria-controls="pills-home" aria-selected="true">EAL-2A (PT1)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button"
-          role="tab" aria-controls="pills-profile" aria-selected="false">EAL-2A (PT2)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button"
-          role="tab" aria-controls="pills-contact" aria-selected="false">EAL-2B (PT1)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button"
-          role="tab" aria-controls="pills-contact" aria-selected="false">EAL-2B (PT2)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button"
-          role="tab" aria-controls="pills-home" aria-selected="true">EAL-3A (PT1)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button"
-          role="tab" aria-controls="pills-profile" aria-selected="false">EAL-3A (PT2)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button"
-          role="tab" aria-controls="pills-contact" aria-selected="false">EAL-3B (PT1)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button"
-          role="tab" aria-controls="pills-contact" aria-selected="false">EAL-3B (PT2)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button"
-          role="tab" aria-controls="pills-home" aria-selected="true">EAL-4A (PT1)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button"
-          role="tab" aria-controls="pills-profile" aria-selected="false">EAL-4A (PT2)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button"
-          role="tab" aria-controls="pills-contact" aria-selected="false">EAL-4B (PT1)</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button"
-          role="tab" aria-controls="pills-contact" aria-selected="false">EAL-4B (PT2)</button>
-      </li>
-    </ul>
-
-    <div class="tab-content" id="pills-tabContent">
-      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-        <div class="row">
-          <% for(let exam of exams) { %>
-            <% if(exam.level.includes("EAL-1A")){ %>
+<link rel="stylesheet" href="/css/examDash.css">
+<div class="container ms-4 mt-5">
+  <div id="accordion">
+    <% for(let level of uniqueLevels) { %>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading<%= level %>">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapse<%= level %>" aria-expanded="true" aria-controls="collapse<%= level %>">
+          <%= level %>
+        </button>
+      </h2>
+      <div id="collapse<%= level %>" class="accordion-collapse collapse show" aria-labelledby="heading<%= level %>"
+        data-bs-parent="#accordion">
+        <div class="accordion-body">
+          <div class="row">
+            <% for(let exam of exams) { 
+              if(exam.level.includes(level)){ %>
             <div class="col-sm-3">
               <div class="card mb-4">
                 <div class="body">
-                  <h4>
-                    <%= exam.title %>
-                  </h4>
-                  <p class="text">
-                    <%= exam.level %>
-                  </p>
-                  <span class="username">Created by: <%= exam.author?.username || 'Unknown' %></span>
+                  <h4><%= exam.title %></h4>
+                  <p class="text"><%= exam.level %></p>
+                  <p class="text"><%= exam.time %></p>
+                  <span class="username">Teacher: <%= exam.author?.username || 'Unknown' %></span>
                   <div class="footer">
                     <div>
                       <% if (currentUserID && exam.author && exam.author.equals(currentUserID)) { %>
-                        <a href="/exam/update/<%= exam._id %>" class="mt-2"><i class="fas fa-edit"></i></a>
-                        <% } %>
+                      <a href="/exam/update/<%= exam._id %>" class="mt-2"><i class="fas fa-edit"></i></a>
+                      <% } %>
                     </div>
                     <div>
                       <a href="/exams/start/<%= exam._id %>" class="mt-2"><i class="fas fa-eye"></i></a>
@@ -96,15 +36,12 @@
                 </div>
               </div>
             </div>
-            <% } %>
-            <% } %>
+            <% } 
+              } %>
+          </div>
         </div>
       </div>
-
-      <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
-      <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-      <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-      <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-      <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
     </div>
+    <% } %>
   </div>
+</div>

@@ -200,13 +200,17 @@ router.get('/dashboard', isTeacher, isLoggedIn, async (req, res) => {
 router.get('/examdashboard', isTeacher, isLoggedIn, async (req, res) => {
   try {
     const exams = await Exam.find({}).populate('author');
-    
-    res.render('teacher/examDash', { exams, currentUserID: req.user._id });
+
+    // Extract unique levels from exams
+    const uniqueLevels = [...new Set(exams.map(exam => exam.level))];
+
+    res.render('teacher/examDash', { exams, uniqueLevels, currentUserID: req.user._id });
   } catch (error) {
     console.error(error);
     res.redirect('/');
   }
 });
+
 
 
 
