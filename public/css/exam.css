@@ -19,3 +19,31 @@ label{
 
 font-size: 17px;
 }
+
+.timer {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    border: 1px solid #800000;
+    border-radius: 10px;
+    padding: 10px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: inline-block;
+   
+    position: sticky;
+    top: 20px;
+    z-index: 999;
+    /* Ensure it's above other content */
+}
+
+.sticky-timer {
+    font-size: 13px;
+    margin-left: 85% !important;
+    padding: 5px 10px;
+    /* Adjust padding */
+}
+
+/* Hide timeText when timer is sticky */
+.sticky-timer #timeText {
+    display: none;
+}

@@ -25,6 +25,7 @@ const examSchema = new Schema({
   term: String,
   level: String,
   subject: String,
+  time: String,
   author:{
     type: Schema.Types.ObjectId,
     ref:'User'

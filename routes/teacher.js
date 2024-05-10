@@ -45,7 +45,7 @@ router.get('/builder', isLoggedIn,isTeacher,async (req, res) => {
 router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
 
   try {
-      const { title, term, level, subject, remark, contents } = req.body;
+      const { title, term, level, subject, remark, contents,time } = req.body;
       const author = req.user._id;
 
       // Initialize audioUrl to null
@@ -80,6 +80,7 @@ router.post('/builder', upload.single("contents[0][audio]"), async (req, res) =>
           level,
           subject,
           remark,
+          time,
           contents: newContents,
           author,
           isPublished: false
@@ -114,7 +115,7 @@ router.get('/exam/update/:id', async (req, res) => {
 
 router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res) => {
   try {
-    const { title, term, level, subject, remark, contents, isPublished } = req.body;
+    const { title, term, level, subject, remark, contents,time, isPublished } = req.body;
     const author = req.user._id;
     const examId = req.params.id;
 
@@ -149,6 +150,7 @@ router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res)
       level,
       subject,
       remark,
+      time,
       contents: newContents,
       author,
       isPublished: isPublished === 'on' ? true : false
@@ -196,9 +198,14 @@ router.get('/dashboard', isTeacher, isLoggedIn, async (req, res) => {
 });
 
 router.get('/examdashboard', isTeacher, isLoggedIn, async (req, res) => {
-
-  const exams = await Exam.find({}).populate('author')
-  res.render('teacher/examDash', {exams, currentUserID: req.user._id });
+  try {
+    const exams = await Exam.find({}).populate('author');
+    
+    res.render('teacher/examDash', { exams, currentUserID: req.user._id });
+  } catch (error) {
+    console.error(error);
+    res.redirect('/');
+  }
 });
 
 

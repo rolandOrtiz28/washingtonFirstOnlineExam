@@ -47,6 +47,16 @@
                             required>
                     </div>
                 </div>
+                <div class="col">
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline">
+                        <select class="form-select program text-muted" aria-label="Default select example" name="time" required>
+                            <option selected disabled class="text-muted">Time</option>
+                            <option value="Part-Time 1" <%=exam.time==='Part-Time 1' ? 'selected' : '' %>>Part-Time 1</option>
+                            <option value="Part-Time 2" <%=exam.time==='Part-Time 2' ? 'selected' : '' %>>Part-Time 2</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <hr>
             <h2>Contents</h2>
