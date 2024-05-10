@@ -48,7 +48,7 @@ const UserSchema = new Schema({
         type: [{ examId: Schema.Types.ObjectId, score: Number }],
         default: [],
         required: function() {
-            return this.role === 'student'; // Gender is required only for students
+            return this.role === 'student';
         },
     },
 role: {

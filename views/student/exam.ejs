@@ -39,7 +39,7 @@
 
                     </div>
                     <div class="col-3">
-                        
+
                         <button type="button" class="btn btn-danger mt-2"
                             onclick="hideAudio('audio_<%= contentIndex %>')" style="display: none;">Hide
                             Audio</button>
@@ -82,7 +82,7 @@
 </form>
 
 
-<!-- <script>
+<script>
     var contentIndex = document.getElementById('contentIndex').value;
 
     document.getElementById('audio_' + contentIndex).addEventListener('play', function() {
@@ -94,32 +94,32 @@
         }
     });
 
-</script> -->
+</script>
 
-<script>
+<!-- <script>
     window.onload = function() {
         var contentIndex = document.getElementById('contentIndex').value;
         if (!localStorage.getItem('playCount_' + contentIndex)) {
             localStorage.setItem('playCount_' + contentIndex, 0);
         }
-        
+
         // Add event listener to the audio element
         var audio = document.getElementById('audio_' + contentIndex);
         audio.addEventListener('play', function() {
             var playCount = parseInt(localStorage.getItem('playCount_' + contentIndex)) || 0;
-            
+
             // Increment play count if less than 3
-            if (playCount < 3) {
+            if (playCount < 2) {
                 localStorage.setItem('playCount_' + contentIndex, playCount + 1);
             } else {
                 audio.style.display = 'none'; // Hide the audio element
             }
         });
     };
-</script>
+</script> -->
 
 
-<!-- <script>
+<script>
     window.onload = function () {
         var contentIndex = document.getElementById('contentIndex').value;
         if (!localStorage.getItem('playCount_' + contentIndex)) {
@@ -153,10 +153,10 @@
         // Update the timer every second
         var timerInterval = setInterval(updateTimer, 1000);
     };
-</script> -->
-<script>
+</script>
+<!-- <script>
   window.onload = function () {
-        var contentIndex = document.getElementById('contentIndex').value;
+        var contentIndex = document.getElementById('contentIndex').value;W
         if (!localStorage.getItem('playCount_' + contentIndex)) {
             localStorage.setItem('playCount_' + contentIndex, 0);
         }
@@ -199,6 +199,6 @@
             }
         });
     };
-</script>
+</script> -->
 
 

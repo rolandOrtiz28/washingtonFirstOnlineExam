@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Scores</title>
+</head>
+
+<body>
+    <h1>Student Scores</h1>
+    <% detailedScores.forEach(exam=> { %>
+        <h2>
+            <%= exam.examTitle %>
+        </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Content Type</th>
+                    <th>Remark</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% exam.scores.forEach(content=> { %>
+                    <tr>
+                        <td>
+                            <%= content.type %>
+                        </td>
+                        <td>
+                            <%= content.remark %>
+                        </td>
+                        <td>
+                            <%= content.score %>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+        <% }); %>
+</body>
+
+</html>

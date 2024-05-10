@@ -1,42 +1,49 @@
 <% layout('/layouts/adminboilerplate') -%>
     <div class="container">
-        <h1>
-            <%= student.name %> Scores
+<div class="row">
+<div class="col-md-6">
+      <h1>
+            <%= student.name %> - Scores
         </h1>
-        <% student.examScores.forEach(examScore=> { %>
-            <% const examTitle=examScore.examId.title; %>
-                <h2>
-                    <%= examTitle %> Details
-                </h2>
-                <table class="table table-striped">
-                    <thead>
+</div>
+<% detailedScores.forEach(exam=> { %>
+<div class="col-md-3 ms-auto">
+<h1>
+<%= exam.examTitle %>
+</h1>
+</div>
+<% }) %>
+</div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Exam Title</th>
+                    <th>Content Type</th>
+                    <th>Remark</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% detailedScores.forEach(exam=> { %>
+                    <% exam.scores.forEach(content=> { %>
                         <tr>
-                            <th>Content</th>
-                            <th>Remark</th>
-                            <th>Score</th>
+                            <td>
+                                <%= exam.examTitle %>
+                            </td>
+                            <td>
+                                <%= content.type %>
+                            </td>
+                            <td>
+                                <%= content.remark %>
+                            </td>
+                            <td>
+                                <%= content.score %>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% if (examScore.examId.contents && examScore.examId.contents.length> 0) { %>
-                            <% console.log('Contents:', examScore.examId.contents); %>
-                                <% examScore.examId.contents.forEach(content=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= content.title %>
-                                        </td>
-                                        <td>
-                                            <%= content.remark %>
-                                        </td>
-                                        <td>
-                                            <%= student.contentScores[content._id.toString()] || 'N/A' %>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
-                                        <% } %>
-                    </tbody>
-                </table>
-                <p>Total Score for <%= examTitle %>: <%= examScore.score %>
-                </p>
-                <% }); %>
-                    <p>Total Score: <%= student.examScores.reduce((acc, curr)=> acc + curr.score, 0) %></p>
+                        <% }); %>
+                            <% }); %>
+            </tbody>
+        </table>
+
+<a class="btn btn-danger mt-5" href="/studentDashboard">Back</a>
     </div>

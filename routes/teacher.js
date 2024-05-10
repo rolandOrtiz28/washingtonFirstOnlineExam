@@ -221,27 +221,59 @@ router.get('/examdashboard', isTeacher, isLoggedIn, async (req, res) => {
 //         res.status(500).send('Internal Server Error');
 //     }
 // });
-
-
-
-router.get('/studentDashboard', async (req, res) => {
-  try {
-    const students = await User.find({ role: 'student' }).populate({
-      path: 'examScores.examId',
-      select: 'title' // Select only the title field of the exam
-    });
-    console.log(students)
-
-    // Group students by level, time, and unique student ID
+function groupStudentsByLevelAndTime(students) {
     const groupedStudents = {};
     students.forEach(student => {
-      const key = `${student.level}-${student.time}`;
-      if (!groupedStudents[key]) {
-        groupedStudents[key] = student;
-      }
+        const { level, time } = student;
+        if (!groupedStudents[level]) {
+            groupedStudents[level] = {};
+        }
+        if (!groupedStudents[level][time]) {
+            groupedStudents[level][time] = [];
+        }
+        groupedStudents[level][time].push(student);
     });
+    return groupedStudents;
+}
 
-    res.render('teacher/studentdash', { groupedStudents });
+router.get('/studentDashboard', async (req, res) => {
+    try {
+        // Fetch students from the database
+        const students = await User.find({ role: 'student' });
+
+        // Group students by level and time
+        const groupedStudents = groupStudentsByLevelAndTime(students);
+
+        res.render('teacher/studentdash', { groupedStudents });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+router.get('/studentScores/:studentId', async (req, res) => {
+  try {
+    const student = await User.findById(req.params.studentId).populate({
+  path: 'examScores',
+  populate: {
+    path: 'examId',
+    select: 'title',
+    populate: {
+      path: 'contents',
+      select: 'remark type' // Adjust the fields according to your needs
+    }
+  }
+});
+
+
+    if (!student || student.role !== 'student') {
+      return res.status(404).send('Student not found');
+    }
+
+    console.log("Populated Student Object:", student);
+
+    res.render('teacher/studentScores', { student });
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
@@ -249,23 +281,57 @@ router.get('/studentDashboard', async (req, res) => {
 });
 
 
-router.get('/studentScores/:studentId', async (req, res) => {
-  try {
-    const student = await User.findById(req.params.studentId).populate({
-      path: 'examScores.examId',
-      select: 'title contents'
-    });
+router.get('/student/:id/scores', isLoggedIn, async (req, res) => {
+    try {
+        // Fetch the user information by ID
+        const student = await User.findById(req.params.id);
 
-    if (!student || student.role !== 'student') {
-      return res.status(404).send('Student not found');
+        // Ensure the user is a student
+        if (!student || student.role !== 'student') {
+            return res.status(404).send('Student not found');
+        }
+
+        // Fetch all exam scores for the student
+        const examScores = student.examScores;
+
+        // Prepare an array to store detailed score information
+        const detailedScores = [];
+
+        // Iterate through each exam score
+        for (const score of examScores) {
+            const exam = await Exam.findById(score.examId);
+            if (!exam) {
+                console.log('Exam not found for score:', score);
+                continue;
+            }
+
+            // Prepare content information for each exam
+            const contentInfo = [];
+            for (const content of exam.contents) {
+                // Calculate the score for each content
+                const contentScore = student.contentScores[content._id] || 0;
+
+                // Add content information to the array
+                contentInfo.push({
+                    type: content.type,
+                    remark: content.remark,
+                    score: contentScore
+                });
+            }
+
+            // Add detailed score information to the array
+            detailedScores.push({
+                examTitle: exam.title,
+                scores: contentInfo
+            });
+        }
+
+        // Render the template with the detailed score information
+        res.render('teacher/studentScores', { student, detailedScores });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
     }
-
-    console.log("Student Object:", student); // Add this line for debugging
-    res.render('teacher/studentScores', { student });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
 });
 
 
