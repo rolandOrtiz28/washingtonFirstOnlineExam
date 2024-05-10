@@ -1,43 +1,45 @@
 <% layout('/layouts/adminboilerplate') -%>
-    <h1>Students</h1>
+    <div class="container">
+        <h1>Students</h1>
 
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" id="myTabs" role="tablist">
-        <% Object.keys(groupedStudents).forEach((key, index)=> { %>
-            <li class="nav-item">
-                <a class="nav-link <%= index === 0 ? 'active' : '' %>" id="<%= key.replace(/\s+/g, '') %>-tab"
-                    data-toggle="tab" href="#<%= key.replace(/\s+/g, '') %>" role="tab"
-                    aria-controls="<%= key.replace(/\s+/g, '') %>"
-                    aria-selected="<%= index === 0 ? 'true' : 'false' %>">
-                    <%= key %>
-                </a>
-            </li>
-            <% }); %>
-    </ul>
+        <!-- Nav tabs -->
+        <ul class="nav nav-pills" id="myTabs" role="tablist">
+            <% Object.keys(groupedStudents).forEach((key, index)=> { %>
+                <li class="nav-item">
+                    <a class="nav-link <%= index === 0 ? 'active' : '' %>" id="<%= key.replace(/\s+/g, '') %>-tab"
+                        data-toggle="tab" href="#<%= key.replace(/\s+/g, '') %>" role="tab"
+                        aria-controls="<%= key.replace(/\s+/g, '') %>"
+                        aria-selected="<%= index === 0 ? 'true' : 'false' %>">
+                        <%= key %>
+                    </a>
+                </li>
+                <% }); %>
+        </ul>
 
-    <!-- Tab panes -->
-    <div class="tab-content" id="myTabContent">
-        <% Object.keys(groupedStudents).forEach((key, index)=> { %>
-            <div class="tab-pane fade <%= index === 0 ? 'show active' : '' %>" id="<%= key.replace(/\s+/g, '') %>"
-                role="tabpanel" aria-labelledby="<%= key.replace(/\s+/g, '') %>-tab">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Age</th>
-                                <th>Gender</th>
-                                <th>Exam Title</th>
-                                <th>Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% groupedStudents[key].forEach(student=> { %>
-                                <% student.examScores.forEach(score=> { %>
+        <!-- Tab panes -->
+        <div class="tab-content" id="myTabContent">
+            <% Object.keys(groupedStudents).forEach((key, index)=> { %>
+                <div class="tab-pane fade <%= index === 0 ? 'show active' : '' %>" id="<%= key.replace(/\s+/g, '') %>"
+                    role="tabpanel" aria-labelledby="<%= key.replace(/\s+/g, '') %>-tab">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Level</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% const student=groupedStudents[key]; %>
                                     <tr>
                                         <td>
+                                        <a href="/studentScores/<%= student._id %>">
                                             <%= student.name %>
+                                        </a>
                                         </td>
                                         <td>
                                             <%= student.email %>
@@ -49,17 +51,16 @@
                                             <%= student.gender %>
                                         </td>
                                         <td>
-                                            <%= score.examId.title %>
-                                        </td> <!-- Display the exam title -->
+                                            <%= student.level %>
+                                        </td>
                                         <td>
-                                            <%= score.score %>
-                                        </td> <!-- Display the score -->
+                                            <%= student.time %>
+                                        </td>
                                     </tr>
-                                    <% }); %>
-                                        <% }); %>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <% }); %>
+                <% }); %>
+        </div>
     </div>

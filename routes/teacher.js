@@ -225,30 +225,48 @@ router.get('/examdashboard', isTeacher, isLoggedIn, async (req, res) => {
 
 
 router.get('/studentDashboard', async (req, res) => {
-    try {
-        const students = await User.find({ role: 'student' }).populate({
-            path: 'examScores.examId',
-            select: 'title' // Select only the title field of the exam
-        });
+  try {
+    const students = await User.find({ role: 'student' }).populate({
+      path: 'examScores.examId',
+      select: 'title' // Select only the title field of the exam
+    });
+    console.log(students)
 
-        // Group students by level and time
-        const groupedStudents = {};
-        students.forEach(student => {
-            const key = `${student.level}-${student.time}`;
-            if (!groupedStudents[key]) {
-                groupedStudents[key] = [];
-            }
-            groupedStudents[key].push(student);
-        });
+    // Group students by level, time, and unique student ID
+    const groupedStudents = {};
+    students.forEach(student => {
+      const key = `${student.level}-${student.time}`;
+      if (!groupedStudents[key]) {
+        groupedStudents[key] = student;
+      }
+    });
 
-        res.render('teacher/studentdash', { groupedStudents });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
-    }
+    res.render('teacher/studentdash', { groupedStudents });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 
+router.get('/studentScores/:studentId', async (req, res) => {
+  try {
+    const student = await User.findById(req.params.studentId).populate({
+      path: 'examScores.examId',
+      select: 'title contents'
+    });
+
+    if (!student || student.role !== 'student') {
+      return res.status(404).send('Student not found');
+    }
+
+    console.log("Student Object:", student); // Add this line for debugging
+    res.render('teacher/studentScores', { student });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 
 module.exports = router;
