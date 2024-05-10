@@ -115,6 +115,7 @@ router.post('/submit-exam', catchAsync(async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }));
+
 // router.post('/submit-exam', catchAsync(async (req, res) => {
 //     try {
 //         // Ensure req.user exists and contains user information
@@ -181,7 +182,7 @@ router.post('/submit-exam', catchAsync(async (req, res) => {
 //             { new: true } // Return the modified document
 //         );
 
-       
+
 
 //         // Render the exam result template with the calculated score
 //         res.redirect('/student/thankyou');

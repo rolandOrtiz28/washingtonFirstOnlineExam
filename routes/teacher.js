@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Exam = require('../model/examination');
 const Teacher = require('../model/teacher')
+const User = require('../model/user')
 const catchAsync = require('../utils/CatchAsync')
 const passport = require('passport')
 const {isLoggedIn} = require('../middleware')
@@ -70,7 +71,7 @@ router.post('/builder', upload.single("contents[0][audio]"), async (req, res) =>
           return {
               ...content,
               audio: audioUrl,
-           
+
           };
       });
 
@@ -136,11 +137,11 @@ router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res)
         }
       }
 
-     
+
 
       return {
         ...content,
-       
+
       };
     });
 
@@ -211,8 +212,41 @@ router.get('/examdashboard', isTeacher, isLoggedIn, async (req, res) => {
   }
 });
 
+// router.get('/studentDashboard', async (req, res) => {
+//     try {
+//         const students = await User.find({ role: 'student' }); // Fetch all users with role 'student'
+//         res.render('teacher/studentdash', { students }); // Pass the students data to the template
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
 
 
+
+router.get('/studentDashboard', async (req, res) => {
+    try {
+        const students = await User.find({ role: 'student' }).populate({
+            path: 'examScores.examId',
+            select: 'title' // Select only the title field of the exam
+        });
+
+        // Group students by level and time
+        const groupedStudents = {};
+        students.forEach(student => {
+            const key = `${student.level}-${student.time}`;
+            if (!groupedStudents[key]) {
+                groupedStudents[key] = [];
+            }
+            groupedStudents[key].push(student);
+        });
+
+        res.render('teacher/studentdash', { groupedStudents });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 

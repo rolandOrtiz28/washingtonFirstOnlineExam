@@ -1,6 +1,8 @@
 <% layout('/layouts/adminboilerplate') -%>
 <link rel="stylesheet" href="/css/examDash.css">
-<div class="container ms-4 mt-5">
+
+<h1>Examination list</h1>
+<div class="container ms-4">
   <div id="accordion">
     <% for(let level of uniqueLevels) { %>
     <div class="accordion-item">
@@ -14,7 +16,7 @@
         data-bs-parent="#accordion">
         <div class="accordion-body">
           <div class="row">
-            <% for(let exam of exams) { 
+            <% for(let exam of exams) {
               if(exam.level.includes(level)){ %>
             <div class="col-sm-3">
               <div class="card mb-4">
@@ -36,7 +38,7 @@
                 </div>
               </div>
             </div>
-            <% } 
+            <% }
               } %>
           </div>
         </div>
