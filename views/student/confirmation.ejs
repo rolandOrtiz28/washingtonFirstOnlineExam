@@ -1,55 +1,5 @@
 <% layout('/layouts/boilerplate') -%>
-
-    <style>
-     .hr1 {
-  border: none;
-  border-top: 3px double #000000;
-  color: #000000;
-  overflow: visible;
-  text-align: center;
-  height: 10px;
-width: 50%;
-margin: 0 auto;
-}
-
-.hr1::after {
-  background: #fff;
-  content: '§';
-  padding: 0 4px;
-  position: relative;
-  top: -13px;
-}
-     .hr2 {
-  border: none;
-  border-top: 3px double #000000;
-  color: #000000;
-  overflow: visible;
-  text-align: center;
-  height: 10px;
-width: 100%;
-margin: 0 auto;
-}
-
-.hr2::after {
-  background: #fff;
-  content: '§';
-  padding: 0 4px;
-  position: relative;
-  top: -13px;
-}
-
-img{
-  width: 150px;
-}
-header{
-  color: #002060;
-}
-
-.rules{
-border: 2px solid black;
-}
-    </style>
-
+<link rel="stylesheet" href="/css/confirmation.css">
     <header class="text-center">
       <div class="row text-center">
         <div class="col">
@@ -164,25 +114,6 @@ border: 2px solid black;
  
   </div>
 
-    <script>
- 
-      
-      // Get the current date
-      var currentDate = new Date();
-      
-      // Convert month number to month name
-      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      var monthName = months[currentDate.getMonth()];
-      
-      // Add "th" to the day
-      var day = currentDate.getDate();
-      var dayWithSuffix = day + (day % 10 == 1 && day != 11 ? 'st' : (day % 10 == 2 && day != 12 ? 'nd' : (day % 10 == 3 && day != 13 ? 'rd' : 'th')));
-      
-      // Format the date as desired (e.g., "May 25th, YYYY")
-      var formattedDate = dayWithSuffix + ' ' +monthName+ ', ' + currentDate.getFullYear(); // Adjust the format as needed
-      
-      // Display the formatted date in the designated element
-      document.getElementById("currentDate").textContent = formattedDate;
-    </script>
+    <script src="/javascript/confirmation.js"> </script>
     
-    
+   

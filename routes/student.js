@@ -139,7 +139,7 @@ router.get('/login', async (req, res) => {
 router.post('/register', catchAsync(async (req, res) => {
 
     try {
-        const {  email,username, password, name, level, time, role } = req.body;
+        const {  email ,username, password, name, level, time, role } = req.body;
 
         // Your validation code
 
@@ -157,7 +157,7 @@ router.post('/register', catchAsync(async (req, res) => {
 
 
         // Create a new user object without passing the password directly
-        const user = new User({ email,username, password, name, level, time, role });
+        const user = new User({ email ,username, password, name, level, time, role });
         const registeredUser = await User.register(user, password);
 
         req.login(registeredUser, err => {

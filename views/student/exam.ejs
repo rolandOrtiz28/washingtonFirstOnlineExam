@@ -31,10 +31,9 @@
             <div class="row">
                 <% if (content.type==='Listening' && content.audio) { %>
                     <div class="col-3 d-flex justify-content-center text-center mb-4">
-                        <audio id="audio_<%= contentIndex %>" controls>
-                            <source src="<%= content.audio %>" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
+                        <audio id="audio_<%= contentIndex %>" controls data-content-index="<%= contentIndex %>" src="<%= content.audio %>"></audio>
+
+
                         <input type="hidden" id="contentIndex" value="<%= contentIndex %>">
 
                     </div>
