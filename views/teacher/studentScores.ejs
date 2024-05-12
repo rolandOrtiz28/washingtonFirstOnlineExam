@@ -30,7 +30,7 @@
                                 <td rowspan="<%= numberOfContents %>">
                                     <%= exam.examTitle %>
                                 </td>
-                               
+
                             <% } %>
                             <td>
                                 <%= contentCount + 1 %>
@@ -54,8 +54,9 @@
                     <% }); %>
                 <% }); %>
             </tbody>
-            
+
         </table>
 
+<a class="btn btn-success mt-5" href="/student/<%= student._id %>/score">Download Excel</a>
 <a class="btn btn-danger mt-5" href="/studentDashboard">Back</a>
     </div>

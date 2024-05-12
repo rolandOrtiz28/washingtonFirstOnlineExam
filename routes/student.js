@@ -24,9 +24,9 @@ router.get('/show', isLoggedIn,async (req, res) => {
     try {
 
         const studentLevel = req.query.level; // Assuming level is passed as query parameter
-       
+
         console.log(studentLevel)
-      
+
         const exams = await Exam.find({ level: studentLevel, isPublished: true });
 
         res.render('student/exams', { exams });
@@ -155,7 +155,7 @@ router.post('/register', catchAsync(async (req, res) => {
             return res.redirect('/');
         }
 
-       
+
         // Create a new user object without passing the password directly
         const user = new User({ email,username, password, name, level, time, role });
         const registeredUser = await User.register(user, password);

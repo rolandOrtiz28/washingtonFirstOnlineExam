@@ -1,28 +1,37 @@
 <% layout('/layouts/boilerplate') -%>
-<link rel="stylesheet" href="/css/exams.css">
+    <link rel="stylesheet" href="/css/exams.css">
 
-<div class="container mt-5 mb-5">
-
-<div class="container p-5" style="border: 2px solid #800000; border-radius: 20px;">
-    <h1 class="ms-3 mb-4 title text-center">Available Exams</h1>
-    <% if (exams.length > 0) { %>
-        <div class="row  d-flex justify-content-center" >
-            <% exams.forEach(exam => { %>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title"><strong><%= exam.title %></strong></h4>
-                            <p class="card-text">Level: <b><%= exam.level %></b></p>
-                            <p class="card-text">Time: <b><%= exam.time %></b></p>
-                            <p class="card-text">Subject: <b><%= exam.subject %></b></p>
-                            <a href="/student/exam/confirmation/<%= exam._id %>" class="btn btn-primary">Proceed</a>
+    <div class="container mt-5 mb-5">
+        <a class="btn btn-sm btn-primary mb-3 ms-auto text-end" href="/student/logout">Logout</a>
+        <div class="container p-5" style="border: 2px solid #800000; border-radius: 20px;">
+            <h1 class="ms-3 mb-4 title text-center">Available Exams</h1>
+            <% if (exams.length> 0) { %>
+                <div class="row  d-flex justify-content-center">
+                    <% exams.forEach(exam=> { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title"><strong>
+                                            <%= exam.title %>
+                                        </strong></h4>
+                                    <p class="card-text">Level: <b>
+                                            <%= exam.level %>
+                                        </b></p>
+                                    <p class="card-text">Time: <b>
+                                            <%= exam.time %>
+                                        </b></p>
+                                    <p class="card-text">Subject: <b>
+                                            <%= exam.subject %>
+                                        </b></p>
+                                    <a href="/student/exam/confirmation/<%= exam._id %>"
+                                        class="btn btn-primary">Proceed</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <% }); %>
                 </div>
-            <% }); %>
+                <% } else { %>
+                    <p>No exams available.</p>
+                    <% } %>
         </div>
-    <% } else { %>
-        <p>No exams available.</p>
-    <% } %>
-</div>
-</div>
+    </div>

@@ -1,43 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Scores</title>
-</head>
-
-<body>
-    <h1>Student Scores</h1>
-    <% detailedScores.forEach(exam=> { %>
-        <h2>
-            <%= exam.examTitle %>
-        </h2>
-        <table>
+<% layout('/layouts/adminboilerplate') -%>
+    <link rel="stylesheet" href="/css/scores.css">
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>
+                    <%= student.name %> - Scores
+                </h1>
+            </div>
+        </div>
+        <table class="table table-bordered">
             <thead>
-                <tr>
+                <tr class="text-center">
+                    <th>Exam</th>
+                    <th>Number of Contents</th>
                     <th>Content Type</th>
                     <th>Remark</th>
                     <th>Score</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
-                <% exam.scores.forEach(content=> { %>
-                    <tr>
-                        <td>
-                            <%= content.type %>
-                        </td>
-                        <td>
-                            <%= content.remark %>
-                        </td>
-                        <td>
-                            <%= content.score %>
-                        </td>
-                    </tr>
-                    <% }); %>
+                <% detailedScores.forEach(exam=> { %>
+                    <% const numberOfContents=exam.scores.length; %>
+                        <% let contentCount=0; %>
+                            <% exam.scores.forEach(content=> { %>
+                                <tr class="text-center">
+                                    <% if (contentCount===0) { %>
+                                        <!-- Render exam title and overall score only for the first content item -->
+                                        <td rowspan="<%= numberOfContents %>">
+                                            <%= exam.examTitle %>
+                                        </td>
+                                        <% } %>
+                                            <td>
+                                                <%= contentCount + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= content.type %>
+                                            </td>
+                                            <td>
+                                                <%= content.remark %>
+                                            </td>
+                                            <td>
+                                                <%= content.score %>
+                                            </td>
+                                            <% if (contentCount===0) { %>
+                                                <td rowspan="<%= numberOfContents %>">
+                                                    <%= exam.overallScore %> <!-- Display overall score -->
+                                                </td>
+                                                <% } %>
+                                </tr>
+                                <% contentCount++; %> <!-- Increment contentCount -->
+                                    <% }); %>
+                                        <% }); %>
             </tbody>
         </table>
-        <% }); %>
-</body>
+        <!-- Add a button to trigger download -->
+        <button id="downloadExcelBtn" class="btn btn-primary">Download Excel</button>
+        <a class="btn btn-danger mt-5" href="/studentDashboard">Back</a>
+    </div>
 
-</html>
+    <script>
+        // Add event listener to the button
+        document.getElementById('downloadExcelBtn').addEventListener('click', function () {
+            // Redirect to the route for downloading the Excel file
+            window.location.href = "/scores/student/<%= student._id %>/download-excel";
+        });
+    </script>

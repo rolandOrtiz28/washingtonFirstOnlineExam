@@ -66,11 +66,14 @@
                 <span>Charts</span></a>
         </li> -->
         <!-- Nav Item - Tables -->
+    <% if (currentUserIsAdmin) { %>
         <li class="nav-item">
             <a class="nav-link" href="/builder">
                 <i class="fas fa-fw fa-square-plus"></i>
-                <span>Create Exam</span></a>
+                <span>Create Exam</span>
+            </a>
         </li>
+        <% } %>
         <li class="nav-item">
             <a class="nav-link" href="/logout">
 
