@@ -24,7 +24,9 @@ router.get('/show', isLoggedIn,async (req, res) => {
     try {
 
         const studentLevel = req.query.level; // Assuming level is passed as query parameter
+       
         console.log(studentLevel)
+      
         const exams = await Exam.find({ level: studentLevel, isPublished: true });
 
         res.render('student/exams', { exams });
@@ -137,7 +139,7 @@ router.get('/login', async (req, res) => {
 router.post('/register', catchAsync(async (req, res) => {
 
     try {
-        const { email, username, password, name, age, gender, level, time, role } = req.body;
+        const {  email,username, password, name, level, time, role } = req.body;
 
         // Your validation code
 
@@ -153,14 +155,9 @@ router.post('/register', catchAsync(async (req, res) => {
             return res.redirect('/');
         }
 
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            req.flash('error', 'A user with the given email is already registered');
-            return res.redirect('/');
-        }
-
+       
         // Create a new user object without passing the password directly
-        const user = new User({ email, username, name, age, gender, level, time, role });
+        const user = new User({ email,username, password, name, level, time, role });
         const registeredUser = await User.register(user, password);
 
         req.login(registeredUser, err => {

@@ -1,0 +1,9 @@
+td{
+width: 20%;
+
+}
+
+.cell-border {
+    border: 1px solid black !important; /* Add border styling */
+    padding: 8px !important; /* Add padding for better spacing */
+}

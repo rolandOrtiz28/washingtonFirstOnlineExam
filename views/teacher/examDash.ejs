@@ -1,8 +1,9 @@
 <% layout('/layouts/adminboilerplate') -%>
 <link rel="stylesheet" href="/css/examDash.css">
 
-<h1>Examination list</h1>
+
 <div class="container ms-4">
+  <h1>Examination list</h1>
   <div id="accordion">
     <% for(let level of uniqueLevels) { %>
     <div class="accordion-item">
@@ -27,9 +28,9 @@
                   <span class="username">Teacher: <%= exam.author?.username || 'Unknown' %></span>
                   <div class="footer">
                     <div>
-                      <% if (currentUserID && exam.author && exam.author.equals(currentUserID)) { %>
-                      <a href="/exam/update/<%= exam._id %>" class="mt-2"><i class="fas fa-edit"></i></a>
-                      <% } %>
+                      <% if (currentUserID && ((exam.author && exam.author.equals(currentUserID)) || currentUserIsAdmin)) { %>
+    <a href="/exam/update/<%= exam._id %>" class="mt-2"><i class="fas fa-edit"></i></a>
+<% } %>
                     </div>
                     <div>
                       <a href="/exams/start/<%= exam._id %>" class="mt-2"><i class="fas fa-eye"></i></a>

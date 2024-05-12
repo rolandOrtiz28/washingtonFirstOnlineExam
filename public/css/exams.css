@@ -1,3 +1,12 @@
+.title{
+    background-image: linear-gradient(45deg, #FFD059, #004AAD);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-weight: 900;
+    font-size: 50px;
+}
+
 .card {
     position: relative;
     background-color: #ffffff;

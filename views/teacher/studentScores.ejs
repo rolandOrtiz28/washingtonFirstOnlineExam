@@ -1,34 +1,39 @@
 <% layout('/layouts/adminboilerplate') -%>
-    <div class="container">
+<link rel="stylesheet" href="/css/scores.css">
+    <div class="container  mb-5">
 <div class="row">
 <div class="col-md-6">
       <h1>
             <%= student.name %> - Scores
         </h1>
 </div>
-<% detailedScores.forEach(exam=> { %>
-<div class="col-md-3 ms-auto">
-<h1>
-<%= exam.examTitle %>
-</h1>
-</div>
-<% }) %>
+
 </div>
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>Exam Title</th>
+                <tr class="text-center">
+                    <th>Exam</th>
+                    <th>Number of Contents</th>
                     <th>Content Type</th>
                     <th>Remark</th>
                     <th>Score</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
-                <% detailedScores.forEach(exam=> { %>
-                    <% exam.scores.forEach(content=> { %>
-                        <tr>
+                <% detailedScores.forEach(exam => { %>
+                    <% const numberOfContents = exam.scores.length; %>
+                    <% let contentCount = 0; %>
+                    <% exam.scores.forEach(content => { %>
+                        <tr class="text-center">
+                            <% if (contentCount === 0) { %> <!-- Render exam title and overall score only for the first content item -->
+                                <td rowspan="<%= numberOfContents %>">
+                                    <%= exam.examTitle %>
+                                </td>
+                               
+                            <% } %>
                             <td>
-                                <%= exam.examTitle %>
+                                <%= contentCount + 1 %>
                             </td>
                             <td>
                                 <%= content.type %>
@@ -39,10 +44,17 @@
                             <td>
                                 <%= content.score %>
                             </td>
+                            <% if (contentCount === 0) { %>
+                            <td rowspan="<%= numberOfContents %>">
+                                <%= exam.overallScore %> <!-- Display overall score -->
+                            </td>
+                            <% } %>
                         </tr>
-                        <% }); %>
-                            <% }); %>
+                        <% contentCount++; %> <!-- Increment contentCount -->
+                    <% }); %>
+                <% }); %>
             </tbody>
+            
         </table>
 
 <a class="btn btn-danger mt-5" href="/studentDashboard">Back</a>

@@ -42,4 +42,11 @@ module.exports.isStudent =(req, res, next) => {
     res.status(403).send('Forbidden');
 }
 
-
+module.exports.isAdminOrTeacher = (req, res, next) => {
+    if (req.isAuthenticated() && (req.user.isAdmin || req.user.role === 'teacher')) {
+        // User is either admin or teacher, allow access to the route
+        return next();
+    }
+    // User is not admin or teacher, redirect or show an error
+    res.status(403).send('Forbidden');
+}

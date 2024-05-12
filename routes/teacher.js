@@ -6,6 +6,7 @@ const User = require('../model/user')
 const catchAsync = require('../utils/CatchAsync')
 const passport = require('passport')
 const {isLoggedIn} = require('../middleware')
+const {isAdminOrTeacher} = require('../middleware')
 const { cloudinary } = require('../cloudinary');
 const multer = require('multer');
 const {isTeacher} = require('../middleware')
@@ -22,7 +23,7 @@ router.get('/teacher/login', (req, res) => {
 })
 
 
-router.get('/teacher/logout', (req, res, next) => {
+router.get('/logout', (req, res, next) => {
    req.logout(function (err) {
         if (err) { return next(err); }
         req.flash('success', "Goodbye!");
@@ -194,11 +195,11 @@ router.get('/exams/start/:id', async (req, res) => {
 
 
 //dashboard routes
-router.get('/dashboard', isTeacher, isLoggedIn, async (req, res) => {
+router.get('/dashboard', isTeacher,isAdminOrTeacher, isLoggedIn, async (req, res) => {
   res.render('teacher/dashboard');
 });
 
-router.get('/examdashboard', isTeacher, isLoggedIn, async (req, res) => {
+router.get('/examdashboard', isTeacher,isAdminOrTeacher, isLoggedIn, async (req, res) => {
   try {
     const exams = await Exam.find({}).populate('author');
 
@@ -251,87 +252,173 @@ router.get('/studentDashboard', async (req, res) => {
     }
 });
 
+router.get('/teacher/adminregistration',(req,res)=>{
 
-router.get('/studentScores/:studentId', async (req, res) => {
+  res.render('teacher/adminRegister')
+}
+)
+
+router.post('/teacher/adminregister', catchAsync(async (req, res) => {
+
   try {
-    const student = await User.findById(req.params.studentId).populate({
-  path: 'examScores',
-  populate: {
-    path: 'examId',
-    select: 'title',
-    populate: {
-      path: 'contents',
-      select: 'remark type' // Adjust the fields according to your needs
-    }
+      const {  email,username, password, isAdmin, role } = req.body;
+
+      // Password validation
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+      if (!passwordRegex.test(password)) {
+          req.flash('error', 'Password must contain at least one uppercase letter, one digit, and be at least 8 characters long');
+          res.redirect('/registration/:url');
+          return;
+      }
+      const isAdminBool = isAdmin === 'true';
+      const user = new User({ email, username, isAdmin: isAdminBool,role });
+      const registeredUser = await User.register(user, password);
+      req.login(registeredUser, err => {
+          if (err) return next(err);
+          req.flash('success', `Welcome to ${username}`)
+          res.redirect('/examdashboard')
+      })
+  } catch (e) {
+      req.flash('error', e.message);
+      res.redirect('/teacher/adminregistration');
   }
-});
+}));
 
 
-    if (!student || student.role !== 'student') {
-      return res.status(404).send('Student not found');
-    }
+// router.get('/studentScores/:studentId', async (req, res) => {
+//   try {
+//     const student = await User.findById(req.params.studentId).populate({
+//   path: 'examScores',
+//   populate: {
+//     path: 'examId',
+//     select: 'title',
+//     populate: {
+//       path: 'contents',
+//       select: 'remark type' // Adjust the fields according to your needs
+//     }
+//   }
+// });
 
-    console.log("Populated Student Object:", student);
 
-    res.render('teacher/studentScores', { student });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
-});
+//     if (!student || student.role !== 'student') {
+//       return res.status(404).send('Student not found');
+//     }
 
+//     console.log("Populated Student Object:", student);
+
+//     res.render('teacher/studentScores', { student });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
+
+
+// router.get('/student/:id/scores', isLoggedIn, async (req, res) => {
+//     try {
+//         // Fetch the user information by ID
+//         const student = await User.findById(req.params.id);
+
+//         // Ensure the user is a student
+//         if (!student || student.role !== 'student') {
+//             return res.status(404).send('Student not found');
+//         }
+
+//         // Fetch all exam scores for the student
+//         const examScores = student.examScores;
+
+//         // Prepare an array to store detailed score information
+//         const detailedScores = [];
+
+//         // Iterate through each exam score
+//         for (const score of examScores) {
+//             const exam = await Exam.findById(score.examId);
+//             if (!exam) {
+//                 console.log('Exam not found for score:', score);
+//                 continue;
+//             }
+
+//             // Prepare content information for each exam
+//             const contentInfo = [];
+//             for (const content of exam.contents) {
+//                 // Calculate the score for each content
+//                 const contentScore = student.contentScores[content._id] || 0;
+
+//                 // Add content information to the array
+//                 contentInfo.push({
+//                     type: content.type,
+//                     remark: content.remark,
+//                     score: contentScore
+//                 });
+//             }
+
+//             // Add detailed score information to the array
+//             detailedScores.push({
+//                 examTitle: exam.title,
+//                 scores: contentInfo
+//             });
+//         }
+
+//         // Render the template with the detailed score information
+//         res.render('teacher/studentScores', { student, detailedScores });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
 
 router.get('/student/:id/scores', isLoggedIn, async (req, res) => {
-    try {
-        // Fetch the user information by ID
-        const student = await User.findById(req.params.id);
+  try {
+      // Fetch the user information by ID
+      const student = await User.findById(req.params.id);
 
-        // Ensure the user is a student
-        if (!student || student.role !== 'student') {
-            return res.status(404).send('Student not found');
-        }
+      // Ensure the user is a student
+      if (!student || student.role !== 'student') {
+          return res.status(404).send('Student not found');
+      }
 
-        // Fetch all exam scores for the student
-        const examScores = student.examScores;
+      // Fetch all exam scores for the student
+      const examScores = student.examScores;
 
-        // Prepare an array to store detailed score information
-        const detailedScores = [];
+      // Prepare an array to store detailed score information
+      const detailedScores = [];
+      // Iterate through each exam score
+      for (const score of examScores) {
+          const exam = await Exam.findById(score.examId);
+          if (!exam) {
+              console.log('Exam not found for score:', score);
+              continue;
+          }
+      
+          // Prepare content information for each exam
+          const contentInfo = [];
+          for (const content of exam.contents) {
+              // Calculate the score for each content
+              const contentScore = student.contentScores[content._id.toString()] || 0;
+              // Convert content ID to string and use it as the key to access the content score
+      
+              // Add content information to the array
+              contentInfo.push({
+                  type: content.type,
+                  remark: content.remark,
+                  score: contentScore
+              });
+          }
+      
+          // Add detailed score information to the array, including overall score
+          detailedScores.push({
+              examTitle: exam.title,
+              overallScore: score.score, // Include overall score
+              scores: contentInfo
+          });
+      }
 
-        // Iterate through each exam score
-        for (const score of examScores) {
-            const exam = await Exam.findById(score.examId);
-            if (!exam) {
-                console.log('Exam not found for score:', score);
-                continue;
-            }
-
-            // Prepare content information for each exam
-            const contentInfo = [];
-            for (const content of exam.contents) {
-                // Calculate the score for each content
-                const contentScore = student.contentScores[content._id] || 0;
-
-                // Add content information to the array
-                contentInfo.push({
-                    type: content.type,
-                    remark: content.remark,
-                    score: contentScore
-                });
-            }
-
-            // Add detailed score information to the array
-            detailedScores.push({
-                examTitle: exam.title,
-                scores: contentInfo
-            });
-        }
-
-        // Render the template with the detailed score information
-        res.render('teacher/studentScores', { student, detailedScores });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
-    }
+      // Render the template with the detailed score information
+      res.render('teacher/studentScores', { student, detailedScores });
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+  }
 });
 
 

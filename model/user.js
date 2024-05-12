@@ -4,10 +4,9 @@ const passportLocalMongoose = require('passport-local-mongoose');
 
 
 const UserSchema = new Schema({
-    email: {
+    email:{
         type: String,
-        required: true,
-        unique: true
+        unique:true,
     },
     name: {
         type: String,
@@ -16,21 +15,7 @@ const UserSchema = new Schema({
         },
         unique: false,
     },
-    age: {
-        type: Number,
-         required: function() {
-            return this.role === 'student'; // Gender is required only for students
-        },
-        unique: false,
-    },
-    gender: {
-        type: String,
-        required: function() {
-            return this.role === 'student'; // Gender is required only for students
-        },
-        unique: false,
-    },
-    level: {
+     level: {
         type: String,
         required: function() {
             return this.role === 'student'; // Gender is required only for students
@@ -51,11 +36,15 @@ const UserSchema = new Schema({
             return this.role === 'student';
         },
     },
-role: {
+    role: {
         type: String,
         enum: ['student', 'teacher'],
         required: true
     },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+      },
 });
 
 UserSchema.add({
