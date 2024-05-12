@@ -1,4 +1,5 @@
 <% layout('/layouts/boilerplate') -%>
+<link rel="stylesheet" href="/css/examBuilder.css">
     <div class="container-md">
         <h1 class="text-center mb-5"><u>UPDATE EXAMINATION</u></h1>
         <form action="/update/<%= exam._id %>" method="POST" class="mt-4" enctype="multipart/form-data">
@@ -135,7 +136,7 @@
                         </div>
                         <% }) %>
                         
-                            <button type="button" class="addQuestion btn btn-primary mt-3">Add Question</button>
+                            <!-- <button type="button" class="addQuestion btn btn-primary mt-3">Add Question</button> -->
 </div>
 <% } %>
 <% }) %>
@@ -145,10 +146,10 @@
                 <% } %>>
                     <label class="form-check-label" for="isPublished">Published</label>
             </div>
-    <button type="button" id="addContent" class="btn btn-success mb-3">Add Content</button>
+    <!-- <button type="button" id="addContent" class="btn btn-success mb-3">Add Content</button> -->
                     <button type="submit" class="btn btn-primary mb-3">Update Exam</button>
                     
         </form>
         <a href="/examdashboard" class="btn btn-success btn-md mb-3">Back</a>
     </div>
-    <script src="/javascript/exam.js"></script>
+<script src="/javascript/update.js"></script>

@@ -213,15 +213,7 @@ router.get('/examdashboard', isTeacher,isAdminOrTeacher, isLoggedIn, async (req,
   }
 });
 
-// router.get('/studentDashboard', async (req, res) => {
-//     try {
-//         const students = await User.find({ role: 'student' }); // Fetch all users with role 'student'
-//         res.render('teacher/studentdash', { students }); // Pass the students data to the template
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
+
 function groupStudentsByLevelAndTime(students) {
     const groupedStudents = {};
     students.forEach(student => {
@@ -287,59 +279,6 @@ router.post('/teacher/adminregister', catchAsync(async (req, res) => {
 
 
 
-// router.get('/student/:id/scores', isLoggedIn, async (req, res) => {
-//   try {
-//       // Fetch the user information by ID
-//       const student = await User.findById(req.params.id);
-
-//       // Ensure the user is a student
-//       if (!student || student.role !== 'student') {
-//           return res.status(404).send('Student not found');
-//       }
-
-//       // Fetch all exam scores for the student
-//       const examScores = student.examScores;
-
-//       // Prepare an array to store detailed score information
-//       const detailedScores = [];
-//       // Iterate through each exam score
-//       for (const score of examScores) {
-//           const exam = await Exam.findById(score.examId);
-//           if (!exam) {
-//               console.log('Exam not found for score:', score);
-//               continue;
-//           }
-
-//           // Prepare content information for each exam
-//           const contentInfo = [];
-//           for (const content of exam.contents) {
-//               // Calculate the score for each content
-//               const contentScore = student.contentScores[content._id.toString()] || 0;
-//               // Convert content ID to string and use it as the key to access the content score
-
-//               // Add content information to the array
-//               contentInfo.push({
-//                   type: content.type,
-//                   remark: content.remark,
-//                   score: contentScore
-//               });
-//           }
-
-//           // Add detailed score information to the array, including overall score
-//           detailedScores.push({
-//               examTitle: exam.title,
-//               overallScore: score.score, // Include overall score
-//               scores: contentInfo
-//           });
-//       }
-
-//       // Render the template with the detailed score information
-//       res.render('teacher/studentScores', { student, detailedScores });
-//   } catch (err) {
-//       console.error(err);
-//       res.status(500).send('Internal Server Error');
-//   }
-// });
 
 router.get('/student/:id/score', isLoggedIn, async (req, res) => {
     try {
@@ -479,5 +418,11 @@ router.get('/student/:id/scores', isLoggedIn, async (req, res) => {
     }
 });
 
+
+router.delete('/exam/:id', catchAsync(async (req, res) => {
+  const { id } = req.params;
+  await Exam.findByIdAndDelete(id);
+  res.redirect('/examdashboard');
+}))
 
 module.exports = router;

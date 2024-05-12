@@ -12,11 +12,11 @@ const MongoDBStore = require("connect-mongo");
 const passport = require('passport');
 const ExpressError = require('./utils/ExpressError')
 const flash = require('connect-flash')
-const Teacher = require('./model/teacher')
-const Student = require('./model/students')
+
 const User = require('./model/user')
 const LocalStrategy = require('passport-local')
 const expressLayouts = require('express-ejs-layouts');
+const methodOverride = require('method-override')
 
 // MongoDB connection
 mongoose.connect(dbUrl, {});
@@ -65,6 +65,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
+app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'models')));
 app.use(session(sessionConfig))

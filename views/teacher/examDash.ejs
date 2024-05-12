@@ -17,11 +17,12 @@
         data-bs-parent="#accordion">
         <div class="accordion-body">
           <div class="row">
-            <% for(let exam of exams) {
-              if(exam.level.includes(level)){ %>
+            <% for(let exam of exams) {%>
+              <% if(exam.level.includes(level)){ %>
             <div class="col-sm-3">
               <div class="card mb-4">
                 <div class="body">
+             
                   <h4><%= exam.title %></h4>
                   <p class="text"><%= exam.level %></p>
                   <p class="text"><%= exam.time %></p>
@@ -35,6 +36,14 @@
                     <div>
                       <a href="/exams/start/<%= exam._id %>" class="mt-2"><i class="fas fa-eye"></i></a>
                     </div>
+                    <div>
+
+                                                    <button class="trash mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                      <i class="fas fa-trash"></i>
+</button>
+
+                                               
+                      </div>
                   </div>
                 </div>
               </div>
@@ -48,3 +57,32 @@
     <% } %>
   </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+ <p>Are you sure you want to proceed with deleting the exam?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+     
+        <% exams.forEach(exam => { %>
+        <form class="d-inline" action="/exam/<%=exam._id%>?_method=DELETE"
+                                                    method="post">
+        <button class="btn btn-danger">Confirm</button>
+      </form>
+      <% }) %>
+    
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+                                                
