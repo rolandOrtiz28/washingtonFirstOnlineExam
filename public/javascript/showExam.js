@@ -1,55 +1,20 @@
-function initializeExam() {
-    // Function to reset audio play count on page refresh
-    function resetAudioPlayCount() {
-        // Iterate over all audio elements
-        document.querySelectorAll('audio').forEach(function(audio) {
-            var contentIndex = audio.getAttribute('data-content-index');
-            var audioPlayCountKey = 'audioPlayCount_' + contentIndex;
-            // Reset play count to 0
-            localStorage.setItem(audioPlayCountKey, 0);
-        });
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('audio').forEach(audio => {
+        let playCount = 0;
 
-    // Call resetAudioPlayCount when the page is loaded or refreshed
-    window.addEventListener('load', resetAudioPlayCount);
-
-    // Function to hide audio after it has been played three times
-    function hideAudio(audioId) {
-        var audio = document.getElementById(audioId);
-        var contentIndex = audio.getAttribute('data-content-index');
-        var audioPlayCountKey = 'audioPlayCount_' + contentIndex;
-        var audioPlayCount = parseInt(localStorage.getItem(audioPlayCountKey)) || 0;
-
-        // Increment the play count
-        audioPlayCount++;
-        localStorage.setItem(audioPlayCountKey, audioPlayCount);
-
-        // If played three times, hide the audio
-        if (audioPlayCount >= 3) {
-            audio.style.display = 'none';
-            document.querySelector('#' + audioId + ' + button').style.display = 'none';
-        }
-    }
-
-    // Attach event listeners to audio elements
-    document.querySelectorAll('audio').forEach(function(audio) {
-        audio.addEventListener('play', function() {
-            var contentIndex = audio.getAttribute('data-content-index');
-            var audioPlayCountKey = 'audioPlayCount_' + contentIndex;
-            var audioPlayCount = parseInt(localStorage.getItem(audioPlayCountKey)) || 0;
-
-            // If played three times, prevent further play
-            if (audioPlayCount >= 3) {
-                audio.pause();
+        audio.addEventListener('play', () => {
+            playCount++;
+            if (playCount >= 2) {
+                audio.onplay = function() {
+                    audio.pause();
+                    audio.currentTime = 0;
+                };
+                audio.controls = false;
+                alert('You have reached the maximum play limit for this audio.');
             }
         });
     });
-}
-
-// Call the initializeExam function when the page is loaded
-window.addEventListener('load', initializeExam);
-
-
+});
 
 
     window.onload = function () {
