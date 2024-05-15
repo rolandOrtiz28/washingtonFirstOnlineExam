@@ -47,6 +47,27 @@ module.exports.isAdminOrTeacher = (req, res, next) => {
         // User is either admin or teacher, allow access to the route
         return next();
     }
-    // User is not admin or teacher, redirect or show an error
-    res.status(403).send('Forbidden');
+    req.flash('error', 'Oppps! Restricted');
+    res.redirect('/')
 }
+
+
+module.exports.isAdmin = async (req, res, next) => {
+    try {
+        const currentUser = req.user;
+
+        if (!currentUser || !currentUser.isAdmin) {
+            req.flash('error', 'authorized person only!');
+            return res.redirect('/');
+        } else {
+            next();
+        }
+    } catch (error) {
+        if (error.details && Array.isArray(error.details)) {
+            const msg = error.details.map((el) => el.message).join(',');
+            throw new ExpressError(msg, 500);
+        } else {
+            throw error;
+        }
+    }
+};

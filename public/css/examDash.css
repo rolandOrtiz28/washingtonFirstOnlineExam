@@ -20,9 +20,9 @@
     flex-direction: column;
   }
   
-  .body h4{
+  .body h5{
   color: #800000;
-  
+  font-weight: 700;
   }
   
   .body .text {

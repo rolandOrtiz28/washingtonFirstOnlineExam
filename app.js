@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path')
 const app = express();
 const ejsMate = require('ejs-mate')
-const dbUrl = process.env.DB_URL ||'mongodb://127.0.0.1:27017/wfsOnlineExamination'
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/wfsOnlineExamination'
 const PORT = process.env.PORT || 3000;
 const session = require('express-session')
 const MongoDBStore = require("connect-mongo");
@@ -18,6 +18,8 @@ const User = require('./model/user')
 const LocalStrategy = require('passport-local')
 const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override')
+
+
 
 // MongoDB connection
 mongoose.connect(dbUrl, {});

@@ -1,5 +1,5 @@
 <% layout('/layouts/adminboilerplate') -%>
-    <link rel="stylesheet" href="/css/studentDash.css">
+
 
 
     <div class="container ms-4">
@@ -28,6 +28,7 @@
 
                                             <th>Level</th>
                                             <th>Time</th>
+                                            <th>Action</th>
 
                                         </tr>
                                     </thead>
@@ -46,6 +47,13 @@
                                                 <td>
                                                     <%= student.time %>
                                                 </td>
+                                            <% if (currentUserIsAdmin) { %>
+                                                <td>
+                                                    <form class="d-inline" action="/student/<%=student._id%>?_method=DELETE" method="post">
+                                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                                    </form>
+                                                </td>
+                                                <% } %>
                                             </tr>
                                             <% }); %>
                                     </tbody>

@@ -1,14 +1,13 @@
 <% layout('/layouts/adminboilerplate') -%>
-<link rel="stylesheet" href="/css/scores.css">
-    <div class="container  mb-5">
-<div class="row">
-<div class="col-md-6">
-      <h1>
-            <%= student.name %> - Scores
-        </h1>
-</div>
-
-</div>
+    <link rel="stylesheet" href="/css/scores.css">
+    <div class="container mb-5 ms-3">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>
+                    <%= student.name %> - Scores
+                </h1>
+            </div>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr class="text-center">
@@ -21,42 +20,85 @@
                 </tr>
             </thead>
             <tbody>
-                <% detailedScores.forEach(exam => { %>
-                    <% const numberOfContents = exam.scores.length; %>
-                    <% let contentCount = 0; %>
-                    <% exam.scores.forEach(content => { %>
-                        <tr class="text-center">
-                            <% if (contentCount === 0) { %> <!-- Render exam title and overall score only for the first content item -->
-                                <td rowspan="<%= numberOfContents %>">
-                                    <%= exam.examTitle %>
-                                </td>
-
-                            <% } %>
-                            <td>
-                                <%= contentCount + 1 %>
-                            </td>
-                            <td>
-                                <%= content.type %>
-                            </td>
-                            <td>
-                                <%= content.remark %>
-                            </td>
-                            <td>
-                                <%= content.score %>
-                            </td>
-                            <% if (contentCount === 0) { %>
-                            <td rowspan="<%= numberOfContents %>">
-                                <%= exam.overallScore %> <!-- Display overall score -->
-                            </td>
-                            <% } %>
-                        </tr>
-                        <% contentCount++; %> <!-- Increment contentCount -->
-                    <% }); %>
-                <% }); %>
+                <% detailedScores.forEach(exam=> { %>
+                    <% const numberOfContents=exam.scores.length; %>
+                        <% let contentCount=0; %>
+                            <% exam.scores.forEach(content=> { %>
+                                <tr class="text-center">
+                                    <% if (contentCount===0) { %>
+                                        <!-- Render exam title and overall score only for the first content item -->
+                                        <td rowspan="<%= numberOfContents %>">
+                                            <%= exam.examTitle %>
+                                        </td>
+                                        <% } %>
+                                            <td>
+                                                <%= contentCount + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= content.type %>
+                                            </td>
+                                            <td>
+                                                <%= content.remark %>
+                                            </td>
+                                            <td>
+                                                <%= content.totalScore %>
+                                            </td>
+                                            <% if (contentCount===0) { %>
+                                                <td rowspan="<%= numberOfContents %>">
+                                                    <%= exam.overallScore %>
+                                                </td>
+                                                <% } %>
+                                </tr>
+                                <% contentCount++; %> <!-- Increment contentCount -->
+                                    <% }); %>
+                                        <% }); %>
             </tbody>
-
         </table>
-
-<a class="btn btn-success mt-5" href="/student/<%= student._id %>/score">Download Excel</a>
-<a class="btn btn-danger mt-5" href="/studentDashboard">Back</a>
+        <a class="btn btn-success mt-5" href="/student/<%= student._id %>/score">Download Excel</a>
+        
     </div>
+
+    <div class="container mb-5 ms-3">
+        <h2>Detailed Question Results</h2>
+        <% detailedScores.forEach(exam=> { %>
+            <h3>
+                <%= exam.examTitle %>
+            </h3>
+            <% exam.scores.forEach(content=> { %>
+                <h4>Content Type: <%= content.type %>
+                </h4>
+                <p>Remark: <%= content.remark %>
+                </p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Question</th>
+                            <th>Your Answer</th>
+                            <th>Correct Answer</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% content.questions.forEach(question=> { %>
+                            <tr class="<%= question.isCorrect ? 'table-success' : 'table-danger' %>">
+                                <td>
+                                    <%= question.question %>
+                                </td>
+                                <td>
+                                    <%= question.submittedAnswer %>
+                                </td>
+                                <td>
+                                    <%= question.correctAnswer %>
+                                </td>
+                                <td>
+                                    <%= question.isCorrect ? 'Correct' : 'Incorrect' %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+                <% }); %>
+                    <% }); %>
+    </div>
+
+    <a class="btn btn-danger mt-3 mb-3" href="/studentDashboard">Back</a>
