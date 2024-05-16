@@ -427,7 +427,7 @@ router.get('/student/:id/scores', isLoggedIn, isAdminOrTeacher, async (req, res)
           type: content.type,
           remark: content.remark,
           totalScore: contentScore ? contentScore.totalScore : 0,
-          questions: questionsInfo
+          questions: questionsInfo || [] // Ensure questions is an array
         });
       }
 

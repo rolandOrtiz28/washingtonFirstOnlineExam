@@ -26,7 +26,6 @@
                             <% exam.scores.forEach(content=> { %>
                                 <tr class="text-center">
                                     <% if (contentCount===0) { %>
-                                        <!-- Render exam title and overall score only for the first content item -->
                                         <td rowspan="<%= numberOfContents %>">
                                             <%= exam.examTitle %>
                                         </td>
@@ -49,13 +48,12 @@
                                                 </td>
                                                 <% } %>
                                 </tr>
-                                <% contentCount++; %> <!-- Increment contentCount -->
+                                <% contentCount++; %>
                                     <% }); %>
                                         <% }); %>
             </tbody>
         </table>
         <a class="btn btn-success mt-5" href="/student/<%= student._id %>/score">Download Excel</a>
-        
     </div>
 
     <div class="container mb-5 ms-3">
@@ -79,22 +77,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% content.questions.forEach(question=> { %>
-                            <tr class="<%= question.isCorrect ? 'table-success' : 'table-danger' %>">
-                                <td>
-                                    <%= question.question %>
-                                </td>
-                                <td>
-                                    <%= question.submittedAnswer %>
-                                </td>
-                                <td>
-                                    <%= question.correctAnswer %>
-                                </td>
-                                <td>
-                                    <%= question.isCorrect ? 'Correct' : 'Incorrect' %>
-                                </td>
-                            </tr>
-                            <% }); %>
+                        <% if (Array.isArray(content.questions) && content.questions.length> 0) { %>
+                            <% content.questions.forEach(question=> { %>
+                                <tr class="<%= question.isCorrect ? 'table-success' : 'table-danger' %>">
+                                    <td>
+                                        <%= question.question %>
+                                    </td>
+                                    <td>
+                                        <%= question.submittedAnswer %>
+                                    </td>
+                                    <td>
+                                        <%= question.correctAnswer %>
+                                    </td>
+                                    <td>
+                                        <%= question.isCorrect ? 'Correct' : 'Incorrect' %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="4">No questions available.</td>
+                                        </tr>
+                                        <% } %>
                     </tbody>
                 </table>
                 <% }); %>
