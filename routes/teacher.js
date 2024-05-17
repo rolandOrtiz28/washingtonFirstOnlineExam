@@ -264,142 +264,93 @@ router.post('/teacher/adminregister', catchAsync(async (req, res) => {
 
 //excel downloading
 router.get('/student/:id/score', isLoggedIn, isAdminOrTeacher, async (req, res) => {
-    try {
-        // Fetch the user information by ID
-        const student = await User.findById(req.params.id);
+  try {
+    // Fetch the user information by ID
+    const student = await User.findById(req.params.id);
 
-        // Ensure the user is a student
-        if (!student || student.role !== 'student') {
-            return res.status(404).send('Student not found');
-        }
-
-        // Fetch all exam scores for the student
-        const examScores = student.examScores;
-
-        // Prepare an array to store detailed score information
-        const detailedScores = [];
-        // Iterate through each exam score
-        for (const score of examScores) {
-            const exam = await Exam.findById(score.examId);
-            if (!exam) {
-                console.log('Exam not found for score:', score);
-                continue;
-            }
-
-            // Prepare content information for each exam
-            const contentInfo = [];
-            for (const content of exam.contents) {
-                // Calculate the score for each content
-                const contentScore = student.contentScores[content._id.toString()] || 0;
-                // Convert content ID to string and use it as the key to access the content score
-
-                // Add content information to the array
-                contentInfo.push({
-                    type: content.type,
-                    remark: content.remark,
-                    score: contentScore
-                });
-            }
-
-            // Add detailed score information to the array, including overall score
-            detailedScores.push({
-                examTitle: exam.title,
-                overallScore: score.score, // Include overall score
-                scores: contentInfo
-            });
-        }
-
-        // Generate Excel file
-        const workbook = new Excel.Workbook();
-        const worksheet = workbook.addWorksheet('Scores');
-        worksheet.addRow(['Exam', 'Number of Contents', 'Content Type', 'Remark', 'Score', 'Total']);
-        detailedScores.forEach(exam => {
-            const numberOfContents = exam.scores.length;
-            let contentCount = 0;
-            exam.scores.forEach(content => {
-                if (contentCount === 0) {
-                    worksheet.addRow([exam.examTitle, numberOfContents, content.type, content.remark, content.score, exam.overallScore]);
-                } else {
-                    worksheet.addRow(['', '', content.type, content.remark, content.score, '']);
-                }
-                contentCount++;
-            });
-        });
-
-        // Set response headers for downloading the Excel file
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', 'attachment; filename=student_scores.xlsx');
-
-        // Write workbook data to response
-        workbook.xlsx.write(res)
-            .then(() => {
-                res.end();
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).send('Error generating Excel file');
-            });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
+    // Ensure the user is a student
+    if (!student || student.role !== 'student') {
+      return res.status(404).send('Student not found');
     }
+
+    // Fetch all exam scores for the student
+    const examScores = student.examScores;
+
+    // Prepare an array to store detailed score information
+    const detailedScores = [];
+    // Iterate through each exam score
+    for (const score of examScores) {
+      const exam = await Exam.findById(score.examId);
+      if (!exam) {
+        console.log('Exam not found for score:', score);
+        continue;
+      }
+
+      // Prepare content information for each exam
+      const contentInfo = [];
+      for (const content of exam.contents) {
+        // Calculate the score for each content
+        const contentScore = student.contentScores[content._id.toString()] || { totalScore: 0, questions: [] };
+
+        // Add content information to the array
+        contentInfo.push({
+          type: content.type,
+          remark: content.remark,
+          score: contentScore.totalScore
+        });
+      }
+
+      // Add detailed score information to the array, including overall score
+      detailedScores.push({
+        examTitle: exam.title,
+        overallScore: score.score, // Include overall score
+        scores: contentInfo
+      });
+    }
+
+    // Generate Excel file
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Scores');
+    worksheet.addRow(['Exam', 'Number of Contents', 'Content Type', 'Remark', 'Score', 'Total']);
+    detailedScores.forEach(exam => {
+      const numberOfContents = exam.scores.length;
+      let contentCount = 0;
+      exam.scores.forEach(content => {
+        if (contentCount === 0) {
+          worksheet.addRow([exam.examTitle, numberOfContents, content.type, content.remark, content.score, exam.overallScore]);
+        } else {
+          worksheet.addRow(['', '', content.type, content.remark, content.score, '']);
+        }
+        contentCount++;
+      });
+    });
+
+    // Set response headers for downloading the Excel file
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=student_scores.xlsx');
+
+    // Write workbook data to response
+    workbook.xlsx.write(res)
+      .then(() => {
+        res.end();
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send('Error generating Excel file');
+      });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
+
+
+
+
+
 //displaying score
-// router.get('/student/:id/scores', isLoggedIn, isAdminOrTeacher, async (req, res) => {
-//     try {
-//         // Fetch the user information by ID
-//         const student = await User.findById(req.params.id);
 
-//         // Ensure the user is a student
-//         if (!student || student.role !== 'student') {
-//             return res.status(404).send('Student not found');
-//         }
-
-//         // Fetch all exam scores for the student
-//         const examScores = student.examScores;
-
-//         // Prepare an array to store detailed score information
-//         const detailedScores = [];
-//         // Iterate through each exam score
-//         for (const score of examScores) {
-//             const exam = await Exam.findById(score.examId);
-//             if (!exam) {
-//                 console.log('Exam not found for score:', score);
-//                 continue;
-//             }
-
-//             // Prepare content information for each exam
-//             const contentInfo = [];
-//             for (const content of exam.contents) {
-//                 // Calculate the score for each content
-//                 const contentScore = student.contentScores[content._id.toString()] || 0;
-//                 // Convert content ID to string and use it as the key to access the content score
-
-//                 // Add content information to the array
-//                 contentInfo.push({
-//                     type: content.type,
-//                     remark: content.remark,
-//                     score: contentScore
-//                 });
-//             }
-
-//             // Add detailed score information to the array, including overall score
-//             detailedScores.push({
-//                 examTitle: exam.title,
-//                 overallScore: score.score, // Include overall score
-//                 scores: contentInfo
-//             });
-//         }
-
-//         // Pass detailedScores to the template
-//         res.render('teacher/studentScores', { student, detailedScores }); // Render the template
-
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
 router.get('/student/:id/scores', isLoggedIn, isAdminOrTeacher, async (req, res) => {
   try {
     const student = await User.findById(req.params.id);
