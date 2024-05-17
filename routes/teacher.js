@@ -42,7 +42,7 @@ router.get('/builder', isLoggedIn,isTeacher,async (req, res) => {
 });
 
 
-router.post('/builder', upload.array("contents[0][audio]", 2), async (req, res) => {
+router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
 
   try {
       const { title, term, level, subject, remark, contents,time } = req.body;

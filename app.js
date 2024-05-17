@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const path = require('path')
 const app = express();
 const ejsMate = require('ejs-mate')
-const dbUrl = 'mongodb://127.0.0.1:27017/wfsOnlineExamination'
+const dbUrl =process.env.DB_URL ||  'mongodb://127.0.0.1:27017/wfsOnlineExamination'
 const PORT = process.env.PORT || 3000;
 const session = require('express-session')
 const MongoDBStore = require("connect-mongo");
@@ -20,7 +20,7 @@ const LocalStrategy = require('passport-local')
 const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override')
 
-// process.env.DB_URL || 
+//
 
 // MongoDB connection
 mongoose.connect(dbUrl, {});
@@ -133,7 +133,7 @@ const frameSrcUrls=[
      "https://api2.amplitude.com/",
      "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/fonts/bootstrap-icons.woff",
      "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/fonts/bootstrap-icons.woff2",
-    
+
     ];
     app.use(
         helmet.contentSecurityPolicy({
@@ -162,11 +162,11 @@ const frameSrcUrls=[
                     "https://www.paypalobjects.com/js-sdk-logos/2.2.7/card-black.svg",
                     "https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(31).webp",
                     "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/images/ui-icons_444444_256x240.png",
-    
-    
-    
-    
-    
+
+
+
+
+
                 ],
                 fontSrc: ["'self'", ...fontSrcUrls],
             },
