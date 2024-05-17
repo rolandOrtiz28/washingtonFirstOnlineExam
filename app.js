@@ -1,3 +1,4 @@
+// Declaration
 const dotenv = require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -5,7 +6,7 @@ const bodyParser = require('body-parser');
 const path = require('path')
 const app = express();
 const ejsMate = require('ejs-mate')
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/wfsOnlineExamination'
+const dbUrl = 'mongodb://127.0.0.1:27017/wfsOnlineExamination'
 const PORT = process.env.PORT || 3000;
 const session = require('express-session')
 const MongoDBStore = require("connect-mongo");
@@ -19,7 +20,7 @@ const LocalStrategy = require('passport-local')
 const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override')
 
-// 
+// process.env.DB_URL || 
 
 // MongoDB connection
 mongoose.connect(dbUrl, {});
@@ -38,9 +39,10 @@ db.once("open", () => {
 const teacherRoute = require('./routes/teacher')
 const studentRoute = require('./routes/student')
 
+// Private codes
 const secret = process.env.SESSION_SECRET
 
-
+// Configuration
 const sessionConfig = {
     secret,
     name: '_washingtonFirst',
@@ -171,7 +173,7 @@ const frameSrcUrls=[
         })
     );
 
-
+// Setups
 app.set('view engine', 'ejs');
 app.engine('ejs', ejsMate);
 app.set('layout', 'layouts/boilerplate');
@@ -187,7 +189,7 @@ app.use(express.static(path.join(__dirname, 'models')));
 app.use(session(sessionConfig))
 
 
-
+// Passport
 app.use(passport.initialize());
 app.use(passport.session());
 

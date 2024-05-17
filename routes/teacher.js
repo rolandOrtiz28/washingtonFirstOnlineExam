@@ -42,7 +42,7 @@ router.get('/builder', isLoggedIn,isTeacher,async (req, res) => {
 });
 
 
-router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
+router.post('/builder', upload.array("contents[0][audio]", 2), async (req, res) => {
 
   try {
       const { title, term, level, subject, remark, contents,time } = req.body;
@@ -345,11 +345,62 @@ router.get('/student/:id/score', isLoggedIn, isAdminOrTeacher, async (req, res) 
 });
 
 
-
-
-
-
 //displaying score
+// router.get('/student/:id/scores', isLoggedIn, isAdminOrTeacher, async (req, res) => {
+//     try {
+//         // Fetch the user information by ID
+//         const student = await User.findById(req.params.id);
+
+//         // Ensure the user is a student
+//         if (!student || student.role !== 'student') {
+//             return res.status(404).send('Student not found');
+//         }
+
+//         // Fetch all exam scores for the student
+//         const examScores = student.examScores;
+
+//         // Prepare an array to store detailed score information
+//         const detailedScores = [];
+//         // Iterate through each exam score
+//         for (const score of examScores) {
+//             const exam = await Exam.findById(score.examId);
+//             if (!exam) {
+//                 console.log('Exam not found for score:', score);
+//                 continue;
+//             }
+
+//             // Prepare content information for each exam
+//             const contentInfo = [];
+//             for (const content of exam.contents) {
+//                 // Calculate the score for each content
+//                 const contentScore = student.contentScores[content._id.toString()] || 0;
+//                 // Convert content ID to string and use it as the key to access the content score
+
+//                 // Add content information to the array
+//                 contentInfo.push({
+//                     type: content.type,
+//                     remark: content.remark,
+//                     score: contentScore
+//                 });
+//             }
+
+//             // Add detailed score information to the array, including overall score
+//             detailedScores.push({
+//                 examTitle: exam.title,
+//                 overallScore: score.score, // Include overall score
+//                 scores: contentInfo
+//             });
+//         }
+
+//         // Pass detailedScores to the template
+//         res.render('teacher/studentScores', { student, detailedScores }); // Render the template
+
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
+
 
 router.get('/student/:id/scores', isLoggedIn, isAdminOrTeacher, async (req, res) => {
   try {

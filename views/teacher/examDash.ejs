@@ -71,10 +71,9 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
      
-        <% exams.forEach(exam => { %>
-        <form class="d-inline" action="/exam/<%=exam._id%>?_method=DELETE"
-                                                    method="post">
-        <button class="btn btn-danger">Confirm</button>
+    <% exams.forEach(exam=> { %>
+      <form class="d-inline" action="/exam/<%= exam._id %>?_method=DELETE" method="post">
+        <button class="btn btn-danger" data-bs-dismiss="modal">Confirm</button>
       </form>
       <% }) %>
     
