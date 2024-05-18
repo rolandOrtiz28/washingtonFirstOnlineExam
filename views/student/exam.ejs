@@ -37,7 +37,7 @@
                         <input type="hidden" id="contentIndex" value="<%= contentIndex %>">
 
                     </div>
-                   
+
                     <% } %>
             </div>
             <!-- Reading Section -->
@@ -57,16 +57,17 @@
                 <h3>
                     <%= index + 1 %>. <%= question.question %>
                 </h3>
-                <% question.choices.forEach((choice, choiceIndex)=> { %>
+            <% question.choices.forEach((choice, choiceIndex)=> { %>
+                <% if (choice !=='n/a' ) { %>
                     <div class="form-check ms-3 ">
                         <input class="form-check-input" type="radio" name="answers[<%= contentIndex %>_<%= index %>]"
                             id="choice_<%= contentIndex %>_<%= index %>_<%= choiceIndex %>" value="<%= choice %>">
-                        <label class="form-check-label"
-                            for="choice_<%= contentIndex %>_<%= index %>_<%= choiceIndex %>">
+                        <label class="form-check-label" for="choice_<%= contentIndex %>_<%= index %>_<%= choiceIndex %>">
                             <%= choice %>
                         </label>
                     </div>
-                    <% }); %>
+                    <% } %>
+                        <% }); %>
                         <% }); %>
                     </div>
         </div>
