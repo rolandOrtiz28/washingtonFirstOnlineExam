@@ -110,6 +110,15 @@ router.get('/exam/update/:id', isLoggedIn, isAdmin,async (req, res) => {
   }
 });
 
+router.get('/teacher/exam/:id', isLoggedIn, async (req, res) => {
+  try {
+    const exam = await Exam.findById(req.params.id);
+    res.render('teacher/exam', { exam, currentPage: 0 }); // Pass currentPage with value 0
+  } catch (err) {
+    console.error(err);
+    res.redirect('/');
+  }
+});
 
 
 
