@@ -1,6 +1,11 @@
 <% layout('/layouts/adminboilerplate') -%>
 
+<style>
+a{
+  text-decoration: none;
+}
 
+</style>
 
     <div class="container ms-4">
 <h1>Student List</h1>
@@ -52,6 +57,7 @@
                                                     <form class="d-inline" action="/student/<%=student._id%>?_method=DELETE" method="post">
                                                         <button class="btn btn-danger btn-sm">Delete</button>
                                                     </form>
+                                                   <a href="/update-user/<%=student._id %>" class="text-white btn-danger btn-sm" style="font-style: none;">Update</a>
                                                 </td>
                                                 <% } %>
                                             </tr>

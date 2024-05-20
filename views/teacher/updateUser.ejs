@@ -1,0 +1,54 @@
+<% layout('/layouts/boilerplate') %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form action="/user/<%= user._id %>" method="POST">
+                    <!-- Name input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form4Example1" class="form-control" name="user[name]"  value="<%=user.name %>" required/>
+                        <label class="form-label" for="form4Example1">Name</label>
+                    </div>
+             
+                    
+                   
+                    <div class="form-outline mb-4">
+                        <select class="form-select program text-muted" aria-label="Default select example" name="user[level]" required>
+                            <option value="" disabled>Select Level</option>
+                            <option value="EAL-1A" <%=user.level==='EAL-1A' ? 'selected' : '' %>>EAL-1A</option>
+                            <option value="EAL-1B" <%=user.level==='EAL-1B' ? 'selected' : '' %>>EAL-1B</option>
+                            <option value="EAL-2A" <%=user.level==='EAL-2A' ? 'selected' : '' %>>EAL-2A</option>
+                            <option value="EAL-2B" <%=user.level==='EAL-2B' ? 'selected' : '' %>>EAL-2B</option>
+                            <option value="EAL-3A" <%=user.level==='EAL-3A' ? 'selected' : '' %>>EAL-3A</option>
+                            <option value="EAL-3B" <%=user.level==='EAL-3B' ? 'selected' : '' %>>EAL-3B</option>
+                            <option value="EAL-4A" <%=user.level==='EAL-4A' ? 'selected' : '' %>>EAL-4A</option>
+                            <option value="EAL-4B" <%=user.level==='EAL-4B' ? 'selected' : '' %>>EAL-4B</option>
+                            <option value="EAL-5A" <%=user.level==='EAL-5A' ? 'selected' : '' %>>EAL-5A</option>
+                            <option value="EAL-5B" <%=user.level==='EAL-5B' ? 'selected' : '' %>>EAL-5B</option>
+                            <option value="EAL-6A" <%=user.level==='EAL-6A' ? 'selected' : '' %>>EAL-6A</option>
+                            <option value="EAL-6B" <%=user.level==='EAL-6B' ? 'selected' : '' %>>EAL-6B</option>
+                            <option value="EAL-7A" <%=user.level==='EAL-7A' ? 'selected' : '' %>>EAL-7A</option>
+                            <option value="EAL-7B" <%=user.level==='EAL-7B' ? 'selected' : '' %>>EAL-7B</option>
+                            <option value="EAL-8A" <%=user.level==='EAL-8A' ? 'selected' : '' %>>EAL-8A</option>
+                            <option value="EAL-8B" <%=user.level==='EAL-8B' ? 'selected' : '' %>>EAL-8B</option>
+                            
+                        
+                            <!-- Repeat for other levels -->
+                        </select>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <select class="form-select program text-muted" aria-label="Default select example" name="user[time]" required>
+                            <option selected disabled class="text-muted">Time</option>
+                            <option value="Part-Time 1" <%=user.time==='Part-Time 1' ? 'selected' : '' %>>Part-Time 1</option>
+                            <option value="Part-Time 2" <%=user.time==='Part-Time 2' ? 'selected' : '' %>>Part-Time 2</option>
+                        </select>
+                    </div>
+                    
+
+                   
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>

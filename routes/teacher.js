@@ -449,17 +449,41 @@ router.get('/student/:id/scores', isLoggedIn, isAdminOrTeacher, async (req, res)
 });
 
 
-router.delete('/exam/:id', catchAsync(async (req, res) => {
+router.delete('/exam/:id', isLoggedIn,isAdmin,catchAsync(async (req, res) => {
   const { id } = req.params;
   await Exam.findByIdAndDelete(id);
   res.redirect('/examdashboard');
 }))
 
 
-router.delete('/student/:id', catchAsync(async (req, res) => {
+router.delete('/student/:id', isLoggedIn,isAdmin,catchAsync(async (req, res) => {
   const { id } = req.params;
   await User.findByIdAndDelete(id);
   res.redirect('/studentDashboard');
 }))
+
+
+router.get('/update-user/:id', catchAsync(async(req, res) => {
+  const user = await User.findById(req.params.id);
+  res.render('teacher/updateUser', {user }); // Pass the current user data to the view
+}));
+
+
+router.post('/user/:id',isLoggedIn,isAdmin,catchAsync(async (req, res, next) => {
+  try{
+  const { id } = req.params;
+  const user = await User.findByIdAndUpdate(id, {...req.body.user});
+
+  await user.save();
+  req.flash('success', 'User updated')
+  res.redirect(`/studentDashboard`)
+  }catch{
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+}))
+
+
+
 
 module.exports = router;

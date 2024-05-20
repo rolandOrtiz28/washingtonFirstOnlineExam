@@ -1,0 +1,33 @@
+<% layout('/layouts/boilerplate') -%>
+<%- include('../partials/flash') %>
+<style>
+
+    
+</style>
+<div class="container d-flex justify-content-center align-items-center">
+<form action="/student/reset-password" method="POST">
+<div class="card text-center" style="width: 300px;">
+    <div class="card-header h5 text-white bg-primary">Password Reset</div>
+    <div class="card-body px-5">
+        <p class="card-text py-2">
+            Enter your new username and new password
+        </p>
+        <div data-mdb-input-init class="form-outline">
+            <input type="text" id="typeEmail" class="form-control" name="username" />
+            <label class="form-label" for="typeEmail">Username</label>
+        </div>
+        <div data-mdb-input-init class="form-outline">
+            
+            <input type="password" id="password" class="form-control" name="password" />
+            <button class="btn bg-transparent input" id="eye-icon" type="button">
+                <i class="far fa-eye icon"></i>
+            </button>
+            <label class="form-label" for="typeEmail">New password</label>
+        </div>
+      
+       <button type="submit" class="btn btn-primary w-100">Reset password</button>
+    </div>
+</div>
+</form>
+</div>
+<script src="/javascript/login.js"></script>

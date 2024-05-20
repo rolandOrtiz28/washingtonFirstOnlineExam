@@ -215,4 +215,24 @@ router.get('/logout', (req, res, next) => {
     });
 })
 
+router.get('/reset-password', (req, res) => {
+    res.render('student/reset'); // Create a view named 'reset-password'
+});
+
+router.post('/reset-password', catchAsync(async (req, res) => {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username });
+    if (!user) {
+        req.flash('error', 'No account with that username exists.');
+        return res.redirect('/student/reset-password');
+    }
+
+    await user.setPassword(password);
+    await user.save();
+
+    req.flash('success', 'Password has been reset successfully.');
+    res.redirect('/'); // Redirect to login page or appropriate page after resetting password
+}));
+
 module.exports = router
