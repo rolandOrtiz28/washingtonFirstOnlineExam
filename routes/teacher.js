@@ -45,7 +45,7 @@ router.get('/builder', isLoggedIn,isTeacher,async (req, res) => {
 router.post('/builder', upload.single("contents[0][audio]"), async (req, res) => {
 
   try {
-      const { title, term, level, subject, remark, contents,time } = req.body;
+      const { title, term,teacher, level, subject, remark, contents,time } = req.body;
       const author = req.user._id;
 
       // Initialize audioUrl to null
@@ -81,6 +81,7 @@ router.post('/builder', upload.single("contents[0][audio]"), async (req, res) =>
           subject,
           remark,
           time,
+        teacher,
           contents: newContents,
           author,
           isPublished: false
@@ -99,7 +100,7 @@ router.post('/builder', upload.single("contents[0][audio]"), async (req, res) =>
 
 router.get('/exam/update/:id', isLoggedIn, isAdmin,async (req, res) => {
   try {
-    const exam = await Exam.findById(req.params.id);
+    const exam = await Exam.findById(req.params.id).populate('author');
     if (!exam) {
       return res.status(404).send('Exam not found');
     }
@@ -110,12 +111,21 @@ router.get('/exam/update/:id', isLoggedIn, isAdmin,async (req, res) => {
   }
 });
 
+router.get('/teacher/exam/:id', isLoggedIn, async (req, res) => {
+  try {
+    const exam = await Exam.findById(req.params.id);
+    res.render('teacher/exam', { exam, currentPage: 0 }); // Pass currentPage with value 0
+  } catch (err) {
+    console.error(err);
+    res.redirect('/');
+  }
+});
 
 
 
 router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res) => {
   try {
-    const { title, term, level, subject, remark, contents,time, isPublished } = req.body;
+    const { title, term, teacher, level, subject, remark, contents,time, isPublished } = req.body;
     const author = req.user._id;
     const examId = req.params.id;
 
@@ -149,6 +159,7 @@ router.post('/update/:id', upload.single("contents[0][audio]"), async (req, res)
       term,
       level,
       subject,
+      teacher,
       remark,
       time,
       contents: newContents,

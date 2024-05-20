@@ -25,6 +25,7 @@ const examSchema = new Schema({
   term: String,
   level: String,
   subject: String,
+  teacher: String,
   time: String,
   author:{
     type: Schema.Types.ObjectId,
