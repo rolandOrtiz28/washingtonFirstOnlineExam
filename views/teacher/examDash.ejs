@@ -26,7 +26,7 @@
                   <h5><%= exam.title %></h5>
                   <p class="text"><%= exam.level %></p>
                   <p class="text"><%= exam.time %></p>
-                  <span class="username">Teacher: <%= exam.author?.username || 'Unknown' %></span>
+                  <span class="username">Teacher: <%= exam.teacher || 'Unknown' %></span>
                   <div class="footer">
                     <div>
                       <% if (currentUserID && ((exam.author && exam.author.equals(currentUserID)) || currentUserIsAdmin)) { %>
