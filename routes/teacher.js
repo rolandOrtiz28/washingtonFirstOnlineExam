@@ -11,6 +11,9 @@ const {isTeacher} = require('../middleware')
 const {storage} = require('../cloudinary');
 const upload = multer({ storage });
 const Excel = require('exceljs');
+
+
+
 //Authentication
 router.get('/teacher/registerteacher', (req, res) => {
     res.render('teacher/registerTeacher')
@@ -111,6 +114,19 @@ router.get('/exam/update/:id', isLoggedIn, isAdmin,async (req, res) => {
   }
 });
 
+router.get('/exam/duplicate/:id', isLoggedIn, isAdmin,async (req, res) => {
+  try {
+    const exam = await Exam.findById(req.params.id).populate('author');
+    if (!exam) {
+      return res.status(404).send('Exam not found');
+    }
+    res.render('teacher/duplicateExam', { exam });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 router.get('/teacher/exam/:id', isLoggedIn, async (req, res) => {
   try {
     const exam = await Exam.findById(req.params.id);
@@ -185,6 +201,7 @@ router.get('/update/:id', isLoggedIn, isAdmin, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 
 

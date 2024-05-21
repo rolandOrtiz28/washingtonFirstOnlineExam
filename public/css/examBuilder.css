@@ -16,3 +16,15 @@ h1{
 font-weight: 900
 
 }
+
+
+.trash{
+    border: none;
+    background: none;
+    color:rgb(28, 117, 219);
+      }
+    
+      .trash:hover{
+    color: #800000;
+    
+      }

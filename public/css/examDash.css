@@ -90,13 +90,4 @@
 
   /* Delete btn */
 
-  .trash{
-border: none;
-background: none;
-color:rgb(28, 117, 219);
-  }
-
-  .trash:hover{
-color: #800000;
-
-  }
+ 
