@@ -25,6 +25,7 @@ a{
                             <% Object.keys(groupedStudents[level]).forEach(time=> { %>
                                 <h3>
                                     <%= time %>
+                                    <a href="/studentScoresByGroup?level=<%= level %>&time=<%= time %>" class="btn btn-primary btn-sm ms-3">View Scores</a>
                                 </h3>
                                 <table class="table">
                                     <thead>

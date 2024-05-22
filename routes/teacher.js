@@ -373,6 +373,89 @@ router.get('/student/:id/score', isLoggedIn, isAdminOrTeacher, async (req, res) 
 });
 
 
+
+router.get('/group/scores', isLoggedIn, isAdminOrTeacher, async (req, res) => {
+  try {
+    const { level, time } = req.query;
+    if (!level || !time) {
+      return res.status(400).send('Level and Time are required');
+    }
+
+    // Fetch students from the database based on level and time
+    const students = await User.find({ role: 'student', level, time });
+
+    // Prepare an array to store detailed score information for the group
+    const groupedScores = [];
+    for (const student of students) {
+      const examScores = student.examScores;
+      const detailedScores = [];
+
+      for (const score of examScores) {
+        const exam = await Exam.findById(score.examId);
+        if (!exam) continue;
+
+        const contentInfo = [];
+        for (const content of exam.contents) {
+          const contentScore = student.contentScores[content._id.toString()] || { totalScore: 0, questions: [] };
+          contentInfo.push({
+            type: content.type,
+            score: contentScore.totalScore
+          });
+        }
+
+        detailedScores.push({
+          examTitle: exam.title,
+          overallScore: score.score,
+          scores: contentInfo
+        });
+      }
+
+      groupedScores.push({
+        studentName: student.name,
+        detailedScores
+      });
+    }
+
+    // Generate Excel file
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Scores');
+    const headers = ['Student', 'Exam'];
+
+    // Add dynamic headers based on content types from the first student's first exam
+    if (groupedScores.length > 0 && groupedScores[0].detailedScores.length > 0 && groupedScores[0].detailedScores[0].scores.length > 0) {
+      groupedScores[0].detailedScores[0].scores.forEach(content => {
+        headers.push(content.type);
+      });
+    }
+
+    headers.push('Total');
+    worksheet.addRow(headers);
+
+    // Add data rows
+    groupedScores.forEach(group => {
+      group.detailedScores.forEach(exam => {
+        const row = [group.studentName, exam.examTitle];
+        exam.scores.forEach(content => {
+          row.push(content.score);
+        });
+        row.push(exam.overallScore);
+        worksheet.addRow(row);
+      });
+    });
+
+    // Set response headers for downloading the Excel file
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=group_scores.xlsx');
+
+    // Write workbook data to response
+    await workbook.xlsx.write(res);
+    res.end();
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 //displaying score
 // router.get('/student/:id/scores', isLoggedIn, isAdminOrTeacher, async (req, res) => {
 //     try {
@@ -510,6 +593,56 @@ router.post('/user/:id',isLoggedIn,isAdmin,catchAsync(async (req, res, next) => 
     res.status(500).send('Internal Server Error');
   }
 }))
+
+router.get('/studentScoresByGroup', isLoggedIn, isAdminOrTeacher, async (req, res) => {
+  try {
+      const { level, time } = req.query;
+      if (!level || !time) {
+          return res.status(400).send('Level and Time are required');
+      }
+
+      // Fetch students from the database based on level and time
+      const students = await User.find({ role: 'student', level, time });
+
+      // Collect detailed scores for each student
+      const groupedScores = [];
+      for (const student of students) {
+          const examScores = student.examScores;
+          const detailedScores = [];
+
+          for (const score of examScores) {
+              const exam = await Exam.findById(score.examId);
+              if (!exam) continue;
+
+              const contentInfo = [];
+              for (const content of exam.contents) {
+                  const contentScore = student.contentScores[content._id.toString()];
+                  contentInfo.push({
+                      type: content.type,
+                      totalScore: contentScore ? contentScore.totalScore : 0
+                  });
+              }
+
+              detailedScores.push({
+                  examTitle: exam.title,
+                  overallScore: score.score,
+                  scores: contentInfo
+              });
+          }
+
+          groupedScores.push({
+              studentName: student.name,
+              detailedScores
+          });
+      }
+
+      res.render('teacher/groupStudentScores', { level, time, groupedScores });
+
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+  }
+});
 
 
 

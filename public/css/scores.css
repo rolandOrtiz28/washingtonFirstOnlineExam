@@ -3,7 +3,21 @@ width: 20%;
 
 }
 
-.cell-border {
-    border: 1px solid black !important; /* Add border styling */
-    padding: 8px !important; /* Add padding for better spacing */
+tr th{
+border: 1px black solid !important;
+
 }
+
+tr td{
+    border: 1px black solid !important;
+    
+    }
+    tr .total{
+width: 1rem !important;
+
+    }
+
+    h1{
+color: #800000;
+
+    }
