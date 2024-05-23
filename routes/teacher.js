@@ -240,20 +240,56 @@ function groupStudentsByLevelAndTime(students) {
     return groupedStudents;
 }
 
-router.get('/studentDashboard', isLoggedIn,isAdminOrTeacher,async (req, res) => {
-    try {
-        // Fetch students from the database
-        const students = await User.find({ role: 'student' });
+// router.get('/studentDashboard', isLoggedIn,isAdminOrTeacher,async (req, res) => {
+//     try {
+//         // Fetch students from the database
+//         const students = await User.find({ role: 'student' });
 
-        // Group students by level and time
-        const groupedStudents = groupStudentsByLevelAndTime(students);
+//         // Group students by level and time
+//         const groupedStudents = groupStudentsByLevelAndTime(students);
 
-        res.render('teacher/studentdash', { groupedStudents });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
-    }
+//         res.render('teacher/studentdash', { groupedStudents });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
+
+router.get('/studentDashboard', isLoggedIn, isAdminOrTeacher, async (req, res) => {
+  try {
+    // Fetch students from the database
+    const students = await User.find({ role: 'student' });
+
+    // Fetch exams from the database
+    const exams = await Exam.find();
+
+    // Group students by level, time, and teacher
+    const groupedStudents = {};
+
+    students.forEach(student => {
+      // Find the exam that matches the student's level and time
+      const exam = exams.find(exam => exam.level === student.level && exam.time === student.time);
+      const teacher = exam ? exam.teacher : 'Unknown';
+
+      if (!groupedStudents[student.level]) {
+        groupedStudents[student.level] = {};
+      }
+      if (!groupedStudents[student.level][student.time]) {
+        groupedStudents[student.level][student.time] = {};
+      }
+      if (!groupedStudents[student.level][student.time][teacher]) {
+        groupedStudents[student.level][student.time][teacher] = [];
+      }
+      groupedStudents[student.level][student.time][teacher].push(student);
+    });
+
+    res.render('teacher/studentdash', { groupedStudents });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
 
 router.get('/teacher/adminregistration',(req,res)=>{
 

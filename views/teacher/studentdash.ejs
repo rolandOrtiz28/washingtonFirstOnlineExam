@@ -1,14 +1,13 @@
 <% layout('/layouts/adminboilerplate') -%>
 
-<style>
-a{
-  text-decoration: none;
-}
-
-</style>
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
 
     <div class="container ms-4">
-<h1>Student List</h1>
+        <h1>Student List</h1>
         <div id="accordion">
             <% Object.keys(groupedStudents).forEach(level=> { %>
                 <div class="accordion-item">
@@ -25,50 +24,98 @@ a{
                             <% Object.keys(groupedStudents[level]).forEach(time=> { %>
                                 <h3>
                                     <%= time %>
-                                    <a href="/studentScoresByGroup?level=<%= level %>&time=<%= time %>" class="btn btn-primary btn-sm ms-3">View Scores</a>
                                 </h3>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-
-                                            <th>Level</th>
-                                            <th>Time</th>
-                                            <th>Action</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% groupedStudents[level][time].forEach(student=> { %>
+                                <% Object.keys(groupedStudents[level][time]).forEach(teacher=> { %>
+                                    <h4>
+                                        Teacher: <%= teacher %>
+                                            <a href="/studentScoresByGroup?level=<%= level %>&time=<%= time %>&teacher=<%= teacher %>"
+                                                class="btn btn-primary btn-sm ms-3">View Scores</a>
+                                    </h4>
+                                    <table class="table">
+                                        <thead>
                                             <tr>
-                                            <td>
-                                                <a href="/student/<%= student._id %>/scores">
-                                                    <%= student.name %>
-                                                </a>
-                                            </td>
-
-                                                <td>
-                                                    <%= student.level %>
-                                                </td>
-                                                <td>
-                                                    <%= student.time %>
-                                                </td>
-                                            <% if (currentUserIsAdmin) { %>
-                                                <td>
-                                                    <form class="d-inline" action="/student/<%=student._id%>?_method=DELETE" method="post">
-                                                        <button class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                   <a href="/update-user/<%=student._id %>" class="text-white btn-danger btn-sm" style="font-style: none;">Update</a>
-                                                </td>
-                                                <% } %>
+                                                <th>Name</th>
+                                                <th>Level</th>
+                                                <th>Time</th>
+                                                <th>Teacher</th>
+                                                <th>Action</th>
                                             </tr>
-                                            <% }); %>
-                                    </tbody>
-                                </table>
-                                <% }); %>
+                                        </thead>
+                                        <tbody>
+                                            <% groupedStudents[level][time][teacher].forEach(student=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <a href="/student/<%= student._id %>/scores">
+                                                            <%= student.name %>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <%= student.level %>
+                                                    </td>
+                                                    <td>
+                                                        <%= student.time %>
+                                                    </td>
+                                                    <td>
+                                                        <%= teacher %>
+                                                    </td>
+                                                    <% if (currentUserIsAdmin) { %>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Action
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li>
+                                                                        <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                                                            Delete
+                                                                        </button>
+                                                                        </li>
+                                                                    <li><a href="/update-user/<%= student._id %>" class="dropdown-item" style="font-style: none;">Update</a></li>
+                                                                    
+                                                        
+                                                                </ul>
+                                                            </div>
+                                                            
+                                                            
+                                                        </td>
+                                                        <% } %>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+                                    <% }); %>
+                                        <% }); %>
                         </div>
                     </div>
                 </div>
                 <% }); %>
         </div>
     </div>
+<% Object.keys(groupedStudents).forEach(level=> { %>
+    <% Object.keys(groupedStudents[level]).forEach(time=> { %>
+<% Object.keys(groupedStudents[level][time]).forEach(teacher=> { %>
+<% groupedStudents[level][time][teacher].forEach(student=> { %>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to proceed with deleting the user?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    
+    <form class="d-inline" action="/student/<%= student._id %>?_method=DELETE" method="post">
+    <button class="btn btn-danger" data-bs-dismiss="modal">Confirm</button>
+    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }); %>
+    <% }); %>
+    <% }); %>
+    <% }); %>
