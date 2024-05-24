@@ -10,8 +10,8 @@ body {
     background-position: center;
 }
 
-label{
-color: black !important;
+label {
+    color: black !important;
 }
 
 .validicon {
@@ -201,7 +201,7 @@ input:hover {
     height: 20px;
     border-radius: 3px;
     appearance: none;
-top: 5px;
+    top: 5px;
     background-color: #bbb;
     transition: all .3s;
 }
