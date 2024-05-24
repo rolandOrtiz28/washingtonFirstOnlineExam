@@ -103,6 +103,35 @@
                 </table>
                 <% }); %>
                     <% }); %>
+                    <button class="btn btn-danger mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        Delete
+                    </button>
                     <a class="btn btn-danger mt-3 mb-3" href="/studentDashboard">Back</a>
     </div>
 
+
+
+
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to proceed with deleting the user <strong>
+                            <%= student.name.toUpperCase() %>
+                        </strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    
+                    <form class="d-inline" action="/student/<%= student._id %>?_method=DELETE" method="post">
+                        <button class="btn btn-danger" data-bs-dismiss="modal">Confirm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

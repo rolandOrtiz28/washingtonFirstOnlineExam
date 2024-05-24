@@ -75,9 +75,7 @@ color: #800000;
                                                                 </button>
                                                                 <ul class="dropdown-menu">
                                                                     <li>
-                                                                        <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                                            Delete
-                                                                        </button>
+                                                                        
                                                                         </li>
                                                                     <li><a href="/update-user/<%= student._id %>" class="dropdown-item" style="font-style: none;">Update</a></li>
                                                                     
@@ -100,31 +98,3 @@ color: #800000;
                 <% }); %>
         </div>
     </div>
-<% Object.keys(groupedStudents).forEach(level=> { %>
-    <% Object.keys(groupedStudents[level]).forEach(time=> { %>
-<% Object.keys(groupedStudents[level][time]).forEach(teacher=> { %>
-<% groupedStudents[level][time][teacher].forEach(student=> { %>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to proceed with deleting the user <strong><%= student.name.toUpperCase() %></strong>?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    
-    <form class="d-inline" action="/student/<%= student._id %>?_method=DELETE" method="post">
-    <button class="btn btn-danger" data-bs-dismiss="modal">Confirm</button>
-    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <% }); %>
-    <% }); %>
-    <% }); %>
-    <% }); %>
