@@ -4,6 +4,15 @@
         a {
             text-decoration: none;
         }
+        .accordion-button h5{
+color: #800000;
+
+        }
+.accordion-body h3,h4{
+
+    color: #800000;
+}
+
     </style>
 
     <div class="container ms-4">
@@ -15,7 +24,7 @@
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse<%= level %>" aria-expanded="true"
                             aria-controls="collapse<%= level %>">
-                            <%= level %>
+                           <h5> <%= level %></h5>
                         </button>
                     </h2>
                     <div id="collapse<%= level %>" class="accordion-collapse collapse show"
@@ -103,7 +112,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to proceed with deleting the user?</p>
+                    <p>Are you sure you want to proceed with deleting the user <strong><%= student.name.toUpperCase() %></strong>?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

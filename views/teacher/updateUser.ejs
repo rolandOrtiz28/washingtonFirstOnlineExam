@@ -1,13 +1,35 @@
 <% layout('/layouts/boilerplate') %>
 
+<style>
+h3{
+color: #800000;
+font-weight: 700;
+}
+ .container .row .col-md-6{
+border: 1px solid #800000;
+padding: 2rem;
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(7.4px);
+-webkit-backdrop-filter: blur(7.4px);
+border: 1px solid rgba(255, 255, 255, 0.3);
+ }
+</style>
+
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
+                <h3>Update User</h3>
                 <form action="/user/<%= user._id %>" method="POST">
                     <!-- Name input -->
                     <div class="form-outline mb-4">
                         <input type="text" id="form4Example1" class="form-control" name="user[name]"  value="<%=user.name %>" required/>
                         <label class="form-label" for="form4Example1">Name</label>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form4Example1" class="form-control" name="user[username]"  value="<%=user.username %>" required/>
+                        <label class="form-label" for="form4Example1">Username</label>
                     </div>
              
                     
