@@ -3,10 +3,16 @@
     padding: 2rem;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #fff;
+}
+
+.container .details{
+background-color: rgb(255, 250, 244);
+
 }
 
 .story{
-font-size: 20px;
+font-size: 25px;
 
 }
 

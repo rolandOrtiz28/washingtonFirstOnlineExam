@@ -21,3 +21,10 @@ width: 1rem !important;
 color: #800000;
 
     }
+
+
+    .container{
+background-color: #fff;
+padding: 3rem;
+border-radius: 10px;
+    }

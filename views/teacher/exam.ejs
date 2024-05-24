@@ -1,11 +1,11 @@
 <% layout('/layouts/boilerplate') -%>
     <link rel="stylesheet" href="/css/exam.css">
-
+<div class="container">
     <form id="examForm" action="/student/submit-exam" method="POST">
         <input type="hidden" name="examId" value="<%= exam._id %>">
         <% exam.contents.forEach((content, contentIndex)=> { %>
             <input type="hidden" name="contentIndex" value="<%= contentIndex %>">
-            <div class="container mb-3 p-5">
+            <div class="container mb-3 p-5 details">
                 <!-- Content Details -->
                 <div class="row">
                     <!-- Content Type -->
@@ -80,6 +80,6 @@
 
                 <a href="/examdashboard" class="btn btn-success btn-md mt-3 mb-3">Back</a>
     </form>
-
+</div>
 
     <script src="/javascript/showExam.js"></script>

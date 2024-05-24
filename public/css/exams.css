@@ -1,3 +1,9 @@
+.container .content{
+    border: 2px solid #800000;
+        border-radius: 20px;
+background-color: rgb(255, 250, 244);
+}
+
 .title{
     background-image: linear-gradient(45deg, #FFD059, #004AAD);
     color: transparent;
@@ -9,6 +15,7 @@
 
 .card {
     position: relative;
+    color: #800000;
     background-color: #ffffff;
     padding: 1em;
     z-index: 5;
@@ -16,6 +23,32 @@
     border-radius: 10px;
     max-width: 300px;
     transition: 200ms ease-in-out;
+    overflow: hidden;
+    /* Ensure child elements don't overflow */
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/images/Logo.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+    /* Adjust the opacity as needed */
+    z-index: 1;
+    /* Place it behind the content */
+    border-radius: 10px;
+    /* Ensure the pseudo-element respects the card's border-radius */
+}
+
+.card>* {
+    position: relative;
+    z-index: 5;
+    /* Ensure content is above the background image */
 }
 
 .username {
