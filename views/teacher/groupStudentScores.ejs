@@ -1,40 +1,71 @@
 <% layout('/layouts/adminboilerplate') -%>
-<link rel="stylesheet" href="/css/scores.css">
-<div class="container mb-5" style="border: 2px solid black;">
-    <div class="row">
-        <div class="col-md-12 mt-3">
-            <h1>Scores for <%= level %> Level - <%= time %></h1>
+    <link rel="stylesheet" href="/css/scores.css">
+    <div class="container mb-5" style="border: 2px solid black;">
+        <div class="row">
+            <div class="col-md-12 mt-3">
+                <h1>Scores for <%= level %> Level - <%= time %>
+                </h1>
+            </div>
         </div>
-    </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr class="text-center">
-                <th>Student</th>
-                <th>Exam</th>
-                <% if (groupedScores.length > 0 && groupedScores[0].detailedScores.length > 0 && groupedScores[0].detailedScores[0].scores.length > 0) { %>
-                    <% groupedScores[0].detailedScores[0].scores.forEach(content => { %>
-                        <th><%= content.type %></th>
-                    <% }); %>
-                <% } %>
-                <th class="total">Total Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% groupedScores.forEach(group => { %>
-                <% group.detailedScores.forEach(exam => { %>
+        <table class="table table-bordered">
+            <thead>
+                <tr class="text-center">
+                    <th>Student</th>
+                    <th>Exam</th>
+                    <% if (groupedScores.length> 0 && groupedScores[0].detailedScores.length > 0 &&
+                        groupedScores[0].detailedScores[0].scores.length > 0) {
+                        // Collect unique content types
+                        var contentTypes = [];
+                        groupedScores.forEach(group => {
+                        group.detailedScores.forEach(exam => {
+                        exam.scores.forEach(content => {
+                        if (!contentTypes.includes(content.type)) {
+                        contentTypes.push(content.type);
+                        }
+                        });
+                        });
+                        });
+                        contentTypes.forEach(type => { %>
+                        <th>
+                            <%= type %>
+                        </th>
+                        <% }); } %>
+                            <th class="total">Total Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% groupedScores.forEach(group=> {
+                    group.detailedScores.forEach(exam => {
+                    // Calculate combined scores
+                    var combinedScores = {};
+                    exam.scores.forEach(content => {
+                    if (combinedScores[content.type]) {
+                    combinedScores[content.type] += content.totalScore;
+                    } else {
+                    combinedScores[content.type] = content.totalScore;
+                    }
+                    });
+                    %>
                     <tr class="text-center">
-                        <td><%= group.studentName %></td>
-                        <td><%= exam.examTitle %></td>
-                        <% exam.scores.forEach(content => { %>
-                            <td><%= content.totalScore %></td>
-                        <% }); %>
-                        <td><%= exam.overallScore %></td>
+                        <td>
+                            <%= group.studentName %>
+                        </td>
+                        <td>
+                            <%= exam.examTitle %>
+                        </td>
+                        <% contentTypes.forEach(type=> { %>
+                            <td>
+                                <%= combinedScores[type] || 0 %>
+                            </td>
+                            <% }); %>
+                                <td>
+                                    <%= exam.overallScore %>
+                                </td>
                     </tr>
-                <% }); %>
-            <% }); %>
-        </tbody>
-    </table>
-    <a class="btn btn-success mt-3 mb-3" href="/group/scores?level=<%= level %>&time=<%= time %>">Download Excel</a>
-    <a class="btn btn-danger mt-3 mb-3" href="/studentDashboard">Back</a>
-</div>
+                    <% }); }); %>
+            </tbody>
+        </table>
+        <a class="btn btn-success mt-3 mb-3" href="/group/scores?level=<%= level %>&time=<%= time %>">Download Excel</a>
+        <a class="btn btn-danger mt-3 mb-3" href="/studentDashboard">Back</a>
+    </div>
