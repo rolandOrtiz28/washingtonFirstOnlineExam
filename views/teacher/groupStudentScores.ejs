@@ -13,10 +13,11 @@
                 <tr class="text-center">
                     <th>Student</th>
                     <th>Exam</th>
-                    <% if (groupedScores.length> 0 && groupedScores[0].detailedScores.length > 0 &&
+                    <% var contentTypes=[]; if (groupedScores.length> 0) {
+                        if (groupedScores[0].detailedScores && groupedScores[0].detailedScores.length > 0) {
+                        if (groupedScores[0].detailedScores[0].scores &&
                         groupedScores[0].detailedScores[0].scores.length > 0) {
                         // Collect unique content types
-                        var contentTypes = [];
                         groupedScores.forEach(group => {
                         group.detailedScores.forEach(exam => {
                         exam.scores.forEach(content => {
@@ -26,6 +27,10 @@
                         });
                         });
                         });
+                        }
+                        }
+                        }
+                        if (contentTypes.length > 0) {
                         contentTypes.forEach(type => { %>
                         <th>
                             <%= type %>
@@ -39,6 +44,7 @@
                     group.detailedScores.forEach(exam => {
                     // Calculate combined scores
                     var combinedScores = {};
+                    if (exam.scores) {
                     exam.scores.forEach(content => {
                     if (combinedScores[content.type]) {
                     combinedScores[content.type] += content.totalScore;
@@ -46,6 +52,7 @@
                     combinedScores[content.type] = content.totalScore;
                     }
                     });
+                    }
                     %>
                     <tr class="text-center">
                         <td>
@@ -54,11 +61,12 @@
                         <td>
                             <%= exam.examTitle %>
                         </td>
-                        <% contentTypes.forEach(type=> { %>
+                        <% if (contentTypes.length> 0) {
+                            contentTypes.forEach(type => { %>
                             <td>
                                 <%= combinedScores[type] || 0 %>
                             </td>
-                            <% }); %>
+                            <% }); } %>
                                 <td>
                                     <%= exam.overallScore %>
                                 </td>
